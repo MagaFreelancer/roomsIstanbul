@@ -1,0 +1,90 @@
+.hero {
+    background-image: url("../../assets/heroBg.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-top: 100px;
+    padding-bottom: 150px;
+    &__title {
+        color: var(--blackColor);
+        margin: 0;
+        font-size: 60px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    &__subtitle {
+        color: rgba(#16100d, 0.5);
+        font-size: 22px;
+        margin-bottom: 50px;
+        max-width: 535px;
+    }
+    &__points {
+        display: grid;
+        grid-template-columns: 1fr 55px;
+        padding: 22px;
+        max-width: 915px;
+        width: 100%;
+        backdrop-filter: blur(5px);
+        background-color: rgba(#ffffff, 0.8);
+        border-radius: 16px;
+        margin-bottom: 50px;
+    }
+    &__points-col {
+        display: none;
+
+        &--active {
+            display: block;
+        }
+    }
+    &__points-list {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    &__points-item {
+        position: relative;
+        padding-left: 80px;
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 80px;
+            width: 80px;
+            background-repeat: no-repeat;
+        }
+        &--location {
+            &::after {
+                background-image: url("../../assets/points/1.svg");
+            }
+        }
+        &--price {
+            &::after {
+                background-image: url("../../assets/points/2.svg");
+            }
+        }
+        &--type {
+            &::after {
+                background-image: url("../../assets/points/3.svg");
+            }
+        }
+    }
+    &__points-heading {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    &__points-descr {
+        color: rgba(#16100d, 0.5);
+    }
+    &__static {
+        display: flex;
+        gap: 58px;
+    }
+    &__static-num {
+        font-size: 30px;
+        font-weight: 700;
+    }
+    &__static-descr {
+       
+    }
+}

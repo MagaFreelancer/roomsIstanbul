@@ -1,0 +1,19 @@
+.button {
+    padding: 17px;
+    color: var(--whiteColor);
+    background-color: var(--blueColor);
+    transition: opacity 0.1s ease-in-out;
+    cursor: pointer;
+
+    &--big {
+        padding: 17px 32px;
+        border-radius: 16px;
+    }
+    &--sm {
+        border-radius: 10px;
+        padding: 13px 17px;
+    }
+    &:hover {
+        opacity: 0.8;
+    }
+}
