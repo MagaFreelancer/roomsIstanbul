@@ -1,0 +1,64 @@
+.explanation {
+	padding: 100px 0;
+	
+	&__subtitle {
+		max-width: 410px;
+	}
+	
+	&__cols {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 20px;
+		
+	}
+	
+	&__item {
+		padding: 90px 40px 30px;
+		border-radius: 16px;
+		position: relative;
+		
+		&:after {
+			content: "";
+			position: absolute;
+			left: 40px;
+			top: 30px;
+			height: 40px;
+			width: 40px;
+			background-repeat: no-repeat;
+			background-size: 40px 40px;
+		}
+		
+		&--search {
+			&:after {
+				background-image: url("../../assets/explanation/1.svg");
+			}
+		}
+		
+		&--select {
+			&:after {
+				background-image: url("../../assets/explanation/2.svg");
+			}
+		}
+		
+		&--apartment {
+			&:after {
+				background-image: url("../../assets/explanation/3.svg");
+			}
+		}
+		
+		&:nth-child(2) {
+			background-color: var(--blueColor);
+			color: var(--whiteColor);
+		}
+	}
+	&__heading {
+		font-size: 20px;
+		margin-bottom: 10px;
+		font-weight: 600;
+	}
+	&__text {
+		font-size: 16px;
+		font-weight: 400;
+		line-height: 1.6;
+	}
+}
