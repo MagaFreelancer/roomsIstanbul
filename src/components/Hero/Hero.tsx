@@ -1,27 +1,26 @@
-import React from 'react';
-import Button from '../Button/Button';
-import { BtnClasses } from '../Button/Button';
+import { FC ,useState} from 'react';
 import searchSvg from '../../assets/points/search.svg'
 import './Hero.scss'
-const points: Array<Record<string, string>> = [
+type PointsType = { text: string; heading: string; class: string }
+const points: PointsType[] = [
     {
         heading: 'Location',
-        descr: 'Ahmedabad, India',
+        text: 'Ahmedabad, India',
         class: 'hero__points-item--location',
     }, {
         heading: 'Price',
-        descr: '$1000 - $10,000',
+        text: '$1000 - $10,000',
         class: 'hero__points-item--price',
     }, {
         heading: 'Type of Property',
-        descr: 'Apartment',
+        text: 'Apartment',
         class: 'hero__points-item--type',
     },
 ]
 
-const Hero: React.FC = () => {
-    const [activeCol, setActiveCol] = React.useState<number>(0)
-    const [searchValue, setSearchValue] = React.useState<string>('')
+const Hero: FC = () => {
+    const [activeCol, setActiveCol] = useState<number>(0)
+    // const [searchValue, setSearchValue] = useState<string>('')
 
 
     const onClickSearch = () => {
@@ -45,7 +44,7 @@ const Hero: React.FC = () => {
                                 {points.map((item, index) => (
                                     <li key={index} className={`hero__points-item ${item.class}`}>
                                         <p className="hero__points-heading">{item.heading}</p>
-                                        <span className="hero__points-descr">{item.descr}</span>
+                                        <span className="hero__points-descr">{item.text}</span>
                                     </li>
                                 ))}
                             </ul>

@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import "./Button.scss";
 
 /* eslint-disable react-refresh/only-export-components */
@@ -10,7 +10,7 @@ type Props = {
   children: string | JSX.Element
   cls: BtnClasses.BUTTON_BIG | BtnClasses.BUTTON_SM,
 }
-const Button: React.FC<Props> = ({ children, cls }) => {
+const Button: FC<Props> = ({ children, cls }) => {
   return <button className={`button ${cls}`}>{children}</button>;
 };
 

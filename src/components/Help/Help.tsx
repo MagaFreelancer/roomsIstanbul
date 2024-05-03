@@ -29,7 +29,7 @@ const Help: FC = () => {
 									<span>2</span>
 								</li>
 							</ul>
-							<address className='help__address'>
+							<address className='help__address address'>
 								1901 Thornridge Cir. Shiloh,
 								Hawaii 81063
 							</address>
@@ -52,7 +52,7 @@ const Help: FC = () => {
 									<span>2</span>
 								</li>
 							</ul>
-							<address className='help__address'>
+							<address className='help__address address'>
 								1901 Thornridge Cir. Shiloh,
 								Hawaii 81063
 							</address>

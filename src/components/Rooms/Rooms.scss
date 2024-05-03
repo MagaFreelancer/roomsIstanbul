@@ -1,0 +1,8 @@
+.rooms {
+	padding: 100px 0;
+	&__cards {
+		display: grid;
+		gap: 20px;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}

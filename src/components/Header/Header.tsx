@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logoSvg from "../../assets/logo.svg";
 import Button from '../Button/Button.tsx'
@@ -8,7 +8,7 @@ import { BtnClasses } from "../Button/Button.tsx";
 const items: string[] = [
   'Home', 'About', 'Service', 'New Property', 'Contact'
 ]
-const Header: React.FC = () => {
+const Header: FC = () => {
 
   return (
     <header className="header">
