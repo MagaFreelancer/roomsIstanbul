@@ -1,21 +1,18 @@
-import './App.scss'
-import Explanation from './components/Explanation/Explanation'
+import {FC} from 'react'
+import {Routes,Route} from 'react-router-dom'
 import Header from './components/Header/Header.tsx';
-import Help from './components/Help/Help'
-import Hero from './components/Hero/Hero.tsx'
-import RoomCard from './components/RoomCard/RoomCard'
-import Rooms from './components/Rooms/Rooms'
+import Home from './pages/Home/Home'
+import './App.scss'
 
-function App() {
-
+const App: FC = () => {
+  
   return (
     <>
       <Header />
       <main className='main'>
-        <Hero />
-        <Explanation/>
-        <Help/>
-        <Rooms/>
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+        </Routes>
       </main>
       <footer className='footer'></footer>
     </>
