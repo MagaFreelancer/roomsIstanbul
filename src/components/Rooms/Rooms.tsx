@@ -1,31 +1,23 @@
-import { FC, useEffect, useState } from 'react'
-import axios from 'axios'
+import { FC, useEffect } from 'react'
 import RoomCard from '../RoomCard/RoomCard'
-import "./Rooms.scss"
-export type DataType = {
-	id: number,
-	name: string,
-	price: number,
-	couch: number,
-	table: number,
-	address: string,
-	imageUrl: string
-}
+import { useSelector} from 'react-redux'
+import { selectRooms, DataStatus } from '../../redux/slices/roomsSlice'
+import { fetchRooms } from '../../redux/slices/roomsSlice'
+import { useAppDispatch } from '../../redux/store'
+import './Rooms.scss'
+
 const Rooms: FC = () => {
-	const [cards, setCards] = useState<Array<DataType> | null> (null)
-	
-	
+	const { items, status } = useSelector(selectRooms)
+	const dispatch = useAppDispatch()
+
 	const getCards = async () => {
-		const { data } = await axios.get('https://0175150936641c7d.mokky.dev/rooms');
-		return data
+		dispatch(fetchRooms())
 	}
 	useEffect(() => {
-		getCards().then(data => {
-			setCards(data)
-		})
+		getCards()
 	}, [])
-	
-	if(cards === null) {
+
+	if (status !== DataStatus.SUCCESS) {
 		return 'загрузка'
 	}
 	return (
@@ -39,8 +31,8 @@ const Rooms: FC = () => {
 					content of a page when looking at its layout. The point of using.
 				</p>
 				<ul className='rooms__cards'>
-					{cards.map((item,index) => (
-						<RoomCard  key={index} {...item}/>
+					{items.map((item, index) => (
+						<RoomCard key={index} {...item} />
 					))}
 				</ul>
 			</div>

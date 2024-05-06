@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import couchSvg from '../../assets/help/couch.svg'
 import tableSvg from '../../assets/help/table.svg'
-import { DataType } from '../Rooms/Rooms'
+import { DataType } from '../../redux/slices/roomsSlice'
 import shareSvg from './../../assets/share.svg'
 import './RoomCard.scss'
 const RoomCard: FC<DataType> = ({ name, imageUrl, price, address }) => {
