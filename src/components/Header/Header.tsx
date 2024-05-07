@@ -1,7 +1,5 @@
 import { FC } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { BtnClasses } from "../Button/Button.tsx";
-import Button from '../Button/Button.tsx'
 import logoSvg from "../../assets/logo.svg";
 import singSvg from '../../assets/sign.svg'
 import registerSvg from '../../assets/register.svg'
@@ -24,8 +22,8 @@ const Header: FC = () => {
             {items.map((item, index) => (<li key={index} className="header__item"><NavLink to={`/${item}`}>{item}</NavLink></li>))}
           </ul>
           <div className="nav__btns">
-          <Button cls={BtnClasses.BUTTON_BIG}><img className="header__btn-img" src={singSvg} alt="" /></Button>
-          <Button cls={BtnClasses.BUTTON_BIG}><img className="header__btn-img" src={registerSvg} alt="" /></Button>
+          <Link className="button-blue button--big" to="/login"><img className="header__btn-img" src={singSvg} alt="" /></Link>
+          <Link className="button-blue button--big" to="/register"><img className="header__btn-img" src={registerSvg} alt="" /></Link>
           </div>
         </nav>
       </div>
