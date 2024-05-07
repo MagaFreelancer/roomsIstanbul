@@ -1,14 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import roomsSlice from './slices/roomsSlice'
-import AuthSlice from './slices/auth'
+import authSlice from './slices/authSlice'
 import { useDispatch} from 'react-redux'
 
 export const store = configureStore({
 	reducer: {
 		roomsSlice,
-		AuthSlice,
+		authSlice,
 	}
 })
+
 export type RootState = ReturnType<typeof store.getState>
 
 

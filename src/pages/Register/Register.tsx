@@ -1,19 +1,11 @@
 import { FC } from 'react'
 import TextField from '@mui/material/TextField';
+import './Login.scss'
 import Button, { BtnClasses, BtnTypes } from '../../components/Button/Button';
-import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { UserAuth } from '../../redux/slices/authSlice';
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from '../../redux/store'
-import { selectAuth } from '../../redux/slices/authSlice';
-import { fetchAuth } from '../../redux/slices/authSlice';
-import './Login.scss'
-
 
 const Login: FC = () => {
-    const dispatch = useAppDispatch();
-    const isAuth = useSelector(selectAuth);
     const
         {
             register,
@@ -24,23 +16,15 @@ const Login: FC = () => {
             }
         } = useForm<UserAuth>({
             defaultValues: {
+                login: '',
                 email: '',
                 password: '',
             }
         })
 
     const onSubmit = (data: UserAuth) => {
-        getAuth(data)
+        console.log(data);
         reset()
-
-    }
-    const getAuth = async (params: UserAuth) => {
-        console.log(params);
-        
-        dispatch(fetchAuth(params))
-    }
-    if (isAuth) {
-        return <Navigate to="/" />
     }
     return (
         <section className="login">
@@ -49,6 +33,16 @@ const Login: FC = () => {
                     Зайти в аккаунт
                 </h2>
                 <form onSubmit={handleSubmit(onSubmit)} className='login__form' >
+                    <TextField
+                        className='login__field'
+                        label="Логин"
+                        variant="outlined"
+                        {...register('login', {
+                            required: 'Укажите ваш логин'
+                        })}
+                        error={Boolean(errors.login?.message)}
+                        helperText={errors.login?.message}
+                    />
                     <TextField className='login__field'
                         label="Почта"
                         variant="outlined"
@@ -68,7 +62,7 @@ const Login: FC = () => {
                         error={Boolean(errors.password?.message)}
                         helperText={errors.password?.message}
                     />
-                    <Button type={BtnTypes.SUBMIT} cls={BtnClasses.BUTTON_BIG}>Авторизоваться</Button>
+                    <Button type={BtnTypes.SUBMIT} cls={BtnClasses.BUTTON_BIG}>Зарегистрироваться</Button>
                 </form>
             </div>
         </section>
