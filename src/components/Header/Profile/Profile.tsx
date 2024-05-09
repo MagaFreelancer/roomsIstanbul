@@ -3,15 +3,21 @@ import { Link } from 'react-router-dom'
 // import { UserType } from '../../../redux/slices/authSlice'
 import logoutSvg from '../../../assets/logout.svg';
 import settingsSvg from '../../../assets/settings.svg';
+import { UserType } from '../../../redux/slices/authSlice';
 import './Profile.scss'
+import { useAppDispatch } from '../../../redux/store';
+
+type Props = {
+    data: UserType
+    logout: () => any
+}
 
 
+const Porfile: FC<Props> = ({ logout, data }) => {
 
-const Porfile: FC = () => {
-
-    const [open, setOpen] = React.useState<boolean>(true);
+    const [open, setOpen] = React.useState<boolean>(false);
     const sortRef = React.useRef<HTMLDivElement>(null);
-
+    const dispatch = useAppDispatch();
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
@@ -24,13 +30,17 @@ const Porfile: FC = () => {
             document.body.removeEventListener("click", handleClickOutside);
         };
     }, []);
+    const onClickLogout = () => {
+        dispatch(logout()); // Передаем полученное действие в dispatch
+        setOpen(false);
+    }
     return (
         <div className="profile" ref={sortRef}>
             <div className="profile__username" onClick={() => setOpen(!open)}>
-                Elmaga
+                {data.login}
             </div>
             <div className="profile__img">
-                <img src="https://mui.com/static/images/avatar/1.jpg" alt="avatar" />
+                <img src={data.imageUrl} alt="avatar" />
             </div>
             <ul className={`profile__list ${open && 'profile__list--active'}`}>
                 <li className="profile__item">
@@ -40,7 +50,7 @@ const Porfile: FC = () => {
                     <Link className='profile__link' to="/settings">Настройки <img src={settingsSvg} alt="settings" /></Link>
                 </li>
                 <li className="profile__item">
-                    <Link className='profile__link' to="/settings">Выйти <img src={logoutSvg} alt="logout" /></Link>
+                    <button onClick={onClickLogout} className='profile__link'>Выйти <img src={logoutSvg} alt="logout" /></button>
                 </li>
             </ul>
         </div>

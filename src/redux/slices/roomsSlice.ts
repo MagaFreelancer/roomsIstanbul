@@ -44,8 +44,7 @@ const roomsSlice  = createSlice({
 		builder
 			.addCase(fetchRooms.pending, (state) => {
 				state.status = DataStatus.LOADING
-				state.items = []
-			})
+				state.items = []})
 			.addCase(fetchRooms.fulfilled, (state, action) => {
 				state.status = DataStatus.SUCCESS
 				state.items = action.payload

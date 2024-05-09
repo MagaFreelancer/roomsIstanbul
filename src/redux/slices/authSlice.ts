@@ -4,11 +4,12 @@ import { RootState } from '../store';
 import axios from 'axios'
 
 
+
 export interface UserAuth {
     email: string
     password: string | number
 }
-export interface UserType {
+export type UserType = {
     email: string
     id: string | number
     login: string,
@@ -36,14 +37,16 @@ export const fetchAuth = createAsyncThunk<DataType, UserAuth>('auth/fetchSlice',
             'https://0175150936641c7d.mokky.dev/auth',
             params
         )
-        console.log(data);
-
         return data
     })
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        logout: state => {
+            state.data = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAuth.pending, (state) => {
@@ -60,9 +63,9 @@ const authSlice = createSlice({
             })
     }
 })
-export const selectAuth = (state: RootState) => Boolean( state.authSlice.data)
+export const selectAuth = (state: RootState) => Boolean(state.authSlice.data)
 // export const selectAuth = () => true
-export const selectAuthData = (state: RootState) => state.authSlice.data
-
+export const selectAuthData = (state: RootState) => state.authSlice.data?.data
 
 export default authSlice.reducer
+export const { logout } = authSlice.actions
