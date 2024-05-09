@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../../redux/store';
 
 type Props = {
     data: UserType
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     logout: () => any
 }
 

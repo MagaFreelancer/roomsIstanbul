@@ -15,8 +15,7 @@ const items: string[] = [
 const Header: FC = () => {
   const isAuth = useSelector(selectAuth);
   const data = useSelector(selectAuthData);
-  console.log(logout());
-  
+
   return (
     <header className="header">
       <div className="container">
