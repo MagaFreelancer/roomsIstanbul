@@ -30,7 +30,7 @@ const Header: FC = () => {
           {isAuth === false ? <div className="nav__btns">
             <Link to="/login" className="button-blue button--big"><img className="header__btn-img" src={singSvg} alt="" /></Link>
             <Link to="/register" className="button-blue button--big" ><img className="header__btn-img" src={registerSvg} alt="" /></Link>
-          </div> : <Porfile logout={logout} data={data!} />
+          </div> : <Porfile logout={logout} data={data!.data} />
           }
         </nav>
       </div>

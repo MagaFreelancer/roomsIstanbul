@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom'
 import logoutSvg from '../../../assets/logout.svg';
 import settingsSvg from '../../../assets/settings.svg';
 import { UserType } from '../../../redux/slices/authSlice';
-import './Profile.scss'
 import { useAppDispatch } from '../../../redux/store';
+import { PayloadAction } from '@reduxjs/toolkit';
+import './Profile.scss'
 
 type Props = {
     data: UserType
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    logout: () => any
+    logout: () => PayloadAction<void>
 }
 
 
@@ -19,6 +19,8 @@ const Porfile: FC<Props> = ({ logout, data }) => {
     const [open, setOpen] = React.useState<boolean>(false);
     const sortRef = React.useRef<HTMLDivElement>(null);
     const dispatch = useAppDispatch();
+
+
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
@@ -34,6 +36,8 @@ const Porfile: FC<Props> = ({ logout, data }) => {
     const onClickLogout = () => {
         dispatch(logout()); // Передаем полученное действие в dispatch
         setOpen(false);
+        localStorage.removeItem('token')
+        localStorage.removeItem('data')
     }
     return (
         <div className="profile" ref={sortRef}>

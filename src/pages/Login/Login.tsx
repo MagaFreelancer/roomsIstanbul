@@ -1,19 +1,25 @@
-import { FC } from 'react'
+
+import { FC, useEffect } from 'react'
 import TextField from '@mui/material/TextField';
 import Button, { BtnClasses, BtnTypes } from '../../components/Button/Button';
 import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { UserAuth } from '../../redux/slices/authSlice';
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../redux/store'
-import { selectAuth } from '../../redux/slices/authSlice';
-import { fetchAuth } from '../../redux/slices/authSlice';
+import {
+    selectAuth, UserAuth,
+    fetchAuth,
+    selectAuthS
+} from '../../redux/slices/authSlice';
+import { DataStatus } from "../../redux/slices/roomsSlice"
 import './Login.scss'
-
 
 const Login: FC = () => {
     const dispatch = useAppDispatch();
     const isAuth = useSelector(selectAuth);
+    const { data, status } = useSelector(selectAuthS)
+
+
     const
         {
             register,
@@ -29,16 +35,21 @@ const Login: FC = () => {
             }
         })
 
-    const onSubmit = (data: UserAuth) => {
-        getAuth(data)
+    const onSubmit = async (values: UserAuth) => {
+        await dispatch(fetchAuth(values))
         reset()
 
     }
-    const getAuth = async (params: UserAuth) => {
-        console.log(params);
-        
-        dispatch(fetchAuth(params))
-    }
+
+
+    useEffect(() => {
+        if (status !== DataStatus.LOADING) {
+            if (isAuth) {
+                localStorage.setItem('token', data!.token)
+                localStorage.setItem('data', JSON.stringify(data))
+            }
+        }
+    }, [status])
     if (isAuth) {
         return <Navigate to="/" />
     }

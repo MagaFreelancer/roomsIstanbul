@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit' //PayloadAction
-import axios from 'axios'
+import axios from '../../axios'
 import { RootState } from '../store'
 
 export enum DataStatus {
@@ -24,7 +24,7 @@ type StateType = {
 export const fetchRooms = createAsyncThunk<DataType[], void>(
 	'rooms/fetchRooms',
 	async () => {
-	const { data } = await axios.get<DataType[]>('https://0175150936641c7d.mokky.dev/rooms');
+	const { data } = await axios.get<DataType[]>('/rooms');
 	return data
 }
 )
