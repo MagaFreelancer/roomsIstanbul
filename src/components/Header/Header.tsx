@@ -26,7 +26,7 @@ const Header: FC = () => {
           <ul className="header__menu">
             {items.map((item, index) => (<li key={index} className="header__item"><NavLink to={`/${item}`}>{item}</NavLink></li>))}
           </ul>
-
+    
           {isAuth === false ? <div className="nav__btns">
             <Link to="/login" className="button-blue button--big"><img className="header__btn-img" src={singSvg} alt="" /></Link>
             <Link to="/register" className="button-blue button--big" ><img className="header__btn-img" src={registerSvg} alt="" /></Link>

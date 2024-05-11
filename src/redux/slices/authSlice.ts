@@ -13,25 +13,27 @@ export type UserType = {
     login: string;
     imageUrl: string;
 }
-export interface DataType {
+export interface DataUserType {
     token: string;
     data: UserType;
 }
 
 interface StateType {
-    data: DataType | null;
+    data: DataUserType | null;
     status: DataStatus.FAILED | DataStatus.SUCCESS | DataStatus.LOADING;
 }
 const initialState: StateType = {
-    data: JSON.parse(localStorage.getItem('data') || '{}') || null,
+    data: JSON.parse(localStorage.getItem('data') || 'null') || null,
     status: DataStatus.LOADING
 }
-export const fetchAuth = createAsyncThunk<DataType, UserAuth>('auth/fetchSlice',
+export const fetchAuth = createAsyncThunk<DataUserType, UserAuth>('auth/fetchSlice',
     async (params) => {
-        const { data } = await axios.post<DataType>(
+        const { data } = await axios.post<DataUserType>(
             '/auth',
             params
         )
+        console.log(data);
+        
         return data
     })
 
@@ -49,7 +51,7 @@ const authSlice = createSlice({
                 state.status = DataStatus.LOADING;
                 state.data = null;
             })
-            .addCase(fetchAuth.fulfilled, (state, action: PayloadAction<DataType>) => {
+            .addCase(fetchAuth.fulfilled, (state, action: PayloadAction<DataUserType>) => {
                 state.status = DataStatus.SUCCESS;
                 state.data = action.payload;
             })

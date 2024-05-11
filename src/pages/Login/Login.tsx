@@ -19,7 +19,6 @@ const Login: FC = () => {
     const isAuth = useSelector(selectAuth);
     const { data, status } = useSelector(selectAuthS)
 
-
     const
         {
             register,
@@ -40,8 +39,6 @@ const Login: FC = () => {
         reset()
 
     }
-
-
     useEffect(() => {
         if (status !== DataStatus.LOADING) {
             if (isAuth) {
@@ -49,6 +46,7 @@ const Login: FC = () => {
                 localStorage.setItem('data', JSON.stringify(data))
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status])
     if (isAuth) {
         return <Navigate to="/" />
