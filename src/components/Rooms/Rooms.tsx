@@ -1,13 +1,13 @@
 import { FC, useEffect } from 'react'
 import RoomCard from '../RoomCard/RoomCard'
-import { useSelector} from 'react-redux'
 import { selectRooms, DataStatus } from '../../redux/slices/roomsSlice'
 import { fetchRooms } from '../../redux/slices/roomsSlice'
-import { useAppDispatch } from '../../redux/store'
+import { useAppDispatch } from '../../utils/hook'
+import { useAppSelector } from '../../utils/hook'
 import './Rooms.scss'
 
 const Rooms: FC = () => {
-	const { items, status } = useSelector(selectRooms)
+	const { items, status } = useAppSelector(selectRooms)
 	const dispatch = useAppDispatch()
 
 	const getCards = async () => {
