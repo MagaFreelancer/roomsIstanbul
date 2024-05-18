@@ -5,8 +5,19 @@ import Register from './Register/Register'
 import instance from '../../axios'
 import { useAppDispatch } from '../../utils/hook'
 import { login } from '../../redux/slices/auth'
-
+import { useForm } from 'react-hook-form'
+import { AppErrors } from '../../common/errors'
+import { yupResolver } from "@hookform/resolvers/yup"
+import { LoginSchema } from '../../utils/yup'
 const Auth = () => {
+    const {
+        register,
+        formState: {
+            errors
+        },
+        handleSubmit } = useForm({
+            resolver: yupResolver(LoginSchema)
+        })
     const location = useLocation()
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
@@ -16,31 +27,36 @@ const Auth = () => {
     const [username, setUsername] = useState('')
     const dispatch = useAppDispatch()
 
-    const handleSubmit = async (e: { preventDefault: () => void }) => {
-        e.preventDefault()
+    const handleSubmitForm = async (data: any) => {
 
         if (location.pathname === 'login') {
-            const userData = {
-                email,
-                password,
+            try {
+                const userData = {
+                    email: data.email,
+                    password: data.password,
+                }
+                const user = await instance.post('/auth', userData)
+                await dispatch(login(user))
+            } catch (e) {
+                return e
             }
-            const { data } = await instance.post('/auth', userData)
-            await dispatch(login(data))
-            console.log(data);
 
         } else {
             if (password === repeatPassword) {
-                const userData = {
-                    email,
-                    password,
-                    firstName,
-                    username,
-                    createDate: new Date(),
-                    imageUrl: "https://healingarts.ru/wp-content/uploads/2015/10/72f211u-960.jpg"
+                try {
+                    const userData = {
+                        email,
+                        password,
+                        firstName,
+                        username,
+                        createDate: new Date(),
+                        imageUrl: "https://healingarts.ru/wp-content/uploads/2015/10/72f211u-960.jpg"
+                    }
+                    const user = await instance.post('/register', userData)
+                    await dispatch(login(user))
+                } catch (e) {
+                    throw Error(AppErrors.PasswordDoNotMatch)
                 }
-                const { data } = await instance.post('/register', userData)
-                await dispatch(login(data))
-                console.log(data);
             }
         }
     }
@@ -49,10 +65,16 @@ const Auth = () => {
     return (
         <div className="auth">
             <div className="auth__wrapper">
-                <form className='auth__form' onSubmit={handleSubmit}>
+                <form className='auth__form' onSubmit={handleSubmit(handleSubmitForm)}>
                     {
                         location.pathname === '/login'
-                            ? <Login setEmail={setEmail} setPassword={setPassword} navigate={navigate} />
+                            ? <Login
+                                setEmail={setEmail}
+                                setPassword={setPassword}
+                                navigate={navigate}
+                                register={register}
+                                errors={errors}
+                            />
                             : location.pathname === '/register'
                                 ?
                                 <Register

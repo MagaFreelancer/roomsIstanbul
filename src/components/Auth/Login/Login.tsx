@@ -8,7 +8,7 @@ import { BtnClasses, BtnTypes } from '../../../common/types/button'
 import './../Auth.scss'
 
 const Login: FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
-    const { navigate, setEmail, setPassword } = props;
+    const { navigate, register, errors } = props;
     return (
         <>
             <h2 className="login__title">
@@ -17,23 +17,17 @@ const Login: FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
             <TextField className='login__field'
                 label="Почта"
                 variant="outlined"
-                // {...register('email', {
-                //     required: 'Укажите почту'
-                // })}
-                type='email'
-                onChange={(e) => setEmail(e.target.value)}
-            // error={Boolean(errors.email?.message)}
-            // helperText={errors.email?.message}
+                error={!!errors.email}
+                helperText={errors.email ? `${errors.email.message}` : ''}
+                {...register('email')}
             />
             <TextField className='login__field'
                 label="Пароль"
                 variant="outlined"
-                onChange={(e) => setPassword(e.target.value)}
-            // {...register('password', {
-            //     required: 'Создайте себе пароль'
-            // })}
-            // error={Boolean(errors.password?.message)}
-            // helperText={errors.password?.message}
+
+                error={!!errors.password}
+                helperText={errors.password ? `${errors.password.message}` : ''}
+                {...register('password')}
             />
             <Button type={BtnTypes.SUBMIT} cls={BtnClasses.BUTTON_BIG}>Авторизоваться</Button>
             <Typography variant="body1" sx={{ fontFamily: 'Poppins', }}>
