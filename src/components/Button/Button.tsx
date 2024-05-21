@@ -1,6 +1,6 @@
 import { FC } from "react";
-import "./Button.scss";
 import { IPropsButton } from "../../common/types/button";
+import "./Button.scss";
 
 const Button: FC<IPropsButton> = (props: IPropsButton): JSX.Element => {
   const { children, cls, type } = props

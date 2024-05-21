@@ -22,9 +22,9 @@ const Header: FC = () => {
 
           </ul>
 
-          <div className="nav__btns">
-            <Link to="/login" className="button-blue button--big"><img className="header__btn-img" src={singSvg} alt="" /></Link>
-            <Link to="/register" className="button-blue button--big" ><img className="header__btn-img" src={registerSvg} alt="" /></Link>
+          <div className="nav__links">
+            <Link to="/login" className="button-blue button-blue--big"><img className="header__link-img" src={singSvg} alt="" /></Link>
+            <Link to="/register" className="button-blue button-blue--big" ><img className="header__link-img" src={registerSvg} alt="" /></Link>
           </div>
         </nav>
       </div>

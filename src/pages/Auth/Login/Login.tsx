@@ -1,14 +1,12 @@
-
 import { FC } from 'react'
-import Button from '../../Button/Button';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import { IPropsLogin } from '../../../common/types/auth';
-import { BtnClasses, BtnTypes } from '../../../common/types/button'
+import { BtnTypes } from '../../../common/types/button'
+import LoadingButton from '@mui/lab/LoadingButton';
 import './../Auth.scss'
 
 const Login: FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
-    const { navigate, register, errors } = props;
+    const { navigate, register, errors, loading } = props;
     return (
         <>
             <h2 className="login__title">
@@ -29,11 +27,13 @@ const Login: FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
                 helperText={errors.password ? `${errors.password.message}` : ''}
                 {...register('password')}
             />
-            <Button type={BtnTypes.SUBMIT} cls={BtnClasses.BUTTON_BIG}>Авторизоваться</Button>
-            <Typography variant="body1" sx={{ fontFamily: 'Poppins', }}>
+            <LoadingButton sx={{ padding: '12px' }} type={BtnTypes.SUBMIT} loading={loading} variant="outlined">
+                <span>Авторизоваться</span>
+            </LoadingButton>
+            <div className='auth__navigate'>
                 У вас нет аккаунта?
                 <span className="incitingText" onClick={() => navigate('/register')}>Регистрация</span>
-            </Typography>
+            </div>
         </>
     )
 }
