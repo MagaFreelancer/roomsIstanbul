@@ -1,42 +1,15 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit' //PayloadAction
-import axios from '../../axios'
+import { createSlice } from '@reduxjs/toolkit' //PayloadAction
 import { RootState } from '../store'
-
-export enum DataStatus {
-	LOADING = "loading",
-	SUCCESS = "success",
-	FAILED = "failed"
-}
-export interface DataType {
-	id: number,
-	name: string,
-	price: number,
-	couch: number,
-	table: number,
-	address: string,
-	imageUrl: string
-}
-type StateType = {
-	items: DataType[],
-	// status: string,
-	status: DataStatus.LOADING | DataStatus.SUCCESS | DataStatus.FAILED
-}
-export const fetchRooms = createAsyncThunk<DataType[], void>(
-	'rooms/fetchRooms',
-	async () => {
-	const { data } = await axios.get<DataType[]>('/rooms');
-	return data
-}
-)
+import { DataStatus, StateType} from '../../common/types/rooms'
+import { fetchRooms } from "../thunk/rooms";
 
 
-const initialState:StateType = {
+const initialState: StateType = {
 	items: [],
 	status: DataStatus.LOADING
 }
 
-
-const roomsSlice  = createSlice({
+const roomsSlice = createSlice({
 	name: 'rooms',
 	initialState,
 	reducers: {},
@@ -44,7 +17,8 @@ const roomsSlice  = createSlice({
 		builder
 			.addCase(fetchRooms.pending, (state) => {
 				state.status = DataStatus.LOADING
-				state.items = []})
+				state.items = []
+			})
 			.addCase(fetchRooms.fulfilled, (state, action) => {
 				state.status = DataStatus.SUCCESS
 				state.items = action.payload
@@ -55,5 +29,5 @@ const roomsSlice  = createSlice({
 			})
 	}
 })
-export const selectRooms = (state: RootState) => state.roomsSlice
+export const selectRooms = (state: RootState) => state.rooms
 export default roomsSlice.reducer

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IRegisterData, IloginData } from "../../common/types/auth";
-import instance from "../../utils/axios";
+import { IRegisterData, IloginData } from "../../../common/types/auth";
+import instance from "../../../utils/axios";
 
 export const loginUser = createAsyncThunk('auth/login',
     async (
@@ -40,4 +40,27 @@ export const registerUser = createAsyncThunk('auth/register',
                 return rejectWithValue(error.message)
             }
         }
+    })
+export const fetchAuthMe = createAsyncThunk('auth/me',
+    async (
+        _,
+        { rejectWithValue }
+    ) => {
+        try {
+            const token = sessionStorage.getItem('token')
+            const user = await instance.get('/auth_me', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            return user.data
+        }
+        catch (error: any) {
+            if (error.message && error.data.message) {
+                return rejectWithValue(error.response.data.message)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+
     })

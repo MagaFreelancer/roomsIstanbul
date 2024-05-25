@@ -25,3 +25,17 @@ export interface IRegisterData {
     username: string
     firstName: string
 }
+export interface IStateType {
+    user: {
+        user: IUserData
+        token: string
+    }
+    isloading: boolean
+    isLogged: boolean
+}
+export interface IUserData {
+    username: string
+    fistName: string
+    email: string
+    imageUrl: string
+}

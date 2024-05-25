@@ -1,0 +1,58 @@
+.office {
+    &__container {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    &__content {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 30px;
+    }
+    &__sidebar {
+        font-family: "Montserrat", sans-serif;
+    }
+    &__cards {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-gap: 2vw;
+    }
+    &__checks {
+        display: flex;
+        flex-direction: column;
+    }
+    &__search {
+        display: flex;
+        gap: 10px;
+    }
+    &__field {
+        position: relative;
+        width: 80%;
+        input {
+            width: 100%;
+            height: 100%;
+            padding: 7px 30px 7px 7px;
+            outline: none;
+            border: 1px solid var(--blackColor);
+            font-size: 18px;
+            border-radius: 4px;
+            &:focus {
+                border: 1px solid var(--blueColor);
+            }
+        }
+    }
+    &__close {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        transition:
+            color 0.2s ease-in-out,
+            opacity 0.2s ease-in-out;
+       
+        &:hover {
+            color: var(--blueColor);
+        }
+    }
+}

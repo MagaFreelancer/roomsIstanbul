@@ -1,9 +1,9 @@
 import { FC, useEffect } from 'react'
 import RoomCard from '../RoomCard/RoomCard'
-import { selectRooms, DataStatus } from '../../redux/slices/roomsSlice'
-import { fetchRooms } from '../../redux/slices/roomsSlice'
-import { useAppDispatch } from '../../utils/hook'
-import { useAppSelector } from '../../utils/hook'
+import { selectRooms } from '../../redux/slices/roomsSlice'
+import { useAppDispatch, useAppSelector } from '../../utils/hook'
+import { fetchRooms } from '../../redux/thunk/rooms'
+import { DataStatus } from '../../common/types/rooms'
 import './Rooms.scss'
 
 const Rooms: FC = () => {

@@ -7,7 +7,7 @@ export enum BtnTypes {
 }
 export type IPropsButton = {
     children: string | JSX.Element
-    cls: BtnClasses.BUTTON_BIG | BtnClasses.BUTTON_SM,
+    cls?: BtnClasses.BUTTON_BIG | BtnClasses.BUTTON_SM,
     type: BtnTypes
     loading?: boolean
 }

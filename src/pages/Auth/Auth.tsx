@@ -6,14 +6,17 @@ import { useForm } from 'react-hook-form';
 import { AppErrors } from '../../common/errors';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema, RegisterSchema } from '../../utils/yup';
-import { loginUser, registerUser } from '../../redux/thunk';
-
+import { loginUser, registerUser } from '../../redux/thunk/auth';
 
 const Auth = () => {
+    const { isLogged } = useAppSelector(e => e.auth)
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const isloading = useAppSelector(e => e.auth.isloading)
+    if (isLogged) {
+        navigate('/')
+    }
 
     const {
         register,

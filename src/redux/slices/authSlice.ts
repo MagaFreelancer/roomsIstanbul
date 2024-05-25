@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, registerUser } from "../thunk";
+import { fetchAuthMe, loginUser, registerUser } from "../thunk/auth";
+import { IStateType, IUserData } from "../../common/types/auth";
 
-const initialState = {
-    user: {},
+const initialState: IStateType = {
+    user: {
+        token: '',
+        user: {} as IUserData,
+    },
     isLogged: false,
     isloading: false
 }
@@ -19,12 +23,10 @@ export const authSlice = createSlice({
             state.isloading = false
         })
         builder.addCase(loginUser.pending, (state) => {
-            state.user = {}
             state.isLogged = false
             state.isloading = true
         })
         builder.addCase(loginUser.rejected, (state) => {
-            state.user = {}
             state.isLogged = false
             state.isloading = true
         })
@@ -34,12 +36,23 @@ export const authSlice = createSlice({
             state.isloading = false
         })
         builder.addCase(registerUser.pending, (state) => {
-            state.user = {}
             state.isLogged = false
             state.isloading = true
         })
         builder.addCase(registerUser.rejected, (state) => {
-            state.user = {}
+            state.isLogged = false
+            state.isloading = true
+        })
+        builder.addCase(fetchAuthMe.fulfilled, (state, action) => {
+            state.user = action.payload
+            state.isLogged = true
+            state.isloading = false
+        })
+        builder.addCase(fetchAuthMe.pending, (state) => {
+            state.isLogged = false
+            state.isloading = true
+        })
+        builder.addCase(fetchAuthMe.rejected, (state) => {
             state.isLogged = false
             state.isloading = true
         })

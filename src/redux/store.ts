@@ -1,19 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import roomsSlice from './slices/roomsSlice'
-import authSlice from './slices/auth'
+import authSlice from './slices/authSlice'
 export const store = configureStore({
 	reducer: {
-		roomsSlice,
+		rooms: roomsSlice,
 		auth: authSlice
 	},
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({
-			serializableCheck: {
-				// Игнорируем пути, которые могут содержать не сериализуемые значения
-				ignoredActionPaths: ['payload.headers', 'payload.config', 'payload.request'],
-				ignoredPaths: ['auth.data'], // Если нужно игнорировать в состоянии
-			},
-		}),
 })
 
 export type AppDispatch = typeof store.dispatch
