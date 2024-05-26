@@ -1,10 +1,11 @@
 import { FC } from 'react'
 import couchSvg from '../../assets/help/couch.svg'
 import tableSvg from '../../assets/help/table.svg'
-import { DataType } from '../../redux/slices/roomsSlice'
+import { DataType } from '../../common/types/rooms'
 import shareSvg from './../../assets/share.svg'
 import './RoomCard.scss'
-const RoomCard: FC<DataType> = ({ name, imageUrl, price, address }) => {
+const RoomCard: FC<DataType> = (props: DataType) => {
+	const { name, imageUrl, price, address, square, capacity } = props
 	return (
 		<li className='card'>
 			<div className='card__img'>
@@ -19,15 +20,15 @@ const RoomCard: FC<DataType> = ({ name, imageUrl, price, address }) => {
 			</h5>
 			<ul className='card__list'>
 				<li className='card__item'>
-					<img src={tableSvg} alt='стол' />
-					<span>2</span>
+					<img src={couchSvg} alt='кресло' />
+					<span>{capacity}</span>
 				</li>
 				<li className='card__item'>
-					<img src={couchSvg} alt='кресло' />
-					<span>2</span>
+					<img src={tableSvg} alt='кресло' />
+					<span>{square}</span>
 				</li>
 			</ul>
-			
+
 			<address className='card__address address'>{address}</address>
 		</li>
 	)

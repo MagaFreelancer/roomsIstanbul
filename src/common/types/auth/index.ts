@@ -19,12 +19,6 @@ export interface IloginData {
     email: string
     password: string
 }
-export interface IRegisterData {
-    email: string
-    password: string
-    username: string
-    firstName: string
-}
 export interface IStateType {
     user: {
         user: IUserData
@@ -38,4 +32,7 @@ export interface IUserData {
     fistName: string
     email: string
     imageUrl: string
+}
+export interface IPropsProfile {
+    data: IUserData
 }

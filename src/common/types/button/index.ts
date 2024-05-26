@@ -4,6 +4,7 @@ export enum BtnClasses {
 }
 export enum BtnTypes {
     SUBMIT = "submit",
+    BUTTON = 'button'
 }
 export type IPropsButton = {
     children: string | JSX.Element

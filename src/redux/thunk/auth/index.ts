@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IRegisterData, IloginData } from "../../../common/types/auth";
+import { IUserData, IloginData } from "../../../common/types/auth";
 import instance from "../../../utils/axios";
 
 export const loginUser = createAsyncThunk('auth/login',
@@ -24,7 +24,7 @@ export const loginUser = createAsyncThunk('auth/login',
 
 export const registerUser = createAsyncThunk('auth/register',
     async (
-        data: IRegisterData,
+        data: IUserData,
         { rejectWithValue }
     ) => {
         try {

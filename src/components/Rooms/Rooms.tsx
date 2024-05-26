@@ -11,7 +11,8 @@ const Rooms: FC = () => {
 	const dispatch = useAppDispatch()
 
 	const getCards = async () => {
-		dispatch(fetchRooms())
+
+		await dispatch(fetchRooms(false))
 	}
 	useEffect(() => {
 		getCards()

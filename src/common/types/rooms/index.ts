@@ -4,16 +4,30 @@ export enum DataStatus {
 	FAILED = "failed"
 }
 export interface DataType {
-	id: number,
-	name: string,
-	price: number,
-	couch: number,
-	table: number,
-	address: string,
+	id: number
+	name: string
+	price: number
+	address: string
 	imageUrl: string
+	square: string
+	capacity: number
 }
 export interface StateType {
-	items: DataType[],
+	items: DataType[]
+	searchValue: string
+	minmaxPrice: number[]
+	square: SquareItem[]
+	capacity: CapacityItem[]
 	// status: string,
 	status: DataStatus.LOADING | DataStatus.SUCCESS | DataStatus.FAILED
+}
+export type SquareItem = {
+	value: string
+	checked: boolean
+	id: number
+}
+export type CapacityItem = {
+	value: number
+	checked: boolean
+	id: number
 }

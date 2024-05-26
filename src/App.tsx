@@ -4,7 +4,7 @@ import Header from './components/Header/Header.tsx';
 import Home from './pages/Home/Home'
 import AuthRootComponent from "./pages/Auth/Auth.tsx";
 
-import PrivateRoute from './utils/router/privateRoute.tsx';
+// import PrivateRoute from './utils/router/privateRoute.tsx';
 import { fetchAuthMe } from './redux/thunk/auth/index.ts';
 import { useAppDispatch, useAuth } from './utils/hook/index.ts';
 import Office from './pages/Office/index.tsx';
@@ -27,9 +27,9 @@ const App: FC = () => {
       <Header />
       <main className='main'>
         <Routes>
-          <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Home />} />
-          </Route>
+          {/* <Route element={<PrivateRoute />}>
+          </Route> */}
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<AuthRootComponent />} />
           <Route path="/register" element={<AuthRootComponent />} />
           <Route path='/offices' element={<Office />} />
