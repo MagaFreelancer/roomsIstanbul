@@ -11,7 +11,7 @@ export interface IPropsRegister<
     TFieldValues extends FieldValues = FieldValues,
 > {
     navigate: (to: string) => void
-    register: UseFormRegister<FieldValues>
+    register: UseFormRegister<IRegisterData>
     errors: FieldErrors<TFieldValues>
     loading: boolean
 }

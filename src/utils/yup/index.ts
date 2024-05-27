@@ -23,6 +23,6 @@ export const RegisterSchema = yup.object().shape({
         .min(8, AppErrors.minLength)
         .required(AppErrors.RequiredField)
         .matches(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[a-zA-Z!#$%&? "])[a-zA-Z0-9!@#$%&?]{6,20}$/, AppErrors.InvalidPassword),
-    firstname: yup.string().required(AppErrors.RequiredField),
+    firstName: yup.string().required(AppErrors.RequiredField),
     username: yup.string().required(AppErrors.RequiredField)
 })

@@ -1,0 +1,28 @@
+.register {
+    &__wrapper {
+        max-width: 500px;
+        padding: 20px;
+        margin: 100px auto 0;
+        border: 1px solid rgba(#12181d, 0.2);
+    }
+    &__title {
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    &__navigate {
+        text-align: center;
+        font-family: "Syne", sans-serif;
+        font-family: inherit;
+        font-size: 14px;
+        span {
+            padding-left: 5px;
+            color: var(--blueColor);
+            cursor: pointer;
+        }
+    }
+}
