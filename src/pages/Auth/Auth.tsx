@@ -45,6 +45,7 @@ const Auth = () => {
                         password: data.password,
                         firstName: data.name,
                         username: data.username,
+                        imageUrl: ''
                     }
                     await dispatch(registerUser(userData))
                     navigate('/')

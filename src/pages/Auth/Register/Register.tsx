@@ -24,7 +24,7 @@ const Register: FC<IPropsRegister> = (props: IPropsRegister): JSX.Element => {
                 variant="outlined"
                 error={!!errors.name?.message}
                 helperText={errors.name ? `${errors.name.message}` : ''}
-                {...register('name')}
+                {...register('firstName')}
             />
             <TextField
                 className='register__field'

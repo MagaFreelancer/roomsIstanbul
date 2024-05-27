@@ -8,7 +8,6 @@ import { IPropsCapacity } from '../../../common/types/filters';
 
 const CapacityFilter: FC<IPropsCapacity> = (props: IPropsCapacity): JSX.Element => {
   const { capacity, setCapacity } = props
-console.log(capacity);
 
   const onChangeCheckbox = (id: number) => {
     setCapacity(capacity.map(item => {

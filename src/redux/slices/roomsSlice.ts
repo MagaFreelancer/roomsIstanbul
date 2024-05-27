@@ -53,7 +53,6 @@ const roomsSlice = createSlice({
 		},
 		setMinmaxPrice: (state, action) => {
 			state.minmaxPrice = action.payload
-
 		},
 		setSquare: (state, action) => {
 			state.square = action.payload

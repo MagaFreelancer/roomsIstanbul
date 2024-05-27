@@ -25,27 +25,27 @@
 		border-radius: 5px;
 		opacity: 0;
 		pointer-events: none;
-		transition: opacity .2s ease-in-out;
+		transition: opacity 0.2s ease-in-out;
 		img {
 			height: 20px;
 			width: 20px;
 		}
-		background: rgba(#025595, .1);
+		background: rgba(#025595, 0.1);
 		height: 36px;
 		width: 36px;
-		
 	}
 	&__price {
-		font-family: sans-serif;
+		font-family: "Manrope", sans-serif;
 		color: var(--blueColor);
-		font-size: 24px;
-		font-weight: 700;
+		font-size: 19px;
+		font-weight: 800;
 		margin-bottom: 20px;
 	}
 	&__name {
-		font-size: 22px;
+		font-size: 20px;
 		margin-bottom: 20px;
-		font-weight: 700;
+		font-weight: 600;
+		font-family: "Manrope", sans-serif;
 	}
 	&__list {
 		display: flex;

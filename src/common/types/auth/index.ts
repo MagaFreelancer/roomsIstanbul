@@ -3,7 +3,7 @@ export interface IPropsLogin<
     TFieldValues extends FieldValues = FieldValues,
 > {
     navigate: (to: string) => void
-    register: UseFormRegister<TFieldValues>
+    register: UseFormRegister<IloginData>
     errors: FieldErrors<TFieldValues>
     loading: boolean
 }
@@ -11,7 +11,7 @@ export interface IPropsRegister<
     TFieldValues extends FieldValues = FieldValues,
 > {
     navigate: (to: string) => void
-    register: UseFormRegister<TFieldValues>
+    register: UseFormRegister<FieldValues>
     errors: FieldErrors<TFieldValues>
     loading: boolean
 }
@@ -29,9 +29,16 @@ export interface IStateType {
 }
 export interface IUserData {
     username: string
-    fistName: string
+    firstName: string
     email: string
     imageUrl: string
+}
+export interface IRegisterData {
+    username: string
+    firstName: string
+    email: string
+    password: string
+    confirmPassword: string
 }
 export interface IPropsProfile {
     data: IUserData

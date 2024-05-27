@@ -8,8 +8,9 @@ import AuthRootComponent from "./pages/Auth/Auth.tsx";
 import { fetchAuthMe } from './redux/thunk/auth/index.ts';
 import { useAppDispatch, useAuth } from './utils/hook/index.ts';
 import Office from './pages/Office/index.tsx';
-import './App.scss'
+import SinglePage from './pages/SinglePage/index.tsx';
 
+import './App.scss'
 
 const App: FC = () => {
   const dispatch = useAppDispatch()
@@ -33,6 +34,8 @@ const App: FC = () => {
           <Route path="/login" element={<AuthRootComponent />} />
           <Route path="/register" element={<AuthRootComponent />} />
           <Route path='/offices' element={<Office />} />
+          <Route path='/offices/:id' element={<SinglePage />} />
+
         </Routes>
       </main>
       <footer className='footer'></footer>
