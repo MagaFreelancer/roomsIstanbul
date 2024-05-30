@@ -7,10 +7,9 @@ import { fetchAuthMe } from './redux/thunk/auth/index.ts';
 import { useAppDispatch, useAuth } from './utils/hook/index.ts';
 import Office from './pages/Office/index.tsx';
 import SinglePage from './pages/SinglePage/index.tsx';
-
-import './App.scss'
 import Login from './pages/Login/Login.tsx';
 import Register from './pages/Register/Register.tsx';
+import './App.scss'
 
 const App: FC = () => {
   const dispatch = useAppDispatch()
@@ -18,6 +17,7 @@ const App: FC = () => {
 
 
   useEffect(() => {
+
     if (auth) {
       dispatch(fetchAuthMe())
     }
