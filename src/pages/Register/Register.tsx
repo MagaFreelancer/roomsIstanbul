@@ -9,6 +9,7 @@ import { AppErrors } from '../../common/errors';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterSchema } from '../../utils/yup';
 import { registerUser } from '../../redux/thunk/auth';
+
 import './Register.scss'
 //2
 const Register: FC = (): JSX.Element => {
