@@ -15,7 +15,6 @@ const initialState: ISingleState = {
         imageUrl: "",
         info: [
             "",
-
         ],
         imgs: [
             "",

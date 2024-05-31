@@ -7,7 +7,7 @@ import { fetchRooms } from "../thunk/rooms";
 const initialState: StateType = {
 	items: [],
 	searchValue: '',
-	minmaxPrice: [2000, 4000],
+	minmaxPrice: [450, 850],
 	square: [
 		{
 			value: '10.6',

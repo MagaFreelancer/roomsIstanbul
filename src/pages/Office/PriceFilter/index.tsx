@@ -43,8 +43,8 @@ const PriceFilter: FC<IPropsPrice> = (props: IPropsPrice): JSX.Element => {
             valueLabelDisplay="auto"
             disableSwap
             step={100}
-            min={1400}
-            max={4500}
+            min={350}
+            max={990}
           />
         </div>
       </AccordionDetails>

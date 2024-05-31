@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchAuthMe, loginUser, registerUser } from "../thunk/auth";
 import { IStateType, IUserData } from "../../common/types/auth";
+import { RootState } from "../store";
 
 const initialState: IStateType = {
     user: {
@@ -44,7 +45,7 @@ export const authSlice = createSlice({
             state.isloading = true
         })
         builder.addCase(fetchAuthMe.fulfilled, (state, action) => {
-            state.user = action.payload
+            state.user.user = action.payload
             state.isLogged = true
             state.isloading = false
         })
@@ -58,5 +59,6 @@ export const authSlice = createSlice({
         })
     },
 })
+export const selectAuth = (state: RootState) => state.auth
 
 export default authSlice.reducer

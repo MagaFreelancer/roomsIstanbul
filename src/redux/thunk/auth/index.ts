@@ -53,6 +53,7 @@ export const fetchAuthMe = createAsyncThunk('auth/me',
                     Authorization: `Bearer ${token}`
                 }
             })
+
             return user.data
         }
         catch (error: any) {

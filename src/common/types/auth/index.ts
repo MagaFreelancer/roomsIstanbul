@@ -32,6 +32,7 @@ export interface IUserData {
     firstName: string
     email: string
     imageUrl: string
+    favorite: string[]
 }
 export interface IRegisterData {
     username: string

@@ -14,15 +14,23 @@ import { fetchSingle } from '../../redux/thunk/single';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './SinglePage.scss'
+import { selectAuth } from '../../redux/slices/authSlice';
 
 const SinglePage: FC = (): JSX.Element => {
     const { id } = useParams()
-    const dispatch = useAppDispatch()
     const { singleRoom } = useAppSelector(selectSingle)
-    const { name, imgs, info, price } = singleRoom
 
-    const [value, setValue] = useState<number | null>(3.5);
+    const { user, isLogged } = useAppSelector(selectAuth)
+    const { name, imgs, info, price } = singleRoom
+    const [value, setValue] = useState<number | null>(3.5); //rating
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+    const dispatch = useAppDispatch()
+    let ratingValue;
+    if (isLogged) {
+        ratingValue = user.user.favorite.find(item => item === id)
+        console.log(ratingValue);
+
+    }
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
         setAnchorEl(event.currentTarget);
@@ -61,7 +69,7 @@ const SinglePage: FC = (): JSX.Element => {
     const daysPriceResult = daysCount * price ///===========
     const salePrice = (daysPriceResult / 100) * 80 //==========
 
-    const getRoom = async (id: string) => {
+    const getRoom = async (id: string | undefined) => {
         dispatch(fetchSingle(id))
     }
 
@@ -143,7 +151,7 @@ const SinglePage: FC = (): JSX.Element => {
                     </div>
                     <div className="singlepage__btns">
                         <button className="singlepage__btn button-blue button-blue--big">Арендовать</button>
-                        <button className="singlepage__btn button-white button-white--big">Добавить в избранное</button>
+                        <button className="singlepage__btn button-white button-white--big">{`${ratingValue ? "Убрать из избранное" : "Добавить в избранное"}`}</button>
                     </div>
                 </div>
             </div>

@@ -24,7 +24,7 @@ const Header: FC = () => {
 
           {isLogged === false ? <div className="nav__links">
             <Link to="/login" className="nav__link">Авторизация/Регистрация</Link>
-          </div> : <Porfile data={user} />
+          </div> : <Porfile data={user.user} />
           }
         </nav>
       </div>
