@@ -21,7 +21,7 @@ export interface IloginData {
 }
 export interface IStateType {
     user: {
-        user: IUserData
+        data: IUserData
         token: string
     }
     isloading: boolean

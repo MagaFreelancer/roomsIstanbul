@@ -1,7 +1,16 @@
-import { FC ,useState} from 'react';
+import {
+    FC, useState
+} from 'react';
 import searchSvg from '../../assets/points/search.svg'
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
+import { IPropsHero, PointsType } from '../../common/types/rooms';
+import { useNavigate } from 'react-router-dom';
+import SendIcon from '@mui/icons-material/Send';
+import SearchIcon from '@mui/icons-material/Search';
 import './Hero.scss'
-type PointsType = { text: string; heading: string; class: string }
+
 const points: PointsType[] = [
     {
         heading: 'Location',
@@ -18,14 +27,32 @@ const points: PointsType[] = [
     },
 ]
 
-const Hero: FC = () => {
-    const [activeCol, setActiveCol] = useState<number>(0)
-    // const [searchValue, setSearchValue] = useState<string>('')
+const Hero: FC<IPropsHero> = (props: IPropsHero): JSX.Element => {
+    const { items, status } = props
+    const navigate = useNavigate()
 
-
-    const onClickSearch = () => {
-        setActiveCol(1)
+    const [searchValue, setSearchValue] = useState<string>('')
+    const [open, setOpen] = useState<boolean>(false);
+    const onClickSendIcon = () => {
+        if (searchValue.trim()) {
+            onChangeSearch(searchValue)
+        } else {
+            setOpen(false)
+        }
     }
+    const onChangeSearch = (value: string) => {
+        const itemOption = items.find(item => {
+            if (item.name.toLocaleLowerCase() === value.toLocaleLowerCase()) {
+
+                return item
+            }
+        })
+
+        if (itemOption != null) {
+            navigate(`offices/${itemOption.id}`)
+        }
+    }
+
     return (
         <section className='hero'>
             <div className="container hero__container">
@@ -39,7 +66,7 @@ const Hero: FC = () => {
                 </p>
                 <div className="hero__points">
                     <div className="hero__points-left">
-                        <div className={`hero__points-col ${activeCol === 0 && 'hero__points-col--active'}`}>
+                        <div className={`hero__points-col ${open === false && 'hero__points-col--active'}`}>
                             <ul className="hero__points-list">
                                 {points.map((item, index) => (
                                     <li key={index} className={`hero__points-item ${item.class}`}>
@@ -49,12 +76,35 @@ const Hero: FC = () => {
                                 ))}
                             </ul>
                         </div>
-                        <div className={`hero__points-col ${activeCol === 1 && 'hero__points-col--active'}`}>
-                            <input type="text" />
+                        <div className={`hero__points-col ${open && 'hero__points-col--active'}`}>
+                            <form onSubmit={() => onChangeSearch(searchValue)} >
+                                <Stack className='hero__points-field'>
+                                    <Autocomplete
+                                        freeSolo
+                                        id="free-solo-2-demo"
+                                        disableClearable
+                                        options={items.map((option) => option.name)}
+                                        onChange={(_, value) => {
+                                            onChangeSearch(value)
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                label="Search input"
+                                                onChange={(e) => setSearchValue(e.target.value)}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    type: 'search',
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </Stack>
+                            </form>
                         </div>
                     </div>
-                    <button onClick={onClickSearch} className='hero__points-search button-blue button-blue--sm'>
-                        <img src={searchSvg} alt="search" />
+                    <button onClick={() => setOpen(!open)} className='hero__points-search button-blue button-blue--sm'>
+                        {open ? <SendIcon onClick={() => onClickSendIcon()} /> : <SearchIcon />}
                     </button>
                 </div>
                 <div className="hero__static">

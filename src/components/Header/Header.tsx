@@ -8,6 +8,7 @@ import './Header.scss';
 
 const Header: FC = () => {
   const { user, isLogged } = useAppSelector(e => e.auth)
+  console.log('header', user);
 
   return (
     <header className="header">
@@ -24,7 +25,7 @@ const Header: FC = () => {
 
           {isLogged === false ? <div className="nav__links">
             <Link to="/login" className="nav__link">Авторизация/Регистрация</Link>
-          </div> : <Porfile data={user.user} />
+          </div> : <Porfile data={user.data} />
           }
         </nav>
       </div>

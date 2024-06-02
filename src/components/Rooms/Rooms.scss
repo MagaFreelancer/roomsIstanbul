@@ -1,9 +1,0 @@
-.rooms {
-	padding: 100px 0;
-	&__cards {
-		display: grid;
-		gap: 20px;
-		grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-		grid-gap: 2vw;
-	}
-}

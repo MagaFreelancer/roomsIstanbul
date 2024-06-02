@@ -11,6 +11,8 @@ export interface DataType {
 	imageUrl: string
 	square: string
 	capacity: number
+	info: string[]
+	imgs: string[]
 }
 export interface StateType {
 	items: DataType[]
@@ -30,4 +32,10 @@ export type CapacityItem = {
 	value: number
 	checked: boolean
 	id: number
+}
+
+export type PointsType = { text: string; heading: string; class: string }
+export interface IPropsHero {
+	items: DataType[]
+	status: DataStatus.LOADING | DataStatus.SUCCESS | DataStatus.FAILED
 }

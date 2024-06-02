@@ -6,7 +6,7 @@ import { RootState } from "../store";
 const initialState: IStateType = {
     user: {
         token: '',
-        user: {} as IUserData,
+        data: {} as IUserData,
     },
     isLogged: false,
     isloading: false
@@ -19,7 +19,7 @@ export const authSlice = createSlice({
     },
     extraReducers(builder) {
         builder.addCase(loginUser.fulfilled, (state, action) => {
-            state.user = action.payload.data
+            state.user = action.payload
             state.isLogged = true
             state.isloading = false
         })
@@ -32,7 +32,7 @@ export const authSlice = createSlice({
             state.isloading = true
         })
         builder.addCase(registerUser.fulfilled, (state, action) => {
-            state.user = action.payload.data
+            state.user = action.payload
             state.isLogged = true
             state.isloading = false
         })
@@ -45,7 +45,7 @@ export const authSlice = createSlice({
             state.isloading = true
         })
         builder.addCase(fetchAuthMe.fulfilled, (state, action) => {
-            state.user.user = action.payload
+            state.user.data = action.payload
             state.isLogged = true
             state.isloading = false
         })
