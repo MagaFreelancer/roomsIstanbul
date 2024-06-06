@@ -9,12 +9,14 @@ import Office from './pages/Office/index.tsx';
 import SinglePage from './pages/SinglePage/index.tsx';
 import Login from './pages/Login/Login.tsx';
 import Register from './pages/Register/Register.tsx';
+import Footer from './components/Footer/Footer.tsx';
+
 import './App.scss'
+import Personal from './pages/Personal/Personal.tsx';
 
 const App: FC = () => {
   const dispatch = useAppDispatch()
   const auth = useAuth()
-
 
   useEffect(() => {
 
@@ -24,7 +26,7 @@ const App: FC = () => {
   }, [])
 
   return (
-    <>
+    <div className='wrapper'>
       <Header />
       <main className='main'>
         <Routes>
@@ -35,11 +37,11 @@ const App: FC = () => {
           <Route path="/register" element={<Register />} />
           <Route path='/offices' element={<Office />} />
           <Route path='/offices/:id' element={<SinglePage />} />
-
+          <Route path='/profile' element={<Personal />} />
         </Routes>
       </main>
-      <footer className='footer'></footer>
-    </>
+      <Footer />
+    </div>
   )
 }
 

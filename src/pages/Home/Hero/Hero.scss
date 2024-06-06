@@ -1,5 +1,5 @@
 .hero {
-    background-image: url("../../assets/heroBg.jpg");
+    background-image: url("../../../assets/heroBg.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -80,17 +80,17 @@
         }
         &--location {
             &::after {
-                background-image: url("../../assets/points/1.svg");
+                background-image: url("../../../assets/points/1.svg");
             }
         }
         &--price {
             &::after {
-                background-image: url("../../assets/points/2.svg");
+                background-image: url("../../../assets/points/2.svg");
             }
         }
         &--type {
             &::after {
-                background-image: url("../../assets/points/3.svg");
+                background-image: url("../../../assets/points/3.svg");
             }
         }
     }

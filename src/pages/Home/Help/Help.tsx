@@ -1,8 +1,8 @@
 import { FC } from 'react'
-import tableSvg from '../../assets/help/table.svg'
-import couchSvg from '../../assets/help/couch.svg'
-import bg1 from '../../assets/help/bg-1.jpg'
-import bg2 from '../../assets/help/bg-2.jpg'
+import tableSvg from '../../../assets/help/table.svg'
+import couchSvg from '../../../assets/help/couch.svg'
+import bg1 from '../../../assets/help/bg-1.jpg'
+import bg2 from '../../../assets/help/bg-2.jpg'
 import "./Help.scss"
 const Help: FC = () => {
 	return (

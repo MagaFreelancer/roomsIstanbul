@@ -1,14 +1,14 @@
 import {
     FC, useState
 } from 'react';
-import searchSvg from '../../assets/points/search.svg'
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
-import { IPropsHero, PointsType } from '../../common/types/rooms';
+import { IPropsHero, PointsType } from '../../../common/types/rooms';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import SearchIcon from '@mui/icons-material/Search';
+
 import './Hero.scss'
 
 const points: PointsType[] = [
@@ -28,7 +28,9 @@ const points: PointsType[] = [
 ]
 
 const Hero: FC<IPropsHero> = (props: IPropsHero): JSX.Element => {
-    const { items, status } = props
+    const { items } = props
+
+
     const navigate = useNavigate()
 
     const [searchValue, setSearchValue] = useState<string>('')
@@ -55,6 +57,7 @@ const Hero: FC<IPropsHero> = (props: IPropsHero): JSX.Element => {
 
     return (
         <section className='hero'>
+
             <div className="container hero__container">
                 <h1 className="hero__title">
                     Discover a place <br />
@@ -120,6 +123,7 @@ const Hero: FC<IPropsHero> = (props: IPropsHero): JSX.Element => {
                     </div>
                 </div>
             </div>
+
         </section>
     )
 }

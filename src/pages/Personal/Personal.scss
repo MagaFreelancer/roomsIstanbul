@@ -1,0 +1,24 @@
+.personal {
+    padding: 20px 0;
+    &__container {
+        position: relative;
+        height: 50vh;
+    }
+    &__sidebar {
+    }
+    &__content {
+        transition: 0.2s ease-in-out;
+    }
+    .ant-layout {
+        height: 100%;
+    }
+    .ant-layout-sider-children {
+        background-color: var(--whiteColor);
+    }
+    .ant-layout-sider-trigger {
+        position: relative;
+    }
+    .ant-menu-item {
+        padding-left: 0;
+    }
+}

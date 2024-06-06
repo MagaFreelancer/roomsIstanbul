@@ -8,7 +8,6 @@ import './Header.scss';
 
 const Header: FC = () => {
   const { user, isLogged } = useAppSelector(e => e.auth)
-  console.log('header', user);
 
   return (
     <header className="header">

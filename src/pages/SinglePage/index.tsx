@@ -66,6 +66,8 @@ const SinglePage: FC = (): JSX.Element => {
     const daysCount = valueDateRangePicker?.[0].startDate && valueDateRangePicker?.[0].endDate ?
         differenceInDays(valueDateRangePicker[0].endDate, valueDateRangePicker[0].startDate) + 1 :
         0;
+
+
     const daysPriceResult = daysCount * price ///===========
     const salePrice = (daysPriceResult / 100) * 80 //==========
 
