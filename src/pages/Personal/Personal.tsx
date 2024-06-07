@@ -1,13 +1,13 @@
-import { Breadcrumb, Layout } from 'antd';
+import { Layout } from 'antd';
 import MenuList from './MenuList/MenuList';
+import { Route, Routes } from 'react-router-dom';
+import BreadCrumb from './BreadCrumb/BreadCrumb'
+import { useLocation } from 'react-router-dom';
+import "./Personal.scss"
 const { Content } = Layout;
 
-import "./Personal.scss"
-import { Route, Routes } from 'react-router-dom';
-
 const Personal = () => {
-   
-
+    const { pathname } = useLocation()
     return (
         <>
             <div className="personal">
@@ -16,12 +16,9 @@ const Personal = () => {
                         <MenuList />
                         <Layout >
                             <Content style={{ margin: '0 16px', }}>
-                                <Breadcrumb style={{ margin: '16px 0' }}>
-                                    <Breadcrumb.Item>User</Breadcrumb.Item>
-                                    <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                                </Breadcrumb>
+                                <BreadCrumb pathname={pathname} />
                                 <Routes >
-                                    <Route path="/profile" element={ <MenuList />} />
+                                    <Route path="/profile" element={<MenuList />} />
                                 </Routes>
                             </Content>
                         </Layout>
