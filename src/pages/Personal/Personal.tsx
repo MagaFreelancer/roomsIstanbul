@@ -1,13 +1,12 @@
-import { Breadcrumb, Layout, theme } from 'antd';
+import { Breadcrumb, Layout } from 'antd';
 import MenuList from './MenuList/MenuList';
 const { Content } = Layout;
 
 import "./Personal.scss"
+import { Route, Routes } from 'react-router-dom';
 
 const Personal = () => {
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
+   
 
     return (
         <>
@@ -21,16 +20,9 @@ const Personal = () => {
                                     <Breadcrumb.Item>User</Breadcrumb.Item>
                                     <Breadcrumb.Item>Bill</Breadcrumb.Item>
                                 </Breadcrumb>
-                                <div
-                                    style={{
-                                        padding: 24,
-                                        minHeight: 360,
-                                        background: colorBgContainer,
-                                        borderRadius: borderRadiusLG,
-                                    }}
-                                >
-                                    Bill is a cat.
-                                </div>
+                                <Routes >
+                                    <Route path="/profile" element={ <MenuList />} />
+                                </Routes>
                             </Content>
                         </Layout>
                     </Layout>

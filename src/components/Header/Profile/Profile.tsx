@@ -84,7 +84,7 @@ const Porfile: FC<IPropsProfile> = ({ data }) => {
 
             <ul className={`profile__list ${open && 'profile__list--active'}`}>
                 <li className="profile__item">
-                    <Link className='profile__link' to="/profile">Личный кабинет</Link>
+                    <Link className='profile__link' to="/personal/profile">Личный кабинет</Link>
                 </li>
                 <li className="profile__item">
                     <Link className='profile__link' to="/settings">Настройки <img src={settingsSvg} alt="settings" /></Link>

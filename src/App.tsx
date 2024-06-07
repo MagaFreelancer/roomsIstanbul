@@ -37,7 +37,7 @@ const App: FC = () => {
           <Route path="/register" element={<Register />} />
           <Route path='/offices' element={<Office />} />
           <Route path='/offices/:id' element={<SinglePage />} />
-          <Route path='/profile' element={<Personal />} />
+          <Route path='/personal/*' element={<Personal />} />
         </Routes>
       </main>
       <Footer />

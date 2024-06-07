@@ -1,4 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Layout, Menu } from 'antd';
 import {
     HistoryOutlined,
     LogoutOutlined,
@@ -9,9 +12,9 @@ import {
     SettingOutlined,
     UserOutlined
 } from '@ant-design/icons'
-import { Layout, Menu } from 'antd';
 import type { MenuProps } from 'antd';
-import { Link } from 'react-router-dom';
+
+
 const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -30,23 +33,30 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-    getItem(<Link to="/profile">Профиль</Link>, 'home', <UserOutlined />),
-    getItem(<Link to="/payment">Платежи</Link>, 'payment', <PayCircleOutlined />),
-    getItem(<Link to="/rooms">Офисы</Link>, 'rooms', <ProfileOutlined />),
-    getItem(<Link to="/story">История</Link>, 'story', <HistoryOutlined />),
-    getItem(<Link to="/settings">Настройки</Link>, 'settings', <SettingOutlined />, [
-        getItem(<Link to="/theme">Тема</Link>, 'theme', <MoonOutlined />),
-        getItem(<Link to="/code">QR code</Link>, 'code', <QrcodeOutlined />),
+    getItem(<Link to="/personal/profile">Профиль</Link>, 'profile', <UserOutlined />),
+    getItem(<Link to="/personal/payment">Платежи</Link>, 'payment', <PayCircleOutlined />),
+    getItem(<Link to="/personal/rooms">Офисы</Link>, 'rooms', <ProfileOutlined />),
+    getItem(<Link to="/personal/story">История</Link>, 'story', <HistoryOutlined />),
+    getItem('Настройки', 'settings', <SettingOutlined />, [
+        getItem(<Link to="/personal/theme">Тема</Link>, 'theme', <MoonOutlined />),
+        getItem(<Link to="/personal/code">QR code</Link>, 'code', <QrcodeOutlined />),
     ]),
     getItem(<Link to="/logout">Выход</Link>, 'logout', <LogoutOutlined />),
 ];
 const MenuList = () => {
+    const [selectedKeys, setSelectedKeys] = useState<string[]>(["profile"])
     const [collapsed, setCollapsed] = useState(false);
+    const { pathname } = useLocation()
+    const path = pathname.split('/')
+    useEffect(() => {
+        setSelectedKeys([path[2]])
+    }, [pathname])
+
+
     return (
 
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-            <div className="demo-logo-vertical" />
-            <Menu className='profile__sidebar' defaultSelectedKeys={['1']} mode="inline" items={items} />
+            <Menu className='profile__sidebar' selectedKeys={selectedKeys} mode="inline" items={items} />
         </Sider>
     )
 }
