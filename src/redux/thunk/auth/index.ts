@@ -48,12 +48,12 @@ export const fetchAuthMe = createAsyncThunk('auth/me',
     ) => {
         try {
             const token = sessionStorage.getItem('token')
+
             const user = await instance.get('/auth_me', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
-
             return user.data
         }
         catch (error: any) {
@@ -64,4 +64,24 @@ export const fetchAuthMe = createAsyncThunk('auth/me',
             }
         }
 
+    })
+
+export const fetchPatchProfile = createAsyncThunk('auth/profile',
+    async (
+        { id, changedData }: { id: number, changedData: IUserData },
+        { rejectWithValue }
+    ) => {
+        try {
+
+            const user = await instance.patch(`/users/${id}`, changedData)
+
+            return user.data
+        }
+        catch (error: any) {
+            if (error.message && error.changedData.message) {
+                return rejectWithValue(error.response.changedData.message)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
     })

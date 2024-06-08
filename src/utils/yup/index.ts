@@ -26,3 +26,12 @@ export const RegisterSchema = yup.object().shape({
     firstName: yup.string().required(AppErrors.RequiredField),
     username: yup.string().required(AppErrors.RequiredField)
 })
+export const ProfileSchema = yup.object().shape({
+    firstName: yup.string().required(AppErrors.RequiredField),
+    username: yup.string()
+        .min(4, AppErrors.minLength)
+        .required(AppErrors.RequiredField),
+    email: yup.string()
+        .email(AppErrors.InvalidEmail)
+        .required(AppErrors.RequiredField),
+})

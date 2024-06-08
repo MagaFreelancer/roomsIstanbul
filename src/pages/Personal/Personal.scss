@@ -4,10 +4,11 @@
         position: relative;
         height: 50vh;
     }
-  
+
     &__content {
         transition: 0.2s ease-in-out;
     }
+
     .ant-layout {
         height: 100%;
     }
@@ -17,5 +18,4 @@
     .ant-layout-sider-trigger {
         position: relative;
     }
-    
 }

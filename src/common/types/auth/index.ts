@@ -28,11 +28,13 @@ export interface IStateType {
     isLogged: boolean
 }
 export interface IUserData {
+    id: number,
     username: string
     firstName: string
     email: string
     imageUrl: string
     favorite: string[]
+    password?: string
 }
 export interface IRegisterData {
     username: string

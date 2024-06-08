@@ -11,13 +11,12 @@ import Login from './pages/Login/Login.tsx';
 import Register from './pages/Register/Register.tsx';
 import Footer from './components/Footer/Footer.tsx';
 
-import './App.scss'
 import Personal from './pages/Personal/Personal.tsx';
+import './App.scss'
 
 const App: FC = () => {
   const dispatch = useAppDispatch()
   const auth = useAuth()
-
   useEffect(() => {
 
     if (auth) {

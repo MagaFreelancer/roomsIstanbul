@@ -36,12 +36,12 @@ const Register: FC = (): JSX.Element => {
                     password: data.password,
                     firstName: data.name,
                     username: data.username,
+                    favorite: [],
                     imageUrl: ''
                 }
                 await dispatch(registerUser(userData))
                 navigate('/')
             } catch (e) {
-                console.log(e);
                 return e
             }
         }

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAuthMe, loginUser, registerUser } from "../thunk/auth";
+import { fetchAuthMe, fetchPatchProfile, loginUser, registerUser } from "../thunk/auth";
 import { IStateType, IUserData } from "../../common/types/auth";
 import { RootState } from "../store";
 
@@ -54,6 +54,20 @@ export const authSlice = createSlice({
             state.isloading = true
         })
         builder.addCase(fetchAuthMe.rejected, (state) => {
+            state.isLogged = false
+            state.isloading = true
+        })
+        builder.addCase(fetchPatchProfile.fulfilled, (state, action) => {
+            state.user.data = action.payload
+
+            state.isLogged = true
+            state.isloading = false
+        })
+        builder.addCase(fetchPatchProfile.pending, (state) => {
+            state.isLogged = false
+            state.isloading = true
+        })
+        builder.addCase(fetchPatchProfile.rejected, (state) => {
             state.isLogged = false
             state.isloading = true
         })
