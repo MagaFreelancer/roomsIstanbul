@@ -37,7 +37,8 @@ const Register: FC = (): JSX.Element => {
                     firstName: data.name,
                     username: data.username,
                     favorite: [],
-                    imageUrl: ''
+                    imageUrl: '',
+                    imgsId: 0,
                 }
                 await dispatch(registerUser(userData))
                 navigate('/')
@@ -52,7 +53,7 @@ const Register: FC = (): JSX.Element => {
     return (
         <div className="register">
             <div className="register__wrapper">
-                <form  className='register__form' onSubmit={handleSubmit(handleSubmitForm)}>
+                <form className='register__form' onSubmit={handleSubmit(handleSubmitForm)}>
                     <h2 className="register__title">
                         Зарегистрировать аккаунт
                     </h2>

@@ -30,8 +30,20 @@
         font-family: "Manrope";
         color: rgba(0, 0, 0, 0.5);
     }
+    &__btns {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
     &__updateimg {
-        border-radius: 20px;
+        font-size: 12px;
+        padding: 8px 15px;
+        border-radius: 10px;
+    }
+    &__removeimage {
+        font-size: 12px;
+        padding: 6px 15px;
+        border-radius: 10px;
     }
     &__fields {
         display: flex;

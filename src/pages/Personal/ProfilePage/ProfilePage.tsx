@@ -15,10 +15,9 @@ import { IUserData } from '../../../common/types/auth';
 
 const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Element => {
     const { user, isLogged } = props;
-
+    const isLoadingAvatar = user.imageUrl ? true : false
     const username = isLogged ? user.username[0] : '';
     const inputFileRef = useRef<HTMLInputElement>(null)
-    const [image, setImage] = useState('')
     const dispatch = useAppDispatch()
     const { register, setValue, formState: { errors }, handleSubmit, watch } = useForm({
         defaultValues: {
@@ -37,6 +36,10 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
     }, [user, setValue]);
 
     const handleSubmitForm = async (changedData: any) => {
+        if (user.id === undefined) {
+            console.error('User ID is undefined');
+            return;
+        }
         await reloadProfile(user.id, changedData)
 
         // window.location.reload()
@@ -48,47 +51,72 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
         formData.append('file', file);
 
         try {
+            if (isLoadingAvatar) {
+                await instance.delete(`/uploads/${user.imgsId}`);
+            }
             const { data } = await instance.post('/uploads', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     authorization: 'authorization-text',
                 },
-
-
             });
 
 
-
-            const changedData = {
+            const changedData: IUserData = {
                 ...user,
-                imageUrl: data.url
+                imageUrl: data.url,
+                imgsId: data.id
+            }
+            if (user.id === undefined) {
+                console.error('User ID is undefined');
+                return;
             }
             await reloadProfile(user.id, changedData)
-
             message.success(`${file.name} file uploaded successfully`);
         } catch (error) {
             message.error(`${file.name} file upload failed.`);
         }
     };
 
-
     // const onClickRemoveImage = async (e) => {
     //     console.log(e.target.files);
 
     // }
     // Слежение за значениями полей
-    const reloadProfile = async (id, changedData) => {
+    const reloadProfile = async (id: number, changedData: IUserData) => {
         try {
             sessionStorage.removeItem('token')
             sessionStorage.removeItem('name')
-            const userData = await dispatch(fetchPatchProfile({ id: user.id, changedData }))
-            console.log(userData);
+            const userData = await dispatch(fetchPatchProfile({ id, changedData }))
             await dispatch(loginUser({
                 email: userData.payload.email,
                 password: userData.payload.password
             }))
         } catch (e) {
             console.log(e);
+        }
+    }
+    const handleFileRemove = async () => {
+        try {
+            if (user.imgsId) {
+                await instance.delete(`/uploads/${user.imgsId}`);
+                const changedData: IUserData = {
+                    ...user,
+                    imageUrl: '',
+                    imgsId: 0
+                };
+                if (user.id === undefined) {
+                    console.error('User ID is undefined');
+                    return;
+                }
+                await reloadProfile(user.id, changedData);
+                message.success('File removed successfully');
+            } else {
+                message.warning('No file to remove');
+            }
+        } catch (error) {
+            console.error('File removal failed:', error);
+            message.error('File removal failed.');
         }
     }
     const watchedValues = watch();
@@ -111,8 +139,11 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
                     <div className="profilepage__username">{user.username}</div>
 
                 </div>
-                <button onClick={() => inputFileRef.current?.click()} className='button profilepage__updateimg'>Upload Photo</button>
-                <input ref={inputFileRef} type="file" hidden onChange={handleFileUpload} />
+                <div className="profilepage__btns">
+                    <button onClick={() => inputFileRef.current?.click()} className='button profilepage__updateimg'>Upload Photo</button>
+                    <button onClick={handleFileRemove} className='button-white profilepage__removeimage'>Remove Photo</button>
+                    <input ref={inputFileRef} type="file" hidden onChange={handleFileUpload} />
+                </div>
             </div>
             <form onSubmit={handleSubmit(handleSubmitForm)} className="profilepage__fields">
                 <TextField
