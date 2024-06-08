@@ -68,7 +68,7 @@ export const fetchAuthMe = createAsyncThunk('auth/me',
 
 export const fetchPatchProfile = createAsyncThunk('auth/profile',
     async (
-        { id, changedData }: { id: number, changedData: IUserData },
+        { id, changedData }: { id: number, changedData: IUserData},
         { rejectWithValue }
     ) => {
         try {

@@ -64,8 +64,8 @@ const Porfile: FC<IPropsProfile> = ({ data }) => {
         // localStorage.removeItem('data')
     }
     return (
-        <div className="profile" ref={sortRef}>
-            <div className="profile__username" onClick={() => setOpen(!open)}>
+        <div className="profile">
+            <div ref={sortRef} className="profile__username" onClick={() => setOpen(!open)}>
                 {data.username}
             </div>
             <StyledBadge

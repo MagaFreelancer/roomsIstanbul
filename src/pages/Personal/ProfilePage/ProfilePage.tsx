@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Avatar } from 'antd';
 import { IPropsProfilePage } from '../../../common/types/personal';
 import { useForm } from 'react-hook-form';
@@ -7,11 +7,18 @@ import { TextField } from '@mui/material';
 import { ProfileSchema } from '../../../utils/yup';
 import { useAppDispatch } from '../../../utils/hook';
 import { fetchPatchProfile, loginUser } from '../../../redux/thunk/auth';
+import { message } from 'antd';
+import instance from '../../../utils/axios';
 import "./ProfilePage.scss";
+import { IUserData } from '../../../common/types/auth';
+
 
 const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Element => {
     const { user, isLogged } = props;
+
     const username = isLogged ? user.username[0] : '';
+    const inputFileRef = useRef<HTMLInputElement>(null)
+    const [image, setImage] = useState('')
     const dispatch = useAppDispatch()
     const { register, setValue, formState: { errors }, handleSubmit, watch } = useForm({
         defaultValues: {
@@ -30,20 +37,62 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
     }, [user, setValue]);
 
     const handleSubmitForm = async (changedData: any) => {
-        sessionStorage.removeItem('token')
-        sessionStorage.removeItem('name')
-        const data = await dispatch(fetchPatchProfile({ id: user.id, changedData }))
-
-        await dispatch(loginUser({
-            email: data.payload.email,
-            password: data.payload.password
-        }))
+        await reloadProfile(user.id, changedData)
 
         // window.location.reload()
     };
+    const handleFileUpload = async (e: any) => {
+        const file = e.target.files[0];
 
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const { data } = await instance.post('/uploads', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    authorization: 'authorization-text',
+                },
+
+
+            });
+
+
+
+            const changedData = {
+                ...user,
+                imageUrl: data.url
+            }
+            await reloadProfile(user.id, changedData)
+
+            message.success(`${file.name} file uploaded successfully`);
+        } catch (error) {
+            message.error(`${file.name} file upload failed.`);
+        }
+    };
+
+
+    // const onClickRemoveImage = async (e) => {
+    //     console.log(e.target.files);
+
+    // }
     // Слежение за значениями полей
+    const reloadProfile = async (id, changedData) => {
+        try {
+            sessionStorage.removeItem('token')
+            sessionStorage.removeItem('name')
+            const userData = await dispatch(fetchPatchProfile({ id: user.id, changedData }))
+            console.log(userData);
+            await dispatch(loginUser({
+                email: userData.payload.email,
+                password: userData.payload.password
+            }))
+        } catch (e) {
+            console.log(e);
+        }
+    }
     const watchedValues = watch();
+
 
     return (
         <div className='profilepage'>
@@ -57,7 +106,13 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
                         {user.imageUrl || username}
                     </Avatar>
                 </div>
-                <button className='button profilepage__updateimg'>Upload Photo</button>
+                <div className="profilepage__info">
+                    <div className="profilepage__name">{user.firstName}</div>
+                    <div className="profilepage__username">{user.username}</div>
+
+                </div>
+                <button onClick={() => inputFileRef.current?.click()} className='button profilepage__updateimg'>Upload Photo</button>
+                <input ref={inputFileRef} type="file" hidden onChange={handleFileUpload} />
             </div>
             <form onSubmit={handleSubmit(handleSubmitForm)} className="profilepage__fields">
                 <TextField
