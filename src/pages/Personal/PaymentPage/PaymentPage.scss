@@ -1,0 +1,88 @@
+.payment {
+    background-color: var(--whiteColor);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    padding: 30px;
+    &__heading {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    &__sum {
+        font-size: 40px;
+        margin-bottom: 30px;
+    }
+    &__btn {
+        border-radius: 5px;
+    }
+    &__ops {
+        margin-bottom: 80px;
+    }
+    &__story {
+        font-family: "Poppins";
+    }
+    &__nav-heading {
+        font-size: 21px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    &__filter {
+        display: flex;
+        justify-content: flex-end;
+        gap: 40px;
+        margin-bottom: 20px;
+    }
+    &__table {
+        table {
+            width: 100%;
+            border-spacing: 0;
+        }
+    }
+    &__head {
+        th {
+            color: #b5b7c0;
+            font-size: 14px;
+            font-weight: 400;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+    }
+    &__body {
+        tr {
+            transition: background-color .2s ease;
+            &:hover {
+             background-color: #F5F8FE;
+            }
+            th {
+                padding: 20px 0;
+                font-size: 14px;
+                font-weight: 500;
+            }
+            &:not(:last-child) {
+                th {
+                    border-bottom: 1px solid #f0f0f0;
+                }
+            }
+        }
+    }
+    &__table-sum {
+        color: #df0404;
+        &--inc {
+            color: #008767;
+        }
+    }
+    &__table-status {
+        span {
+            padding: 8px 10px;
+            border-radius: 12px;
+            color: #df0404;
+            background-color: rgba(#df0404, 0.4);
+        }
+        &--inc {
+            span {
+                color: #008767;
+                background-color: rgba(#008767, 0.4);
+            }
+        }
+    }
+}

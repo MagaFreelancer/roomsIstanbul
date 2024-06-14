@@ -21,6 +21,8 @@ const App: FC = () => {
 
     if (auth) {
       dispatch(fetchAuthMe())
+      console.log('lol');
+
     }
   }, [])
 

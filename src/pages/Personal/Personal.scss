@@ -1,15 +1,15 @@
 .personal {
-    padding: 20px 0;
     &__container {
         position: relative;
-        height: 50vh;
     }
 
     &__content {
         transition: 0.2s ease-in-out;
     }
 
-    .ant-layout {
+    &__wrapper {
+        height: 100%;
+        padding-bottom: 20px;
     }
     .ant-layout-sider-children {
         background-color: var(--whiteColor);

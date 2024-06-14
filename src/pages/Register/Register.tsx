@@ -11,6 +11,7 @@ import { RegisterSchema } from '../../utils/yup';
 import { registerUser } from '../../redux/thunk/auth';
 
 import './Register.scss'
+import { IUserData } from '../../common/types/auth';
 //2
 const Register: FC = (): JSX.Element => {
     const { isLogged } = useAppSelector(e => e.auth)
@@ -31,7 +32,7 @@ const Register: FC = (): JSX.Element => {
     const handleSubmitForm = async (data: any) => {
         if (data.password === data.confirmPassword) {
             try {
-                const userData = {
+                const userData: IUserData = {
                     email: data.email,
                     password: data.password,
                     firstName: data.name,
@@ -39,6 +40,11 @@ const Register: FC = (): JSX.Element => {
                     favorite: [],
                     imageUrl: '',
                     imgsId: 0,
+                    payments: {
+                        spend: [],
+                        replenished: [],
+                    },
+                    balance: 30000
                 }
                 await dispatch(registerUser(userData))
                 navigate('/')

@@ -36,6 +36,18 @@ export interface IUserData {
     favorite: string[]
     password?: string
     imgsId: number
+    payments: IPayments
+    balance: number
+}
+export type IPayment = {
+    id: number;
+    sum: number;
+    date: string;
+    type: 'increment' | 'decrement'
+}
+export interface IPayments {
+    spend: IPayment[];
+    replenished: IPayment[];
 }
 export interface IRegisterData {
     username: string

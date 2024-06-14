@@ -7,3 +7,7 @@ export interface IPropsProfilePage {
     user: IUserData
     isLogged: boolean
 }
+export interface IPropsPaymentPage {
+    user: IUserData
+    isLogged: boolean
+}
