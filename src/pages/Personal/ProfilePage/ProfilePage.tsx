@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { Avatar } from 'antd';
 import { IPropsProfilePage } from '../../../common/types/personal';
 import { useForm } from 'react-hook-form';
@@ -9,8 +9,8 @@ import { useAppDispatch } from '../../../utils/hook';
 import { fetchPatchProfile, loginUser } from '../../../redux/thunk/auth';
 import { message } from 'antd';
 import instance from '../../../utils/axios';
-import "./ProfilePage.scss";
 import { IUserData } from '../../../common/types/auth';
+import "./ProfilePage.scss";
 
 
 const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Element => {
@@ -172,7 +172,7 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
                     {...register('email')}
                     value={watchedValues.email || ''}
                 />
-                <button className='button' type='submit'>Сохранить</button>
+                <button className='button profilepage__btn' type='submit'>Сохранить</button>
             </form>
         </div>
     );

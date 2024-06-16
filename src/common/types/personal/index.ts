@@ -1,3 +1,4 @@
+import { AppDispatch } from "../../../redux/store"
 import { IUserData } from "../auth"
 
 export interface IPropsBreadCrumb {
@@ -10,4 +11,5 @@ export interface IPropsProfilePage {
 export interface IPropsPaymentPage {
     user: IUserData
     isLogged: boolean
+    dispatch: AppDispatch;
 }

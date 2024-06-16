@@ -41,7 +41,6 @@ const Register: FC = (): JSX.Element => {
                     imageUrl: '',
                     imgsId: 0,
                     payments: {
-                        spend: [],
                         replenished: [],
                     },
                     balance: 30000

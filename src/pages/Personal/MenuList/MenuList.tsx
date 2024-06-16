@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import {
+    CheckOutlined,
     HistoryOutlined,
     LogoutOutlined,
     MoonOutlined,
@@ -10,6 +11,7 @@ import {
     ProfileOutlined,
     QrcodeOutlined,
     SettingOutlined,
+    StarOutlined,
     UserOutlined
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd';
@@ -35,7 +37,10 @@ function getItem(
 const items: MenuItem[] = [
     getItem(<Link to="/personal/profile">Профиль</Link>, 'profile', <UserOutlined />),
     getItem(<Link to="/personal/payment">Платежи</Link>, 'payment', <PayCircleOutlined />),
-    getItem(<Link to="/personal/rooms">Офисы</Link>, 'rooms', <ProfileOutlined />),
+    getItem('Офисы', 'offices', <ProfileOutlined />, [
+        getItem(<Link to="/personal/favorite">Избранное</Link>, 'favorite', <StarOutlined />),
+        getItem(<Link to="/personal/rented">Аренндованное</Link>, 'rented', <CheckOutlined />),
+    ]),
     getItem(<Link to="/personal/story">История</Link>, 'story', <HistoryOutlined />),
     getItem('Настройки', 'settings', <SettingOutlined />, [
         getItem(<Link to="/personal/theme">Тема</Link>, 'theme', <MoonOutlined />),

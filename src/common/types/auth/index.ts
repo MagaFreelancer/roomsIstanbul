@@ -42,11 +42,10 @@ export interface IUserData {
 export type IPayment = {
     id: number;
     sum: number;
-    date: string;
+    date: Date;
     type: 'increment' | 'decrement'
 }
 export interface IPayments {
-    spend: IPayment[];
     replenished: IPayment[];
 }
 export interface IRegisterData {

@@ -9,6 +9,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useAppSelector } from '../../utils/hook';
 import PaymentPage from './PaymentPage/PaymentPage';
+import { useAppDispatch } from '../../utils/hook';
 import "./Personal.scss"
 
 const { Content } = Layout;
@@ -16,6 +17,7 @@ const { Content } = Layout;
 const Personal: FC = (): JSX.Element => {
     const { pathname } = useLocation()
     const { user, isloading, isLogged } = useAppSelector(e => e.auth)
+    const dispatch = useAppDispatch()
 
 
     return (
@@ -37,7 +39,7 @@ const Personal: FC = (): JSX.Element => {
                                 </div>
                                 <Routes >
                                     <Route path="/profile" element={<ProfilePage user={user.data} isLogged={isLogged} />} />
-                                    <Route path="/payment" element={<PaymentPage user={user.data} isLogged={isLogged} />} />
+                                    <Route path="/payment" element={<PaymentPage user={user.data} isLogged={isLogged} dispatch={dispatch} />} />
                                 </Routes>
                             </Content>
                         </Layout>
