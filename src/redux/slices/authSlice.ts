@@ -59,7 +59,6 @@ export const authSlice = createSlice({
         })
         builder.addCase(fetchPatchProfile.fulfilled, (state, action) => {
             state.user.data = action.payload
-
             state.isLogged = true
             state.isloading = false
         })

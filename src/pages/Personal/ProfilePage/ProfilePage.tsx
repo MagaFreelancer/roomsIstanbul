@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TextField } from '@mui/material';
 import { ProfileSchema } from '../../../utils/yup';
-import { useAppDispatch } from '../../../utils/hook';
 import { fetchPatchProfile, loginUser } from '../../../redux/thunk/auth';
 import { message } from 'antd';
 import instance from '../../../utils/axios';
@@ -14,11 +13,10 @@ import "./ProfilePage.scss";
 
 
 const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Element => {
-    const { user, isLogged } = props;
+    const { user, isLogged, dispatch } = props;
     const isLoadingAvatar = user.imageUrl ? true : false
     const username = isLogged ? user.username[0] : '';
     const inputFileRef = useRef<HTMLInputElement>(null)
-    const dispatch = useAppDispatch()
     const { register, setValue, formState: { errors }, handleSubmit, watch } = useForm({
         defaultValues: {
             username: user.username,
@@ -78,11 +76,6 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
         }
     };
 
-    // const onClickRemoveImage = async (e) => {
-    //     console.log(e.target.files);
-
-    // }
-    // Слежение за значениями полей
     const reloadProfile = async (id: number, changedData: IUserData) => {
         try {
             sessionStorage.removeItem('token')
@@ -98,22 +91,19 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
     }
     const handleFileRemove = async () => {
         try {
-            if (user.imgsId) {
-                await instance.delete(`/uploads/${user.imgsId}`);
-                const changedData: IUserData = {
-                    ...user,
-                    imageUrl: '',
-                    imgsId: 0
-                };
-                if (user.id === undefined) {
-                    console.error('User ID is undefined');
-                    return;
-                }
-                await reloadProfile(user.id, changedData);
-                message.success('File removed successfully');
-            } else {
-                message.warning('No file to remove');
+            await instance.delete(`/uploads/${user.imgsId}`);
+            const changedData: IUserData = {
+                ...user,
+                imageUrl: '',
+                imgsId: 0
+            };
+            if (user.id === undefined) {
+                console.error('User ID is undefined');
+                return;
             }
+            await reloadProfile(user.id, changedData);
+            message.success('File removed successfully');
+
         } catch (error) {
             console.error('File removal failed:', error);
             message.error('File removal failed.');
@@ -141,7 +131,7 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
                 </div>
                 <div className="profilepage__btns">
                     <button onClick={() => inputFileRef.current?.click()} className='button profilepage__updateimg'>Upload Photo</button>
-                    <button onClick={handleFileRemove} className='button-white profilepage__removeimage'>Remove Photo</button>
+                    {isLoadingAvatar && <button onClick={handleFileRemove} className='button-white profilepage__removeimage'>Remove Photo</button>}
                     <input ref={inputFileRef} type="file" hidden onChange={handleFileUpload} />
                 </div>
             </div>

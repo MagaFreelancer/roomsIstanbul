@@ -7,6 +7,7 @@ export interface IPropsBreadCrumb {
 export interface IPropsProfilePage {
     user: IUserData
     isLogged: boolean
+    dispatch: AppDispatch;
 }
 export interface IPropsPaymentPage {
     user: IUserData

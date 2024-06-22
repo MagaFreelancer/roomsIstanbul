@@ -10,6 +10,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useAppSelector } from '../../utils/hook';
 import PaymentPage from './PaymentPage/PaymentPage';
 import { useAppDispatch } from '../../utils/hook';
+import RentedPage from './RentedPage/RentedPage';
+
+
+
 import "./Personal.scss"
 
 const { Content } = Layout;
@@ -38,8 +42,9 @@ const Personal: FC = (): JSX.Element => {
                                     <BreadCrumb pathname={pathname} />
                                 </div>
                                 <Routes >
-                                    <Route path="/profile" element={<ProfilePage user={user.data} isLogged={isLogged} />} />
+                                    <Route path="/profile" element={<ProfilePage user={user.data} isLogged={isLogged} dispatch={dispatch} />} />
                                     <Route path="/payment" element={<PaymentPage user={user.data} isLogged={isLogged} dispatch={dispatch} />} />
+                                    <Route path="/rented" element={<RentedPage />} />
                                 </Routes>
                             </Content>
                         </Layout>

@@ -33,11 +33,18 @@ export interface IUserData {
     firstName: string
     email: string
     imageUrl: string
-    favorite: string[]
+    favorite: number[]
     password?: string
     imgsId: number
     payments: IPayments
-    balance: number
+    balance: number,
+    rentedRooms: IRooms[]
+
+}
+export type IRooms = {
+    daysCount: number,
+    id: number,
+    salePrice: number,
 }
 export type IPayment = {
     id: number;

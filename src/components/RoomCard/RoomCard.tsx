@@ -15,7 +15,9 @@ const RoomCard: FC<DataType> = (props: DataType) => {
 				<div className='card__heading'>
 					<div className='card__price'>{price}₺</div>
 					<button onClick={(e) => e.preventDefault()
-					} className='card__share'><img src={shareSvg} alt='share' /></button>
+					} className='card__share'>
+						<img src={shareSvg} alt='share' />
+					</button>
 				</div>
 				<h5 className='card__name'>
 					{name}

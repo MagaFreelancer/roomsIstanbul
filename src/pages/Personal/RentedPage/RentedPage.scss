@@ -1,0 +1,116 @@
+.rented {
+    background-color: var(--whiteColor);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    padding: 30px;
+
+    &__title {
+        font-size: 21px;
+        margin-bottom: 30px;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__filter {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    &__search {
+    }
+    &__select {
+        max-width: 150px;
+        width: 100%;
+    }
+    &__list {
+        display: grid;
+        gap: 20px;
+    }
+    &__link {
+        display: flex; /* Создаем гибкую структуру */
+        padding: 10px;
+        box-shadow:
+            inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.075),
+            /* shadow ring 👇 */ 0 0 0 1px hsla(0, 0%, 0%, 0.05),
+            /* multiple soft shadows 👇 */ 0 0.3px 0.4px hsla(0, 0%, 0%, 0.02),
+            0 0.9px 1.5px hsla(0, 0%, 0%, 0.045),
+            0 3.5px 6px hsla(0, 0%, 0%, 0.05);
+        border-radius: 10px;
+    }
+    &__image {
+        max-width: 250px;
+        min-width: 190px;
+        margin-right: 20px;
+        img {
+            width: 100%;
+            border-radius: 10px;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    &__info {
+        display: flex;
+        flex-direction: column; /* Располагаем элементы вертикально */
+        width: 100%;
+    }
+    &__descr {
+        margin-bottom: 5px;
+        font-size: 13px;
+    }
+    &__heading {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    &__rating {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    &__rating-text {
+        font-size: 14px;
+        color: #7d7f82;
+    }
+    &__rating-reviews {
+        padding-top: 2px;
+        font-size: 12px;
+        color: #7d7f82;
+        font-weight: 400;
+    }
+    &__more {
+        display: flex;
+        justify-content: space-between;
+
+        width: 100%;
+        margin-top: auto;
+    }
+    &__more-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-left: 10px;
+    }
+    &__conditions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    &__conditions-item {
+        display: flex;
+        align-items: center;
+        color: #7d7f82;
+        gap: 5px;
+    }
+    &__address {
+        color: #7d7f82;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 400;
+    }
+    &__progress {
+    }
+}

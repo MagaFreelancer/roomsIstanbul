@@ -13,12 +13,23 @@ import { selectSingle } from '../../redux/slices/singleSlice';
 import { fetchSingle } from '../../redux/thunk/single';
 import { selectAuth } from '../../redux/slices/authSlice';
 
+
+import { fetchPatchProfile } from '../../redux/thunk/auth';
+import { IRooms, IUserData } from '../../common/types/auth';
+
+import { Popconfirm } from 'antd';
+
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './SinglePage.scss';
 
+
+
+
 const SinglePage: FC = (): JSX.Element => {
-    const { id } = useParams()
+    const params = useParams()
+    const idSingle = Number(params.id)
+
     const { singleRoom } = useAppSelector(selectSingle)
 
     const { user, isLogged } = useAppSelector(selectAuth)
@@ -27,9 +38,9 @@ const SinglePage: FC = (): JSX.Element => {
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
     const dispatch = useAppDispatch()
     let favoriteValue;
-
+    const id = user.data.id;
     if (isLogged) {
-        favoriteValue = user.data.favorite.find(item => item === id)
+        favoriteValue = user.data.favorite.find(item => item === idSingle)
     }
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -71,12 +82,49 @@ const SinglePage: FC = (): JSX.Element => {
     const daysPriceResult = daysCount * price ///===========
     const salePrice = (daysPriceResult / 100) * 80 //==========
 
-    const getRoom = async (id: string | undefined) => {
-        dispatch(fetchSingle(id))
+    const getRoom = async (id: number) => {
+        await dispatch(fetchSingle(id))
+    }
+    const onClickRent = async () => {
+
+        if (id != undefined) {
+            const rentedRooms: IRooms = {
+                daysCount,
+                id: idSingle,
+                salePrice
+            }
+
+            let changedData = {} as IUserData
+            const localRentedRooms = [...user.data.rentedRooms]
+            const activeRent = user.data.rentedRooms.findIndex(item => item.id === idSingle)
+
+            if (activeRent != -1) {
+                localRentedRooms.splice(activeRent, 1, rentedRooms)
+
+                changedData = {
+                    ...user.data,
+                    rentedRooms: [
+                        ...localRentedRooms
+                    ],
+                }
+            } else {
+                changedData = {
+                    ...user.data,
+                    rentedRooms: [
+                        ...user.data.rentedRooms,
+                        rentedRooms,
+                    ],
+                }
+            }
+
+
+
+            await dispatch(fetchPatchProfile({ id, changedData }))
+        }
     }
 
     useEffect(() => {
-        getRoom(id)
+        getRoom(idSingle)
     }, [])
     return (
         <section className='singlepage'>
@@ -152,7 +200,15 @@ const SinglePage: FC = (): JSX.Element => {
 
                     </div>
                     <div className="singlepage__btns">
-                        <button className="singlepage__btn button-blue button-blue--big">Арендовать</button>
+                        <Popconfirm
+                            title="Title"
+                            description="Вы уверены в аренде данного офиса?"
+                            onConfirm={onClickRent}
+                            onOpenChange={() => console.log('open change')}
+                        >
+                            <button className="singlepage__btn button-blue button-blue--big">Арендовать</button>
+
+                        </Popconfirm>
                         <button className="singlepage__btn button-white button-white--big">{`${favoriteValue ? "Убрать из избранное" : "Добавить в избранное"}`}</button>
                     </div>
                 </div>

@@ -28,7 +28,7 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
   const { user, isLogged, dispatch } = props
   const [age, setAge] = React.useState('default');
   let story: IPayment[] = []
-  const storyTypes = {
+  const storyTypes: Record<string, string> = {
     increment: 'replenished',
     decrement: 'spent'
   }
@@ -44,7 +44,7 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
     sortedStory(selectedValue)
   };
   const sortedStory = (type: string) => {
-    let sortedStory: any[] = []
+    let sortedStory: IPayment[] = []
     if (type === 'date') {
       sortedStory = story.sort((a, b) => {
         const aDate = Number(new Date(a.date))
@@ -64,7 +64,7 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
     }
     return sortedStory
   }
-  const lol = sortedStory(age)
+  const paymentItems = sortedStory(age)
   const addBalance = () => {
     if (user.id === undefined) {
       console.error("User ID is undefined");
@@ -138,7 +138,7 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
               </tr>
             </thead>
             <tbody className='payment__body'>
-              {lol.map((item, index) => {
+              {paymentItems.map((item, index) => {
                 const storyStatus = item.type === 'increment' ? true : false
                 let day: string | number = new Date(item.date).getDate()
                 let month: string | number = new Date(item.date).getMonth()
