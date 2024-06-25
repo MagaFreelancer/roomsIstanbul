@@ -1,5 +1,6 @@
 import { DateRangeProps, RangeKeyDict, Range } from 'react-date-range';
 import { DataStatus } from '../rooms';
+import { IRentedRooms } from '../personal';
 export interface ISingleState {
     singleRoom: ISingleItem;
     status: DataStatus.SUCCESS | DataStatus.FAILED | DataStatus.LOADING
@@ -24,4 +25,10 @@ export type ISingleItem = {
     imageUrl: string
     info: string[]
     imgs: string[]
+}
+export interface IPropsRentedRoom {
+    item: IRentedRooms
+    index: number
+    diff: number
+    prec: number
 }

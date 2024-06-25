@@ -45,6 +45,7 @@ export type IRooms = {
     daysCount: number,
     id: number,
     salePrice: number,
+    rentedDate: Date
 }
 export type IPayment = {
     id: number;

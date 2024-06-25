@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Layout } from 'antd';
 import MenuList from './MenuList/MenuList';
 import { Route, Routes } from 'react-router-dom';
@@ -11,9 +11,9 @@ import { useAppSelector } from '../../utils/hook';
 import PaymentPage from './PaymentPage/PaymentPage';
 import { useAppDispatch } from '../../utils/hook';
 import RentedPage from './RentedPage/RentedPage';
+import { selectRooms } from '../../redux/slices/roomsSlice';
 
-
-
+import { fetchRooms } from '../../redux/thunk/rooms';
 import "./Personal.scss"
 
 const { Content } = Layout;
@@ -21,8 +21,15 @@ const { Content } = Layout;
 const Personal: FC = (): JSX.Element => {
     const { pathname } = useLocation()
     const { user, isloading, isLogged } = useAppSelector(e => e.auth)
+    const { items } = useAppSelector(selectRooms)
     const dispatch = useAppDispatch()
 
+    const getItems = async () => {
+        await dispatch(fetchRooms())
+    }
+    useEffect(() => {
+        getItems()
+    }, [])
 
     return (
         <>
@@ -44,7 +51,7 @@ const Personal: FC = (): JSX.Element => {
                                 <Routes >
                                     <Route path="/profile" element={<ProfilePage user={user.data} isLogged={isLogged} dispatch={dispatch} />} />
                                     <Route path="/payment" element={<PaymentPage user={user.data} isLogged={isLogged} dispatch={dispatch} />} />
-                                    <Route path="/rented" element={<RentedPage />} />
+                                    <Route path="/rented" element={<RentedPage items={items} user={user.data} isLogged={isLogged} />} />
                                 </Routes>
                             </Content>
                         </Layout>

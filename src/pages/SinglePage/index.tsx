@@ -91,7 +91,8 @@ const SinglePage: FC = (): JSX.Element => {
             const rentedRooms: IRooms = {
                 daysCount,
                 id: idSingle,
-                salePrice
+                salePrice,
+                rentedDate: new Date()
             }
 
             let changedData = {} as IUserData

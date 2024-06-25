@@ -1,5 +1,6 @@
 import { AppDispatch } from "../../../redux/store"
-import { IUserData } from "../auth"
+import { IRooms, IUserData } from "../auth"
+import { DataType } from "../rooms"
 
 export interface IPropsBreadCrumb {
     pathname: string
@@ -14,3 +15,10 @@ export interface IPropsPaymentPage {
     isLogged: boolean
     dispatch: AppDispatch;
 }
+export interface IPropsRentedPage {
+    user: IUserData
+    isLogged: boolean
+    items: DataType[]
+}
+
+export type IRentedRooms = DataType & IRooms
