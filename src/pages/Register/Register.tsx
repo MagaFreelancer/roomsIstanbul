@@ -9,9 +9,8 @@ import { AppErrors } from '../../common/errors';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterSchema } from '../../utils/yup';
 import { registerUser } from '../../redux/thunk/auth';
-
-import './Register.scss'
 import { IUserData } from '../../common/types/auth';
+import './Register.scss'
 //2
 const Register: FC = (): JSX.Element => {
     const { isLogged } = useAppSelector(e => e.auth)
@@ -30,12 +29,15 @@ const Register: FC = (): JSX.Element => {
             resolver: yupResolver(RegisterSchema),
         })
     const handleSubmitForm = async (data: any) => {
+
         if (data.password === data.confirmPassword) {
+            console.log(data);
+
             try {
                 const userData: IUserData = {
                     email: data.email,
                     password: data.password,
-                    firstName: data.name,
+                    firstName: data.firstName,
                     username: data.username,
                     favorite: [],
                     imageUrl: '',
@@ -43,8 +45,12 @@ const Register: FC = (): JSX.Element => {
                     payments: {
                         replenished: [],
                     },
-                    balance: 30000
+                    balance: 30000,
+                    rentedRooms: [],
+                    createId: Number(new Date)
                 }
+                console.log(userData);
+
                 await dispatch(registerUser(userData))
                 navigate('/')
             } catch (e) {

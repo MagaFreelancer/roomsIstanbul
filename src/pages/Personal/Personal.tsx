@@ -12,7 +12,6 @@ import PaymentPage from './PaymentPage/PaymentPage';
 import { useAppDispatch } from '../../utils/hook';
 import RentedPage from './RentedPage/RentedPage';
 import { selectRooms } from '../../redux/slices/roomsSlice';
-
 import { fetchRooms } from '../../redux/thunk/rooms';
 import "./Personal.scss"
 

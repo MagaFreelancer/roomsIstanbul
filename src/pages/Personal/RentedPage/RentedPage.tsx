@@ -15,6 +15,7 @@ const RentedPage: FC<IPropsRentedPage> = (props): JSX.Element => {
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value as string);
     };
+    
     const rentedRooms: IRentedRooms[] = [];
     items.forEach(item => {
         for (let i = 0; i < user.rentedRooms?.length; i++) {
@@ -66,16 +67,15 @@ const RentedPage: FC<IPropsRentedPage> = (props): JSX.Element => {
                 <ul className="rented__list">
                     {rentedRooms.map((item, index) => {
                         const nowDate = new Date()
-                        const diff = differenceInDays(nowDate, item.rentedDate)
-
-
+                        const diff = differenceInDays(nowDate, item.rentedDate) + 1
                         const prec = diff / item.daysCount * 100
                         return (
                             <RentedRoom
-                                index={index}
+                                key={index}
                                 item={item}
                                 prec={prec}
-                                diff={diff} />
+                                diff={diff}
+                            />
                         )
                     })}
 

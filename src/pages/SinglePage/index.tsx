@@ -9,39 +9,65 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import Popover from '@mui/material/Popover';
 
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
-import { selectSingle } from '../../redux/slices/singleSlice';
 import { fetchSingle } from '../../redux/thunk/single';
 import { selectAuth } from '../../redux/slices/authSlice';
-
-
 import { fetchPatchProfile } from '../../redux/thunk/auth';
 import { IRooms, IUserData } from '../../common/types/auth';
-
+import ChairIcon from '@mui/icons-material/Chair';
+import SquareFootIcon from '@mui/icons-material/SquareFoot';
+import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import { Popconfirm } from 'antd';
 
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './SinglePage.scss';
+import { DataStatus } from '../../common/types/rooms';
+import { selectRooms } from '../../redux/slices/roomsSlice';
+import { IRentedRooms } from '../../common/types/personal';
+import RentedInfo from './RentedInfo/RentedInfo';
 
 
 
+type IProgress = { diff: number, prec: number, daysCount: number, salePrice: number }
 
 const SinglePage: FC = (): JSX.Element => {
     const params = useParams()
     const idSingle = Number(params.id)
 
-    const { singleRoom } = useAppSelector(selectSingle)
-
+    // const { singleRoom } = useAppSelector(selectSingle)
+    const { singleRoom, status } = useAppSelector(e => e.singleRoom)
+    const { items } = useAppSelector(selectRooms)
     const { user, isLogged } = useAppSelector(selectAuth)
-    const { name, imgs, info, price } = singleRoom
-    const [value, setValue] = useState<number | null>(3.5); //rating
-    const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+
+    const {
+        name,
+        imgs,
+        info,
+        price,
+        reviews,
+        capacity,
+        square,
+        address
+    } = singleRoom
+
     const dispatch = useAppDispatch()
     let favoriteValue;
-    const id = user.data.id;
+
     if (isLogged) {
-        favoriteValue = user.data.favorite.find(item => item === idSingle)
+        favoriteValue = user.data.favorite.find(item => item === idSingle);
     }
+    const id = user.data.id;
+    const rews = reviews?.map((item) => item.userReviews).reduce((acc, review) => acc + review, 0);
+    const averageRating = rews / reviews?.length;
+    const [value, setValue] = useState<number | null>(averageRating); //rating
+
+    const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+    const [progress, setProgress] = useState<IProgress>({
+        diff: 0,
+        prec: 0,
+        daysCount: 0,
+        salePrice: 0
+    })
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
         setAnchorEl(event.currentTarget);
@@ -88,19 +114,21 @@ const SinglePage: FC = (): JSX.Element => {
     const onClickRent = async () => {
 
         if (id != undefined) {
-            const rentedRooms: IRooms = {
-                daysCount,
-                id: idSingle,
-                salePrice,
-                rentedDate: new Date()
-            }
+
 
             let changedData = {} as IUserData
             const localRentedRooms = [...user.data.rentedRooms]
-            const activeRent = user.data.rentedRooms.findIndex(item => item.id === idSingle)
+            const activeRentIndex = user.data.rentedRooms.findIndex(item => item.id === idSingle)
 
-            if (activeRent != -1) {
-                localRentedRooms.splice(activeRent, 1, rentedRooms)
+            if (activeRentIndex != -1) {
+                const activeRent = user.data.rentedRooms[activeRentIndex]
+                const rentedRooms: IRooms = {
+                    daysCount: daysCount + activeRent.daysCount,
+                    id: idSingle,
+                    salePrice,
+                    rentedDate: activeRent.rentedDate
+                }
+                localRentedRooms.splice(activeRentIndex, 1, rentedRooms)
 
                 changedData = {
                     ...user.data,
@@ -109,6 +137,12 @@ const SinglePage: FC = (): JSX.Element => {
                     ],
                 }
             } else {
+                const rentedRooms: IRooms = {
+                    daysCount,
+                    id: idSingle,
+                    salePrice,
+                    rentedDate: new Date()
+                }
                 changedData = {
                     ...user.data,
                     rentedRooms: [
@@ -117,9 +151,6 @@ const SinglePage: FC = (): JSX.Element => {
                     ],
                 }
             }
-
-
-
             await dispatch(fetchPatchProfile({ id, changedData }))
         }
     }
@@ -127,6 +158,29 @@ const SinglePage: FC = (): JSX.Element => {
     useEffect(() => {
         getRoom(idSingle)
     }, [])
+    useEffect(() => {
+        setValue(averageRating)
+    }, [status])
+    useEffect(() => {
+        const rentedRoom = user.data.rentedRooms?.find(item => item.id === idSingle) as IRentedRooms | undefined;
+
+        if (rentedRoom) {
+            const nowDate = new Date()
+            const diff = differenceInDays(nowDate, rentedRoom.rentedDate) + 1
+            const prec = diff / rentedRoom.daysCount * 100
+
+            setProgress({
+                prec,
+                diff,
+                daysCount: rentedRoom.daysCount,
+                salePrice: rentedRoom.salePrice
+            })
+        }
+    }, [isLogged])
+    if (status != DataStatus.SUCCESS) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <section className='singlepage'>
             <div className="container singlepage__container">
@@ -155,12 +209,36 @@ const SinglePage: FC = (): JSX.Element => {
                                 setValue(newValue);
                             }}
                         />
+                        <div className="singlepage__rating-reviews">{averageRating}</div>
+                        <div className="singlepage__rating-count">
+                            ({reviews.length} reviews)
+                        </div>
                     </div>
-                    <ul className="singlepage__info">
-                        {info.map((item, index) => (
-                            <li className='singlepage__info-item' key={index}>{item}</li>
-                        ))}
-                    </ul>
+                    <div className="singlepage__info">
+                        <h4 className="singlepage__info-title singlepage__heading">Описание</h4>
+                        <ul className="singlepage__info-list">
+                            {info.map((item, index) => (
+                                <li className='singlepage__info-item' key={index}>{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="singlepage__moreinfo">
+                        <h4 className="singlepage__heading">Дополнительная информация</h4>
+                        <ul className="singlepage__conditions">
+                            <li className="singlepage__conditions-item">
+                                <ChairIcon />
+                                <span> {capacity}</span>
+                            </li>
+                            <li className="singlepage__conditions-item">
+                                <SquareFootIcon />
+                                <span> {square}</span>
+                            </li>
+                        </ul>
+                        <div className="singlepage__address">
+                            <FmdGoodIcon /> <span>{address}</span>
+                        </div>
+                        {progress.daysCount !== 0 && <RentedInfo progress={progress} />}
+                    </div>
                     <div className="singlepage__date-wrapper">
                         <div className="singlepage__price">{salePrice} ₺ <span className='singlepage__sale-price'>{daysPriceResult} ₺</span></div>
 
@@ -207,7 +285,7 @@ const SinglePage: FC = (): JSX.Element => {
                             onConfirm={onClickRent}
                             onOpenChange={() => console.log('open change')}
                         >
-                            <button className="singlepage__btn button-blue button-blue--big">Арендовать</button>
+                            <button className="singlepage__btn button-blue button-blue--big">{`${progress.daysCount !== 0 ? "Добавить аренду" : "Арендовать"}`}</button>
 
                         </Popconfirm>
                         <button className="singlepage__btn button-white button-white--big">{`${favoriteValue ? "Убрать из избранное" : "Добавить в избранное"}`}</button>

@@ -1,8 +1,8 @@
 import { DateRangeProps, RangeKeyDict, Range } from 'react-date-range';
-import { DataStatus } from '../rooms';
+import { DataStatus, DataType } from '../rooms';
 import { IRentedRooms } from '../personal';
 export interface ISingleState {
-    singleRoom: ISingleItem;
+    singleRoom: DataType;
     status: DataStatus.SUCCESS | DataStatus.FAILED | DataStatus.LOADING
 }
 export type IPropsCalendar = {
@@ -15,20 +15,9 @@ export type IPropsCalendar = {
     showMonthAndYearPickers?: boolean
     showPreview?: boolean
 } & DateRangeProps
-export type ISingleItem = {
-    id: number
-    name: string
-    price: number
-    capacity: number
-    square: string
-    address: string
-    imageUrl: string
-    info: string[]
-    imgs: string[]
-}
+
 export interface IPropsRentedRoom {
     item: IRentedRooms
-    index: number
     diff: number
     prec: number
 }

@@ -39,7 +39,7 @@ export interface IUserData {
     payments: IPayments
     balance: number,
     rentedRooms: IRooms[]
-
+    createId: number
 }
 export type IRooms = {
     daysCount: number,

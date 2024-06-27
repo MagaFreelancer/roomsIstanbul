@@ -14,6 +14,8 @@ import "./ProfilePage.scss";
 
 const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Element => {
     const { user, isLogged, dispatch } = props;
+    console.log(user);
+    
     const isLoadingAvatar = user.imageUrl ? true : false
     const username = isLogged ? user.username[0] : '';
     const inputFileRef = useRef<HTMLInputElement>(null)

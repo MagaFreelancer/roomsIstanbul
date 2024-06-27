@@ -51,19 +51,65 @@
     }
     &__rating {
         margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
     }
-    &__info {
+    &__rating-reviews {
+        font-size: 14px;
+        color: #7d7f82;
+    }
+    &__rating-count {
+        padding-top: 2px;
+        font-size: 12px;
+        color: #7d7f82;
+        font-weight: 400;
+    }
+    &__heading {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+    &__info-list {
         display: flex;
         flex-direction: column;
         gap: 15px;
-        margin-bottom: 35px;
+        margin-bottom: 20px;
+    }
+    &__moreinfo {
         border-bottom: 1px solid #e1e1e1;
+        margin-bottom: 35px;
         padding-bottom: 35px;
+    }
+    &__conditions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+    &__conditions-item {
+        display: flex;
+        align-items: center;
+        color: #7d7f82;
+        gap: 5px;
+    }
+    &__address {
+        color: #7d7f82;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 400;
+        margin-bottom: 20px;
+    }
+    &__rented-price {
+        font-size: 14px;
+        margin-top: 20px;
     }
     &__info-item {
         list-style-position: inside;
         list-style-type: disc;
         font-size: 18px;
+        font-size: 14px;
     }
     &__date-wrapper {
         gap: 30px;

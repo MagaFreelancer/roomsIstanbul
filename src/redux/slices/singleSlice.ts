@@ -1,3 +1,4 @@
+import { DataType } from './../../common/types/rooms/index';
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import { DataStatus } from '../../common/types/rooms'
@@ -5,21 +6,7 @@ import { ISingleState } from '../../common/types/singlePage';
 import { fetchSingle } from '../thunk/single';
 
 const initialState: ISingleState = {
-    singleRoom: {
-        id: 0,
-        name: "",
-        price: 0,
-        capacity: 0,
-        square: "",
-        address: "",
-        imageUrl: "",
-        info: [
-            "",
-        ],
-        imgs: [
-            "",
-        ]
-    },
+    singleRoom: {} as DataType,
     status: DataStatus.LOADING
 }
 

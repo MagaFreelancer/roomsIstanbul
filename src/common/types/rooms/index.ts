@@ -13,6 +13,12 @@ export interface DataType {
 	capacity: number
 	info: string[]
 	imgs: string[]
+	reviews: DataReviews[]
+	rating: number
+}
+export type DataReviews = {
+	createId: number,
+	userReviews: number
 }
 export interface StateType {
 	items: DataType[]

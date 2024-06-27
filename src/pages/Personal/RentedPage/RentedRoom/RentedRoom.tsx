@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { IPropsRentedRoom } from '../../../../common/types/singlePage'
 import ChairIcon from '@mui/icons-material/Chair';
@@ -8,10 +8,27 @@ import { Flex, Progress } from 'antd';
 import { Rating } from '@mui/material';
 
 
+const delay = async (ms: number) => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
 const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element => {
-    const { item, index, prec, diff } = props
+    const { item, prec, diff } = props
+    const [progress, setProgress] = useState(0);
+    const rews = item.reviews.map((item) => item.userReviews).reduce((acc, review) => acc + review, 0)
+    const averageRating = rews / item.reviews.length
+
+
+    const ShowProgress = async () => {
+        for (let i = 0; i < prec; i++) {
+            await delay(25)
+            setProgress(i)
+        }
+    }
+    useEffect(() => {
+        ShowProgress()
+    }, [])
     return (
-        <li key={index} className="rented__item">
+        <li className="rented__item">
             <Link to="/" className='rented__link'>
                 <div className="rented__image">
                     <img src={item.imageUrl} alt="" />
@@ -20,10 +37,10 @@ const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element 
                     <div className="rented__descr">{item.info[0].slice(0, 50)}...</div>
                     <h6 className="rented__heading">{item.name}.</h6>
                     <div className="rented__rating">
-                        <Rating name="half-rating-read" defaultValue={4.5} precision={0.5} readOnly />
-                        <div className="rented__rating-text">4.5</div>
+                        <Rating name="half-rating-read" defaultValue={averageRating} precision={0.5} readOnly />
+                        <div className="rented__rating-text">{averageRating}</div>
                         <div className="rented__rating-reviews">
-                            12 reviews
+                            {item.reviews.length} reviews
                         </div>
                     </div>
                     <div className="rented__more">
@@ -44,8 +61,11 @@ const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element 
                         </div>
                         <div className="rented__progress">
                             <Flex gap="small" wrap>
-                                <Progress type="circle" size="small" percent={prec} format={() => `${diff}/${item.daysCount} Days`} />
-                                {/* <Progress size="small" type="circle" percent={precent} format={() => 'Done'} /> */}
+                                {diff === item.daysCount ?
+                                    <Progress size="small" type="circle" percent={100} format={() => 'Done'} />
+                                    :
+                                    <Progress type="circle" size="small" percent={progress} format={() => `${diff}/${item.daysCount} Days`} />
+                                }
                             </Flex>
                         </div>
                     </div>

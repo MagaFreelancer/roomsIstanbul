@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import instance from "../../../utils/axios";
-import { ISingleItem } from "../../../common/types/singlePage";
+import { DataType } from "../../../common/types/rooms";
 
-export const fetchSingle = createAsyncThunk<ISingleItem, number>(
+export const fetchSingle = createAsyncThunk<DataType, number>(
     'single/fetchSingle',
     async (id: number) => {
         const { data } = await instance.get(`/rooms/${id}`);
