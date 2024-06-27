@@ -1,34 +1,28 @@
 import React, { FC, useCallback, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import Rating from '@mui/material/Rating';
 import { Range, RangeKeyDict } from "react-date-range";
 import Calendar from './Calendar/Calendar';
 import { addDays, format, subDays, differenceInDays } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import Popover from '@mui/material/Popover';
-
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { fetchSingle } from '../../redux/thunk/single';
 import { selectAuth } from '../../redux/slices/authSlice';
 import { fetchPatchProfile } from '../../redux/thunk/auth';
 import { IRooms, IUserData } from '../../common/types/auth';
-import ChairIcon from '@mui/icons-material/Chair';
-import SquareFootIcon from '@mui/icons-material/SquareFoot';
-import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import { Popconfirm } from 'antd';
+import { DataStatus } from '../../common/types/rooms';
+import { selectRooms } from '../../redux/slices/roomsSlice';
+import { IRentedRooms } from '../../common/types/personal';
+import ImageGallery from './ImageGallery/ImageGallery';
+import RoomDetails from './RoomDetails/RoomDetails';
 
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './SinglePage.scss';
-import { DataStatus } from '../../common/types/rooms';
-import { selectRooms } from '../../redux/slices/roomsSlice';
-import { IRentedRooms } from '../../common/types/personal';
-import RentedInfo from './RentedInfo/RentedInfo';
 
-
-
-type IProgress = { diff: number, prec: number, daysCount: number, salePrice: number }
+export type IProgress = { diff: number, prec: number, daysCount: number, salePrice: number }
 
 const SinglePage: FC = (): JSX.Element => {
     const params = useParams()
@@ -87,6 +81,10 @@ const SinglePage: FC = (): JSX.Element => {
         },
     ]);
     const [activeImg, setActiveImg] = useState<number>(0)
+
+
+
+    //календарь
     const formattedValueDateRangePickerStartDate = valueDateRangePicker?.[0].startDate
         ? format(valueDateRangePicker[0].startDate, "dd.MM.yyyy", { locale: enUS })
         : "";
@@ -177,6 +175,8 @@ const SinglePage: FC = (): JSX.Element => {
             })
         }
     }, [isLogged])
+
+
     if (status != DataStatus.SUCCESS) {
         return <div>Loading...</div>;
     }
@@ -185,60 +185,21 @@ const SinglePage: FC = (): JSX.Element => {
         <section className='singlepage'>
             <div className="container singlepage__container">
                 <div className="singlepage__col">
-                    <div className="singlepage__slider">
-                        <ul className="singlepage__vertical-list">
-                            {imgs.map((item, index) => (
-                                <li key={index} onClick={() => setActiveImg(index)} className={`singlepage__vertical-item ${index === activeImg && "singlepage__vertical-item--active"}`}><img src={item} alt="" /></li>
-                            ))}
-                        </ul>
-                        <div className="singlepage__img">
-                            {<img src={imgs[activeImg]} alt="office img" />}
-                        </div>
-                    </div>
+                    <ImageGallery imgs={imgs} activeImg={activeImg} setActiveImg={(e) => setActiveImg(e)} />
                 </div>
                 <div className="singlepage__col">
-                    <h2 className="singlepage__title">
-                        {name}
-                    </h2>
-                    <div className="singlepage__rating">
-                        <Rating
-                            name="simple-controlled"
-                            value={value}
-                            precision={0.5}
-                            onChange={(event, newValue) => {
-                                setValue(newValue);
-                            }}
-                        />
-                        <div className="singlepage__rating-reviews">{averageRating}</div>
-                        <div className="singlepage__rating-count">
-                            ({reviews.length} reviews)
-                        </div>
-                    </div>
-                    <div className="singlepage__info">
-                        <h4 className="singlepage__info-title singlepage__heading">Описание</h4>
-                        <ul className="singlepage__info-list">
-                            {info.map((item, index) => (
-                                <li className='singlepage__info-item' key={index}>{item}</li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className="singlepage__moreinfo">
-                        <h4 className="singlepage__heading">Дополнительная информация</h4>
-                        <ul className="singlepage__conditions">
-                            <li className="singlepage__conditions-item">
-                                <ChairIcon />
-                                <span> {capacity}</span>
-                            </li>
-                            <li className="singlepage__conditions-item">
-                                <SquareFootIcon />
-                                <span> {square}</span>
-                            </li>
-                        </ul>
-                        <div className="singlepage__address">
-                            <FmdGoodIcon /> <span>{address}</span>
-                        </div>
-                        {progress.daysCount !== 0 && <RentedInfo progress={progress} />}
-                    </div>
+                    <RoomDetails
+                        name={name}
+                        info={info}
+                        capacity={capacity}
+                        square={square}
+                        address={address}
+                        progress={progress}
+                        value={value}
+                        setValue={(e) => setValue(e)}
+                        averageRating={averageRating}
+                        reviewsCount={reviews.length}
+                    />
                     <div className="singlepage__date-wrapper">
                         <div className="singlepage__price">{salePrice} ₺ <span className='singlepage__sale-price'>{daysPriceResult} ₺</span></div>
 

@@ -27,3 +27,14 @@ export const fetchRooms = createAsyncThunk<DataType[], IFilters | undefined>('ro
 
         return data.data
     })
+
+
+
+// export const fetchRooms = createAsyncThunk<DataType[], IFilters | undefined>('rooms/fetchRooms',
+//     async (
+//         params
+//     ) => {
+
+//         data = await instance.get<DataType[]>(`/rooms`);
+//         return data.data
+//     })
