@@ -3,20 +3,20 @@ import Rating from '@mui/material/Rating';
 
 export interface RatingSectionProps {
     value: number | null;
-    setValue: (value: number | null) => void;
+    changeRating: (value: number | null) => void;
     averageRating: number;
     reviewsCount: number;
 }
 
-const RatingSection: FC<RatingSectionProps> = ({ value, setValue, averageRating, reviewsCount }) => {
+const RatingSection: FC<RatingSectionProps> = ({ value, changeRating, averageRating, reviewsCount }) => {
     return (
         <div className="singlepage__rating">
             <Rating
                 name="simple-controlled"
                 value={value}
-                precision={0.5}
+                precision={0.25}
                 onChange={(event, newValue) => {
-                    setValue(newValue);
+                    changeRating(newValue);
                 }}
             />
             <div className="singlepage__rating-reviews">{averageRating}</div>

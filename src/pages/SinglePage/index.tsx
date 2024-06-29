@@ -13,7 +13,6 @@ import { fetchPatchProfile } from '../../redux/thunk/auth';
 import { IRooms, IUserData } from '../../common/types/auth';
 import { Popconfirm } from 'antd';
 import { DataStatus } from '../../common/types/rooms';
-import { selectRooms } from '../../redux/slices/roomsSlice';
 import { IRentedRooms } from '../../common/types/personal';
 import ImageGallery from './ImageGallery/ImageGallery';
 import RoomDetails from './RoomDetails/RoomDetails';
@@ -21,6 +20,7 @@ import RoomDetails from './RoomDetails/RoomDetails';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './SinglePage.scss';
+import { fetchPatchRooms } from '../../redux/thunk/rooms';
 
 export type IProgress = { diff: number, prec: number, daysCount: number, salePrice: number }
 
@@ -30,7 +30,7 @@ const SinglePage: FC = (): JSX.Element => {
 
     // const { singleRoom } = useAppSelector(selectSingle)
     const { singleRoom, status } = useAppSelector(e => e.singleRoom)
-    const { items } = useAppSelector(selectRooms)
+    // const { items } = useAppSelector(selectRooms)
     const { user, isLogged } = useAppSelector(selectAuth)
 
     const {
@@ -48,11 +48,18 @@ const SinglePage: FC = (): JSX.Element => {
     let favoriteValue;
 
     if (isLogged) {
-        favoriteValue = user.data.favorite.find(item => item === idSingle);
+        favoriteValue = user.data.favorite.findIndex(item => item === idSingle);
+
     }
     const id = user.data.id;
-    const rews = reviews?.map((item) => item.userReviews).reduce((acc, review) => acc + review, 0);
-    const averageRating = rews / reviews?.length;
+
+    const rews = reviews?.map((item) => item.userReviews).reduce((acc, review) => {
+        if (acc !== null && review !== null) {
+            return acc + review;
+        }
+        return acc;
+    }, 0) || 0;
+    const averageRating = reviews?.length ? rews / reviews.length : 0;
     const [value, setValue] = useState<number | null>(averageRating); //rating
 
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
@@ -70,7 +77,32 @@ const SinglePage: FC = (): JSX.Element => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const changeRating = (e: number | null) => {
+        setValue(e);
+        let indexReviews: number | null = null;
+        const reviewsObj = singleRoom.reviews.find((item, index) => {
+            if (item.createId === user.data.createId) {
+                indexReviews = index;
+                return item;
+            }
+            return undefined;
+        });
 
+        const changedData = { ...singleRoom, reviews: [...singleRoom.reviews] };
+
+        if (indexReviews !== null && reviewsObj) {
+            changedData.reviews.splice(indexReviews, 1, {
+                createId: user.data.createId,
+                userReviews: e,
+            });
+        } else {
+            changedData.reviews.push({
+                createId: user.data.createId,
+                userReviews: e
+            });
+        }
+        dispatch(fetchPatchRooms(changedData));
+    }
     const open = Boolean(anchorEl);
     const idPop = open ? 'simple-popover' : undefined;
     const [valueDateRangePicker, setValueDateRangePicker] = useState<Range[] | undefined>([
@@ -111,44 +143,42 @@ const SinglePage: FC = (): JSX.Element => {
     }
     const onClickRent = async () => {
 
-        if (id != undefined) {
+        if (id === undefined) return;
 
+        const changedData: IUserData = { ...user.data };
+        const localRentedRooms = [...user.data.rentedRooms];
+        const activeRentIndex = localRentedRooms.findIndex(item => item.id === idSingle);
 
-            let changedData = {} as IUserData
-            const localRentedRooms = [...user.data.rentedRooms]
-            const activeRentIndex = user.data.rentedRooms.findIndex(item => item.id === idSingle)
+        if (activeRentIndex !== -1) {
+            const activeRent = localRentedRooms[activeRentIndex];
+            localRentedRooms[activeRentIndex] = {
+                ...activeRent,
+                daysCount: daysCount + activeRent.daysCount,
+                salePrice: activeRent.salePrice + salePrice,
+            };
+        } else {
+            localRentedRooms.push({
+                daysCount,
+                id: idSingle,
+                salePrice,
+                rentedDate: new Date(),
+            });
+        }
 
-            if (activeRentIndex != -1) {
-                const activeRent = user.data.rentedRooms[activeRentIndex]
-                const rentedRooms: IRooms = {
-                    daysCount: daysCount + activeRent.daysCount,
-                    id: idSingle,
-                    salePrice,
-                    rentedDate: activeRent.rentedDate
-                }
-                localRentedRooms.splice(activeRentIndex, 1, rentedRooms)
-
-                changedData = {
-                    ...user.data,
-                    rentedRooms: [
-                        ...localRentedRooms
-                    ],
-                }
+        changedData.rentedRooms = localRentedRooms;
+        await dispatch(fetchPatchProfile({ id, changedData }));
+    }
+    const onClickFavourite = async () => {
+        if (id !== undefined) {
+            const favourites: number[] = [...user.data.favorite]
+            const indexFavourit = favourites.indexOf(idSingle)
+            if (indexFavourit !== -1) {
+                favourites.splice(indexFavourit, 1)
             } else {
-                const rentedRooms: IRooms = {
-                    daysCount,
-                    id: idSingle,
-                    salePrice,
-                    rentedDate: new Date()
-                }
-                changedData = {
-                    ...user.data,
-                    rentedRooms: [
-                        ...user.data.rentedRooms,
-                        rentedRooms,
-                    ],
-                }
+
+                favourites.push(idSingle)
             }
+            const changedData: IUserData = { ...user.data, favorite: favourites };
             await dispatch(fetchPatchProfile({ id, changedData }))
         }
     }
@@ -196,9 +226,10 @@ const SinglePage: FC = (): JSX.Element => {
                         address={address}
                         progress={progress}
                         value={value}
-                        setValue={(e) => setValue(e)}
+                        changeRating={(e) => changeRating(e)}
                         averageRating={averageRating}
                         reviewsCount={reviews.length}
+
                     />
                     <div className="singlepage__date-wrapper">
                         <div className="singlepage__price">{salePrice} ₺ <span className='singlepage__sale-price'>{daysPriceResult} ₺</span></div>
@@ -249,7 +280,7 @@ const SinglePage: FC = (): JSX.Element => {
                             <button className="singlepage__btn button-blue button-blue--big">{`${progress.daysCount !== 0 ? "Добавить аренду" : "Арендовать"}`}</button>
 
                         </Popconfirm>
-                        <button className="singlepage__btn button-white button-white--big">{`${favoriteValue ? "Убрать из избранное" : "Добавить в избранное"}`}</button>
+                        <button onClick={onClickFavourite} className="singlepage__btn button-white button-white--big">{`${favoriteValue !== -1 ? "Убрать из избранное" : "Добавить в избранное"}`}</button>
                     </div>
                 </div>
             </div>

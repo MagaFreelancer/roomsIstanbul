@@ -16,7 +16,7 @@ interface RoomDetailsProps extends RatingSectionProps {
 }
 
 const RoomDetails: FC<RoomDetailsProps> = ({ name, info, capacity, square, address, progress, value,
-    setValue,
+    changeRating,
     averageRating,
     reviewsCount, }) => {
     return (
@@ -26,7 +26,7 @@ const RoomDetails: FC<RoomDetailsProps> = ({ name, info, capacity, square, addre
             </h2>
             <RatingSection
                 value={value}
-                setValue={setValue}
+                changeRating={changeRating}
                 averageRating={averageRating}
                 reviewsCount={reviewsCount}
             />

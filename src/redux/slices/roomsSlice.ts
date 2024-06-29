@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import { DataStatus, StateType } from '../../common/types/rooms'
-import { fetchRooms } from "../thunk/rooms";
+import { fetchPatchRooms, fetchRooms } from "../thunk/rooms";
 import { fetchAllRooms } from '../thunk/allRooms';
 
 
@@ -85,6 +85,18 @@ const roomsSlice = createSlice({
 				state.items = action.payload
 			})
 			.addCase(fetchAllRooms.rejected, (state) => {
+				state.status = DataStatus.FAILED
+				state.items = []
+			})
+			.addCase(fetchPatchRooms.pending, (state) => {
+				state.status = DataStatus.LOADING
+				state.items = []
+			})
+			.addCase(fetchPatchRooms.fulfilled, (state, action) => {
+				state.status = DataStatus.SUCCESS
+				state.items = action.payload
+			})
+			.addCase(fetchPatchRooms.rejected, (state) => {
 				state.status = DataStatus.FAILED
 				state.items = []
 			})

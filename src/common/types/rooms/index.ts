@@ -18,7 +18,7 @@ export interface DataType {
 }
 export type DataReviews = {
 	createId: number,
-	userReviews: number
+	userReviews: number | null
 }
 export interface StateType {
 	items: DataType[]
@@ -39,7 +39,6 @@ export type CapacityItem = {
 	checked: boolean
 	id: number
 }
-
 export type PointsType = { text: string; heading: string; class: string }
 export interface IPropsHero {
 	items: DataType[]

@@ -30,11 +30,22 @@ export const fetchRooms = createAsyncThunk<DataType[], IFilters | undefined>('ro
 
 
 
-// export const fetchRooms = createAsyncThunk<DataType[], IFilters | undefined>('rooms/fetchRooms',
-//     async (
-//         params
-//     ) => {
 
-//         data = await instance.get<DataType[]>(`/rooms`);
-//         return data.data
-//     })
+
+export const fetchPatchRooms = createAsyncThunk(
+    'rooms/fetchPatchRooms',
+    async (changedData: DataType, { rejectWithValue }) => {
+        try {
+            const response = await instance.patch(`/rooms/${changedData.id}`, changedData);
+
+                console.log(response);
+                
+            return response.data;
+        } catch (error: any) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data);
+            }
+            return rejectWithValue(error.message);
+        }
+    }
+);

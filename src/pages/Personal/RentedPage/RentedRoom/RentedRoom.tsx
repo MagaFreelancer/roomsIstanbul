@@ -6,6 +6,7 @@ import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import { Flex, Progress } from 'antd';
 import { Rating } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
 
 
 const delay = async (ms: number) => {
@@ -14,8 +15,13 @@ const delay = async (ms: number) => {
 const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element => {
     const { item, prec, diff } = props
     const [progress, setProgress] = useState(0);
-    const rews = item.reviews.map((item) => item.userReviews).reduce((acc, review) => acc + review, 0)
-    const averageRating = rews / item.reviews.length
+    const rews = item.reviews?.map((item) => item.userReviews).reduce((acc, review) => {
+        if (acc !== null && review !== null) {
+            return acc + review;
+        }
+        return acc;
+    }, 0) || 0;
+    const averageRating = item.reviews?.length ? rews / item.reviews.length : 0;
 
 
     const ShowProgress = async () => {
@@ -37,7 +43,7 @@ const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element 
                     <div className="rented__descr">{item.info[0].slice(0, 50)}...</div>
                     <h6 className="rented__heading">{item.name}.</h6>
                     <div className="rented__rating">
-                        <Rating name="half-rating-read" defaultValue={averageRating} precision={0.5} readOnly />
+                    <Rating emptyIcon={<StarIcon style={{ opacity: 0.45 }} fontSize="inherit" />} name="hover-feedback" size="small" defaultValue={averageRating} precision={0.5} readOnly />
                         <div className="rented__rating-text">{averageRating}</div>
                         <div className="rented__rating-reviews">
                             {item.reviews.length} reviews

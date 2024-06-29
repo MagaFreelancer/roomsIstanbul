@@ -29,6 +29,9 @@
         gap: 20px;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         grid-gap: 2vw;
+        padding-top: 20px;
+
+        padding-bottom: 20px;
     }
     &__checks {
         display: flex;
@@ -42,7 +45,7 @@
     }
     &__field {
         position: relative;
-        width: 80%;
+        width: 85%;
         input {
             width: 100%;
             height: 100%;
@@ -55,6 +58,10 @@
                 border: 1px solid var(--blueColor);
             }
         }
+    }
+    &__button {
+        width: 15%;
+        border-radius: 10px;
     }
     &__close {
         position: absolute;
