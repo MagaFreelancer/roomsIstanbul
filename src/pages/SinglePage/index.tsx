@@ -10,17 +10,21 @@ import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { fetchSingle } from '../../redux/thunk/single';
 import { selectAuth } from '../../redux/slices/authSlice';
 import { fetchPatchProfile } from '../../redux/thunk/auth';
-import { IRooms, IUserData } from '../../common/types/auth';
-import { Popconfirm } from 'antd';
-import { DataStatus } from '../../common/types/rooms';
+import { IUserData } from '../../common/types/auth';
+import { Avatar, Popconfirm } from 'antd';
+import { DataStatus, DataType, IComment } from '../../common/types/rooms';
 import { IRentedRooms } from '../../common/types/personal';
 import ImageGallery from './ImageGallery/ImageGallery';
 import RoomDetails from './RoomDetails/RoomDetails';
-
+import { Input } from 'antd';
+import { fetchPatchRooms } from '../../redux/thunk/rooms';
+import { UserOutlined } from '@ant-design/icons';
+import { Rating } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './SinglePage.scss';
-import { fetchPatchRooms } from '../../redux/thunk/rooms';
+const { TextArea } = Input;
 
 export type IProgress = { diff: number, prec: number, daysCount: number, salePrice: number }
 
@@ -32,7 +36,7 @@ const SinglePage: FC = (): JSX.Element => {
     const { singleRoom, status } = useAppSelector(e => e.singleRoom)
     // const { items } = useAppSelector(selectRooms)
     const { user, isLogged } = useAppSelector(selectAuth)
-
+    const [commentValue, setCommentValue] = useState('')
     const {
         name,
         imgs,
@@ -48,7 +52,7 @@ const SinglePage: FC = (): JSX.Element => {
     let favoriteValue;
 
     if (isLogged) {
-        favoriteValue = user.data.favorite.findIndex(item => item === idSingle);
+        favoriteValue = user.data.favourites.findIndex(item => item === idSingle);
 
     }
     const id = user.data.id;
@@ -170,7 +174,7 @@ const SinglePage: FC = (): JSX.Element => {
     }
     const onClickFavourite = async () => {
         if (id !== undefined) {
-            const favourites: number[] = [...user.data.favorite]
+            const favourites: number[] = [...user.data.favourites]
             const indexFavourit = favourites.indexOf(idSingle)
             if (indexFavourit !== -1) {
                 favourites.splice(indexFavourit, 1)
@@ -178,11 +182,35 @@ const SinglePage: FC = (): JSX.Element => {
 
                 favourites.push(idSingle)
             }
-            const changedData: IUserData = { ...user.data, favorite: favourites };
+            const changedData: IUserData = { ...user.data, favourites: favourites };
             await dispatch(fetchPatchProfile({ id, changedData }))
         }
     }
+    const onClickComment = async (e: any) => {
+        e.preventDefault()
+        const localUser = user.data
 
+        const statusComment = singleRoom.comments.findIndex(item => item.createId === localUser.createId)
+
+        if (statusComment === -1) {
+            const commentObj: IComment = {
+                username: localUser.username,
+                imageUrl: localUser.imageUrl,
+                addedDate: new Date(),
+                comment: commentValue,
+                createId: localUser.createId,
+                rating: value
+            }
+            const changedData: DataType = {
+                ...singleRoom,
+                comments: [...singleRoom.comments, commentObj]
+            }
+            await dispatch(fetchPatchRooms(changedData))
+        } else {
+            return false
+        }
+        setCommentValue('')
+    }
     useEffect(() => {
         getRoom(idSingle)
     }, [])
@@ -283,8 +311,69 @@ const SinglePage: FC = (): JSX.Element => {
                         <button onClick={onClickFavourite} className="singlepage__btn button-white button-white--big">{`${favoriteValue !== -1 ? "Убрать из избранное" : "Добавить в избранное"}`}</button>
                     </div>
                 </div>
-            </div>
-        </section>
+                <div className="singlepage__col singlepage__col--comments">
+                    <h3 className="singlepage__col-title">
+                        Комментарий
+                    </h3>
+                    <div className="singlepage__comments">
+                        <form className="singlepage__comments-form">
+                            <div className="singlepage__comments-top">
+                                <Avatar src={user.data.imageUrl} size={64} icon={<UserOutlined />} ></Avatar>
+                                <TextArea
+                                    value={commentValue}
+                                    onChange={(e) => setCommentValue(e.target.value)}
+                                    placeholder="Controlled autosize"
+                                    autoSize={{
+                                        minRows: 3,
+                                        maxRows: 5,
+                                    }}
+                                />
+                            </div>
+                            <div className="singlepage__comments-btn">
+                                <button className='button-blue' onClick={onClickComment}>Оставить комментарий</button>
+                            </div>
+                        </form>
+                        <ul className="singlepage__comments-list">
+                            {singleRoom.comments.map((item, index) => {
+                                let day: string | number = new Date(item.addedDate).getDate()
+                                let month: string | number = new Date(item.addedDate).getMonth()
+                                const year: string | number = new Date(item.addedDate).getFullYear()
+
+                                if (day < 10) {
+                                    day = '0' + day
+                                } if (month < 10) {
+                                    month = '0' + month
+                                }
+                                return (
+                                    <li key={index} className="singlepage__comments-item">
+                                        <div className="singlepage__comments-heading">
+                                            <div className="singlepage__comments-img">
+                                                <Avatar src={item.imageUrl} size={64} icon={<UserOutlined />} />
+                                            </div>
+                                            <div className="singlepage__comments-info">
+                                                <h6 className="singlepage__comments-username">
+                                                    {item.username}
+                                                </h6>
+                                                <div className="singlepage__comments-rating">
+                                                    <Rating emptyIcon={<StarIcon style={{ opacity: 0.45 }} fontSize="inherit" />} name="hover-feedback" size="small" value={item.rating} precision={0.25} readOnly />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p className="singlepage__comments-text">
+                                            {item.comment}
+                                        </p>
+                                        <div className="singlepage__comments-date">
+                                            {`${day}:${month}:${year}`}
+                                        </div>
+                                    </li>
+                                )
+                            })}
+
+                        </ul>
+                    </div>
+                </div>
+            </div >
+        </section >
     )
 }
 

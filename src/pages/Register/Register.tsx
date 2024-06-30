@@ -39,7 +39,7 @@ const Register: FC = (): JSX.Element => {
                     password: data.password,
                     firstName: data.firstName,
                     username: data.username,
-                    favorite: [],
+                    favourites: [],
                     imageUrl: '',
                     imgsId: 0,
                     payments: {

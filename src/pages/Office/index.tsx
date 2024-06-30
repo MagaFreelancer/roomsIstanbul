@@ -54,7 +54,7 @@ const Office = () => {
                                 <input value={searchValue} onChange={(e) => dispatch(setSearchValue(e.target.value))} type="text" />
                                 {searchValue && <CloseIcon onClick={() => dispatch(setSearchValue(''))} className='office__close' />}
                             </div>
-                           <button className='button office__button'>Искать</button>
+                            <button className='button-blue office__button'>Искать</button>
                         </form>
                         <ul className='office__cards'>
                             {items.map((item, index) => (

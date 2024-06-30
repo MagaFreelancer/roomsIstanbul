@@ -14,7 +14,8 @@ export interface DataType {
 	info: string[]
 	imgs: string[]
 	reviews: DataReviews[]
-	rating: number
+	rating: number,
+	comments: IComment[]
 }
 export type DataReviews = {
 	createId: number,
@@ -28,6 +29,14 @@ export interface StateType {
 	capacity: CapacityItem[]
 	// status: string,
 	status: DataStatus.LOADING | DataStatus.SUCCESS | DataStatus.FAILED
+}
+export type IComment = {
+	createId: number,
+	addedDate: Date,
+	username: string,
+	rating: number | null,
+	comment: string,
+	imageUrl: string
 }
 export type SquareItem = {
 	value: string

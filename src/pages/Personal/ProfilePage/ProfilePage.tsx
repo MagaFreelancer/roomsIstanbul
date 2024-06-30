@@ -14,8 +14,7 @@ import "./ProfilePage.scss";
 
 const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Element => {
     const { user, isLogged, dispatch } = props;
-    console.log(user);
-    
+
     const isLoadingAvatar = user.imageUrl ? true : false
     const username = isLogged ? user.username[0] : '';
     const inputFileRef = useRef<HTMLInputElement>(null)
@@ -132,7 +131,7 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
 
                 </div>
                 <div className="profilepage__btns">
-                    <button onClick={() => inputFileRef.current?.click()} className='button profilepage__updateimg'>Upload Photo</button>
+                    <button onClick={() => inputFileRef.current?.click()} className='button-blue profilepage__updateimg'>Upload Photo</button>
                     {isLoadingAvatar && <button onClick={handleFileRemove} className='button-white profilepage__removeimage'>Remove Photo</button>}
                     <input ref={inputFileRef} type="file" hidden onChange={handleFileUpload} />
                 </div>
@@ -164,7 +163,7 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
                     {...register('email')}
                     value={watchedValues.email || ''}
                 />
-                <button className='button profilepage__btn' type='submit'>Сохранить</button>
+                <button className='button-blue profilepage__btn' type='submit'>Сохранить</button>
             </form>
         </div>
     );

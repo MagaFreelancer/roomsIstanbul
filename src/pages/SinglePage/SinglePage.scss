@@ -162,4 +162,51 @@
     &__btn {
         font-size: 20px;
     }
+    &__col-comments {
+        margin-bottom: 30px;
+    }
+    &__col-title {
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+    &__comments-top {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 10px;
+    }
+    &__comments-btn {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            padding: 12px 10px;
+            border-radius: 5px;
+        }
+    }
+    &__comments-heading {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    &__comments-img {
+        margin-bottom: 10px;
+    }
+    &__comments-username {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+    &__comments-text {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 18px;
+        color: rgba(#000000, 0.6);
+    }
+    &__comments-date {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 12px;
+        font-weight: 400;
+        color: rgba(#000000, 0.6);
+    }
 }

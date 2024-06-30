@@ -104,7 +104,7 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
           {numberFormat(user.balance)} ₺
         </div>
         <div className="payment__ops">
-          <button className='button payment__btn' onClick={addBalance}>Пополнить счет</button>
+          <button className='button-blue payment__btn' onClick={addBalance}>Пополнить счет</button>
         </div>
       </div>
       <div className="payment__story">

@@ -33,7 +33,7 @@ export interface IUserData {
     firstName: string
     email: string
     imageUrl: string
-    favorite: number[]
+    favourites: number[]
     password?: string
     imgsId: number
     payments: IPayments
