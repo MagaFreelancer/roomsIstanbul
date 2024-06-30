@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { fetchSingle } from '../../redux/thunk/single';
 import { selectAuth } from '../../redux/slices/authSlice';
 import { fetchPatchProfile } from '../../redux/thunk/auth';
-import { IUserData } from '../../common/types/auth';
+import { IPayment, IUserData } from '../../common/types/auth';
 import { Avatar, Popconfirm } from 'antd';
 import { DataStatus, DataType, IComment } from '../../common/types/rooms';
 import { IRentedRooms } from '../../common/types/personal';
@@ -148,8 +148,9 @@ const SinglePage: FC = (): JSX.Element => {
     const onClickRent = async () => {
 
         if (id === undefined) return;
+        if (salePrice > user.data.balance) return
 
-        const changedData: IUserData = { ...user.data };
+        let changedData: IUserData = { ...user.data };
         const localRentedRooms = [...user.data.rentedRooms];
         const activeRentIndex = localRentedRooms.findIndex(item => item.id === idSingle);
 
@@ -168,9 +169,28 @@ const SinglePage: FC = (): JSX.Element => {
                 rentedDate: new Date(),
             });
         }
+        const lastId = changedData.payments.replenished.length > 0 ? changedData.payments.replenished[changedData.payments.replenished.length - 1].id : 1
 
-        changedData.rentedRooms = localRentedRooms;
+        const newPayment: IPayment = {
+            id: lastId,
+            sum: salePrice,
+            type: 'decrement',
+            date: new Date()
+        }
+        changedData = {
+            ...user.data,
+            balance: user.data.balance - salePrice,
+            payments: {
+                replenished: [
+                    ...user.data.payments.replenished,
+                    newPayment
+                ]
+            },
+            rentedRooms: localRentedRooms
+        };
+
         await dispatch(fetchPatchProfile({ id, changedData }));
+
     }
     const onClickFavourite = async () => {
         if (id !== undefined) {
@@ -211,6 +231,8 @@ const SinglePage: FC = (): JSX.Element => {
         }
         setCommentValue('')
     }
+
+
     useEffect(() => {
         getRoom(idSingle)
     }, [])
@@ -313,7 +335,7 @@ const SinglePage: FC = (): JSX.Element => {
                 </div>
                 <div className="singlepage__col singlepage__col--comments">
                     <h3 className="singlepage__col-title">
-                        Комментарий
+                        {singleRoom.comments.length} Комментария
                     </h3>
                     <div className="singlepage__comments">
                         <form className="singlepage__comments-form">
