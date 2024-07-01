@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../utils/hook';
 import RentedPage from './RentedPage/RentedPage';
 import { selectRooms } from '../../redux/slices/roomsSlice';
 import { fetchRooms } from '../../redux/thunk/rooms';
+import FavouritePage from './FavouritePage/FavouritePage';
 import "./Personal.scss"
 
 const { Content } = Layout;
@@ -51,6 +52,7 @@ const Personal: FC = (): JSX.Element => {
                                     <Route path="/profile" element={<ProfilePage user={user.data} isLogged={isLogged} dispatch={dispatch} />} />
                                     <Route path="/payment" element={<PaymentPage user={user.data} isLogged={isLogged} dispatch={dispatch} />} />
                                     <Route path="/rented" element={<RentedPage items={items} user={user.data} isLogged={isLogged} />} />
+                                    <Route path="/favourite" element={<FavouritePage items={items} dispatch={dispatch} user={user.data} isLogged={isLogged} />} />
                                 </Routes>
                             </Content>
                         </Layout>

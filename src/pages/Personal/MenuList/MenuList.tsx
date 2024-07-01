@@ -38,7 +38,7 @@ const items: MenuItem[] = [
     getItem(<Link to="/personal/profile">Профиль</Link>, 'profile', <UserOutlined />),
     getItem(<Link to="/personal/payment">Платежи</Link>, 'payment', <PayCircleOutlined />),
     getItem('Офисы', 'offices', <ProfileOutlined />, [
-        getItem(<Link to="/personal/favorite">Избранное</Link>, 'favorite', <StarOutlined />),
+        getItem(<Link to="/personal/favourite">Избранное</Link>, 'favourite', <StarOutlined />),
         getItem(<Link to="/personal/rented">Аренндованное</Link>, 'rented', <CheckOutlined />),
     ]),
     getItem(<Link to="/personal/story">История</Link>, 'story', <HistoryOutlined />),
@@ -46,7 +46,7 @@ const items: MenuItem[] = [
         getItem(<Link to="/personal/theme">Тема</Link>, 'theme', <MoonOutlined />),
         getItem(<Link to="/personal/code">QR code</Link>, 'code', <QrcodeOutlined />),
     ]),
-    getItem(<Link to="/logout">Выход</Link>, 'logout', <LogoutOutlined />),
+    getItem(<div >Выход</div>, 'logout', <LogoutOutlined />),
 ];
 const MenuList = () => {
     const [selectedKeys, setSelectedKeys] = useState<string[]>(["profile"])

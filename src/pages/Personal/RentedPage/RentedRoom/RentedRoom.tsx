@@ -14,6 +14,7 @@ const delay = async (ms: number) => {
 }
 const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element => {
     const { item, prec, diff } = props
+    
     const [progress, setProgress] = useState(0);
     const rews = item.reviews?.map((item) => item.userReviews).reduce((acc, review) => {
         if (acc !== null && review !== null) {

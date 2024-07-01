@@ -20,5 +20,15 @@ export interface IPropsRentedPage {
     isLogged: boolean
     items: DataType[]
 }
-
+export interface IPropsFavouritePage {
+    dispatch: AppDispatch;
+    user: IUserData
+    isLogged: boolean
+    items: DataType[]
+}
+export interface IPropsFavouritedRoom {
+    dispatch: AppDispatch;
+    item: DataType
+    user: IUserData
+}
 export type IRentedRooms = DataType & IRooms

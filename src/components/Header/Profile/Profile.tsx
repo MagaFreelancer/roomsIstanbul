@@ -90,7 +90,7 @@ const Porfile: FC<IPropsProfile> = ({ data }) => {
                     <Link className='profile__link' to="/settings">Настройки <img src={settingsSvg} alt="settings" /></Link>
                 </li>
                 <li className="profile__item">
-                    <Link className='profile__link' to="/favourite">Избранное <img src={favouriteSvg} alt="settings" /> </Link>
+                    <Link className='profile__link' to="/personal/favourite">Избранное <img src={favouriteSvg} alt="settings" /> </Link>
                 </li>
                 <li className="profile__item">
                     <button onClick={onClickLogout} className='profile__link'>Выйти <img src={logoutSvg} alt="logout" /></button>
