@@ -16,6 +16,7 @@ export interface IPropsPaymentPage {
     dispatch: AppDispatch;
 }
 export interface IPropsRentedPage {
+    dispatch: AppDispatch;
     user: IUserData
     isLogged: boolean
     items: DataType[]

@@ -10,12 +10,12 @@ import './RentedPage.scss'
 
 
 const RentedPage: FC<IPropsRentedPage> = (props): JSX.Element => {
-    const { user, isLogged, items } = props
+    const { user, isLogged, items, dispatch } = props
     const [age, setAge] = useState('');
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value as string);
     };
-    
+
     const rentedRooms: IRentedRooms[] = [];
     items.forEach(item => {
         for (let i = 0; i < user.rentedRooms?.length; i++) {
@@ -73,7 +73,9 @@ const RentedPage: FC<IPropsRentedPage> = (props): JSX.Element => {
                             <RentedRoom
                                 key={index}
                                 item={item}
+                                user={user}
                                 prec={prec}
+                                dispatch={dispatch}
                                 diff={diff}
                             />
                         )
