@@ -175,7 +175,8 @@ const SinglePage: FC = (): JSX.Element => {
             id: lastId,
             sum: salePrice,
             type: 'decrement',
-            date: new Date()
+            date: new Date(),
+            balance: user.data.balance
         }
         changedData = {
             ...user.data,

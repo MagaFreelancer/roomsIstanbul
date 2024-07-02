@@ -7,8 +7,6 @@ import { differenceInDays } from 'date-fns';
 import RentedRoom from './RentedRoom/RentedRoom';
 import './RentedPage.scss'
 
-
-
 const RentedPage: FC<IPropsRentedPage> = (props): JSX.Element => {
     const { user, isLogged, items, dispatch } = props
     const [age, setAge] = useState('');
@@ -31,6 +29,9 @@ const RentedPage: FC<IPropsRentedPage> = (props): JSX.Element => {
             }
         }
     })
+
+
+
 
     return (
         <div className="rented">

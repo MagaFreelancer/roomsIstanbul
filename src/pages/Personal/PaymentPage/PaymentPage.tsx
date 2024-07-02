@@ -4,6 +4,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { IPropsPaymentPage } from '../../../common/types/personal';
 import { IPayment, IUserData } from '../../../common/types/auth';
 import { fetchPatchProfile } from '../../../redux/thunk/auth';
+import { useTheme } from '@mui/material/styles';
+import { LineChart, axisClasses } from '@mui/x-charts';
+import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import './PaymentPage.scss'
 
 
@@ -24,9 +27,19 @@ const numberFormat = (sum: number): string => {
       sum,
     )
 }
+function createData(
+  time: string,
+  amount?: number,
+): { time: string; amount: number | null } {
+  return { time, amount: amount ?? null };
+}
+
+
+
 const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Element => {
   const { user, isLogged, dispatch } = props
   const [age, setAge] = React.useState('default');
+  const [state, setState] = React.useState({});
   let story: IPayment[] = []
   const storyTypes: Record<string, string> = {
     increment: 'replenished',
@@ -64,6 +77,20 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
     }
     return sortedStory
   }
+  const daysOfWeekInRussian = [
+    'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
+  ];
+  const monthsInRussian = [
+    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+  ];
+  const data = story.map(item => createData(monthsInRussian[new Date(item.date).getMonth()], item.balance))
+  console.log(data);
+
+  // const paymentsSum = story.map(item => item.balance)
+  const theme = useTheme();
+
+
   const paymentItems = sortedStory(age)
   const addBalance = () => {
     if (user.id === undefined) {
@@ -76,7 +103,8 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
       id: lastId + 1,
       sum: 3500,
       date: new Date(),
-      type: "increment"
+      type: "increment",
+      balance: user.balance
     }
 
     fetchProfile(user.id, payment)
@@ -108,10 +136,59 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
         </div>
       </div>
       <div className="payment__story">
+        <h4 className="payment__story-heading">
+          Графика
+        </h4>
+        <div className="payment__dashboard" >
+          <LineChart
+            dataset={data}
+            margin={{
+              top: 16,
+              right: 20,
+              left: 70,
+              bottom: 30,
+            }}
+            xAxis={[
+              {
+                scaleType: 'point',
+                dataKey: 'time',
+                tickNumber: 2,
+                tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
+              },
+            ]}
+            yAxis={[
+              {
+                label: '',
+                labelStyle: {
+                  ...(theme.typography.body1 as ChartsTextStyle),
+                  fill: theme.palette.text.primary,
+                },
+                tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
+                max: 45000,
+                tickNumber: 3,
+              },
+            ]}
+            series={[
+              {
+                dataKey: 'amount',
+                showMark: false,
+                color: theme.palette.primary.light,
+              },
+            ]}
+            sx={{
+              [`.${axisClasses.root} line`]: { stroke: theme.palette.text.secondary },
+              [`.${axisClasses.root} text`]: { fill: theme.palette.text.secondary },
+              [`& .${axisClasses.left} .${axisClasses.label}`]: {
+                transform: 'translateX(-25px)',
+              },
+            }}
+          />
+        </div>
         <div className="payment__nav">
           <h4 className="payment__nav-heading">
             All Customers
           </h4>
+
           <div className="payment__filter">
             <Select
               value={age}
@@ -127,6 +204,7 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
             </Select>
           </div>
         </div>
+
         <div className="payment__table">
           <table>
             <thead className='payment__head'>
@@ -141,7 +219,7 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
               {paymentItems.map((item, index) => {
                 const storyStatus = item.type === 'increment' ? true : false
                 let day: string | number = new Date(item.date).getDate()
-                let month: string | number = new Date(item.date).getMonth()
+                let month: string | number = new Date(item.date).getMonth() + 1
                 const year: string | number = new Date(item.date).getFullYear()
 
                 if (day < 10) {

@@ -52,6 +52,7 @@ export type IPayment = {
     sum: number;
     date: Date;
     type: 'increment' | 'decrement'
+    balance: number
 }
 export interface IPayments {
     replenished: IPayment[];
