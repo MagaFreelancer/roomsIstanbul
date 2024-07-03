@@ -54,7 +54,7 @@ const Personal: FC = (): JSX.Element => {
                                     <Route path="/payment" element={<PaymentPage user={user.data} isLogged={isLogged} dispatch={dispatch} />} />
                                     <Route path="/rented" element={<RentedPage items={items} dispatch={dispatch} user={user.data} isLogged={isLogged} />} />
                                     <Route path="/favourite" element={<FavouritePage items={items} dispatch={dispatch} user={user.data} isLogged={isLogged} />} />
-                                    <Route path="/story" element={<StoryPage />} />
+                                    <Route path="/story" element={<StoryPage items={items} dispatch={dispatch} user={user.data} isLogged={isLogged} />} />
                                 </Routes>
                             </Content>
                         </Layout>

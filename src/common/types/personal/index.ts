@@ -32,4 +32,10 @@ export interface IPropsFavouritedRoom {
     item: DataType
     user: IUserData
 }
+export interface IPropsStoryPage {
+    dispatch: AppDispatch;
+    user: IUserData
+    isLogged: boolean
+    items: DataType[]
+}
 export type IRentedRooms = DataType & IRooms

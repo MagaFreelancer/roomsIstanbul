@@ -39,7 +39,30 @@ export interface IUserData {
     payments: IPayments
     balance: number,
     rentedRooms: IRooms[]
-    createId: number
+    createId: number,
+    story: {
+        favouritesStory: IFavouritedStory[]
+        rentedStory: IRentedStory[]
+        profileStory: IProfileStory[]
+    }
+}
+
+export type IProfileStory = {
+    id: number,
+    date: Date,
+    status: "signed" | "logout" | "registered" | "changed"
+}
+export type IRentedStory = {
+    id: number,
+    date: Date,
+    favouritedRoomsId: number,
+    status: "activate" | "disable" | "extend"
+}
+export type IFavouritedStory = {
+    id: number,
+    favouritedRoomsId: number,
+    date: Date,
+    status: "activate" | "disable"
 }
 export type IRooms = {
     daysCount: number,

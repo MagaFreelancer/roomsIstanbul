@@ -8,6 +8,7 @@ export const loginUser = createAsyncThunk('auth/login',
         { rejectWithValue }
     ) => {
         try {
+            console.log(data);
             const user = await instance.post('/auth', data)
             sessionStorage.setItem('token', user.data.token)
             sessionStorage.setItem('name', user.data.data.firstName)

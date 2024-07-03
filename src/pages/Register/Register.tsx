@@ -31,26 +31,24 @@ const Register: FC = (): JSX.Element => {
     const handleSubmitForm = async (data: any) => {
 
         if (data.password === data.confirmPassword) {
-            console.log(data);
-
             try {
-                const userData: IUserData = {
+                const userData = {
                     email: data.email,
                     password: data.password,
                     firstName: data.firstName,
                     username: data.username,
-                    favourites: [],
-                    imageUrl: '',
-                    imgsId: 0,
-                    payments: {
-                        replenished: [],
-                    },
                     balance: 30000,
-                    rentedRooms: [],
-                    createId: Number(new Date)
-                }
-                console.log(userData);
-
+                    createId: Number(new Date()),
+                    story: {
+                        profileStory: [
+                            {
+                                id: 0,
+                                date: new Date(),
+                                status: 'registered'
+                            }
+                        ]
+                    }
+                } as IUserData
                 await dispatch(registerUser(userData))
                 navigate('/')
             } catch (e) {

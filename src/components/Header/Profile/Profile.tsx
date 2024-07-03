@@ -9,8 +9,10 @@ import { Avatar } from '@mui/material';
 import favouriteSvg from "../../../assets/favourite.svg"
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
-import './Profile.scss'
 import { IPropsProfile } from '../../../common/types/auth';
+import { logout } from '../../../redux/slices/authSlice';
+import { useAppDispatch } from '../../../utils/hook';
+import './Profile.scss'
 
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -44,7 +46,7 @@ const Porfile: FC<IPropsProfile> = ({ data }) => {
 
     const [open, setOpen] = React.useState<boolean>(false);
     const sortRef = React.useRef<HTMLDivElement>(null);
-
+    const dispatch = useAppDispatch()
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
@@ -58,10 +60,12 @@ const Porfile: FC<IPropsProfile> = ({ data }) => {
         };
     }, []);
     const onClickLogout = () => {
-        // dispatch(logout()); // Передаем полученное действие в dispatch
-        // setOpen(false);
-        // localStorage.removeItem('token')
-        // localStorage.removeItem('data')
+        dispatch(logout()); // Передаем полученное действие в dispatch
+        sessionStorage.removeItem('token')
+        sessionStorage.removeItem('name')
+        location.reload()
+        setOpen(false);
+
     }
     return (
         <div className="profile">

@@ -7,8 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from '../../utils/yup';
-import { loginUser } from '../../redux/thunk/auth';
+import { fetchPatchProfile, loginUser } from '../../redux/thunk/auth';
+import { IUserData } from '../../common/types/auth';
+
 import './Login.scss'
+
 //2
 const Login: FC = (): JSX.Element => {
     const navigate = useNavigate()
@@ -24,10 +27,28 @@ const Login: FC = (): JSX.Element => {
         })
     const handleSubmitForm = async (data: any) => {
         try {
-            await dispatch(loginUser(data))
-            navigate('/')
+            const returnedData = await dispatch(loginUser(data));
+
+            const dataUser = returnedData.payload.data;
+            const profileStory = dataUser.story.profileStory;
+
+            const lastId = profileStory.length > 0 ? profileStory[profileStory.length - 1].id + 1 : 0;
+
+            const changedData = {
+                story: {
+                    profileStory: [...profileStory, {
+                        id: lastId,
+                        status: 'signed',
+                        date: new Date()
+                    }]
+                }
+            } as IUserData;
+
+            await dispatch(fetchPatchProfile({ id: dataUser.id, changedData }));
+            navigate('/');
         } catch (e) {
-            return e
+            console.error('Error in handleSubmitForm:', e);
+            return e;
         }
     }
 
