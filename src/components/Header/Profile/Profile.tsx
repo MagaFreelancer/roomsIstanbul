@@ -9,10 +9,11 @@ import { Avatar } from '@mui/material';
 import favouriteSvg from "../../../assets/favourite.svg"
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
-import { IPropsProfile } from '../../../common/types/auth';
+import { IPropsProfile, IUserData } from '../../../common/types/auth';
 import { logout } from '../../../redux/slices/authSlice';
 import { useAppDispatch } from '../../../utils/hook';
 import './Profile.scss'
+import { fetchPatchProfile } from '../../../redux/thunk/auth';
 
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -59,13 +60,33 @@ const Porfile: FC<IPropsProfile> = ({ data }) => {
             document.body.removeEventListener("click", handleClickOutside);
         };
     }, []);
-    const onClickLogout = () => {
+    const onClickLogout = async () => {
+
+        if (data.id === undefined) return false
+
+
+        const profileStory = data.story.profileStory;
+
+        const lastId = profileStory.length > 0 ? profileStory[profileStory.length - 1].id + 1 : 0;
+
+        const changedData = {
+            story: {
+                profileStory: [...profileStory, {
+                    id: lastId,
+                    status: "logout",
+                    date: new Date()
+                }]
+            }
+        } as IUserData;
+
+        await dispatch(fetchPatchProfile({ id: data.id, changedData }));
+
+
         dispatch(logout()); // Передаем полученное действие в dispatch
         sessionStorage.removeItem('token')
         sessionStorage.removeItem('name')
         location.reload()
         setOpen(false);
-
     }
     return (
         <div className="profile">

@@ -44,9 +44,22 @@ export interface IUserData {
         favouritesStory: IFavouritedStory[]
         rentedStory: IRentedStory[]
         profileStory: IProfileStory[]
+        commentsStory: ICommentsStory[]
+        ratingStory: IRatingStory[]
     }
 }
-
+export type IRatingStory = {
+    id: number,
+    date: Date,
+    RatingRoomsId: number
+    status: 'activate' | "disable" | "changed"
+}
+export type ICommentsStory = {
+    id: number,
+    date: Date,
+    commentedRoomsId: number
+    status: 'activate' | "disable" | "changed"
+}
 export type IProfileStory = {
     id: number,
     date: Date,
@@ -55,7 +68,7 @@ export type IProfileStory = {
 export type IRentedStory = {
     id: number,
     date: Date,
-    favouritedRoomsId: number,
+    RentedRoomsId: number,
     status: "activate" | "disable" | "extend"
 }
 export type IFavouritedStory = {

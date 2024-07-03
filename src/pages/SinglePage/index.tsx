@@ -81,8 +81,10 @@ const SinglePage: FC = (): JSX.Element => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const changeRating = (e: number | null) => {
+    const changeRating = async (e: number | null) => {
+        if (user.data.id === undefined) return false
         setValue(e);
+        let status: null | 'activate' | "changed" = null
         let indexReviews: number | null = null;
         const reviewsObj = singleRoom.reviews.find((item, index) => {
             if (item.createId === user.data.createId) {
@@ -93,19 +95,39 @@ const SinglePage: FC = (): JSX.Element => {
         });
 
         const changedData = { ...singleRoom, reviews: [...singleRoom.reviews] };
-
+        const ratingStory = user.data.story.ratingStory
+        const ratingStoryLastId = ratingStory.length > 0 ?
+            ratingStory[ratingStory.length - 1].id + 1 : 0
         if (indexReviews !== null && reviewsObj) {
             changedData.reviews.splice(indexReviews, 1, {
                 createId: user.data.createId,
                 userReviews: e,
             });
+            status = 'changed'
         } else {
             changedData.reviews.push({
                 createId: user.data.createId,
                 userReviews: e
             });
+            status = 'activate'
         }
-        dispatch(fetchPatchRooms(changedData));
+        const changedDataUser = {
+            ...user.data,
+            story: {
+                ...user.data.story,
+                ratingStory: [
+                    ...user.data.story.ratingStory,
+                    {
+                        id: ratingStoryLastId,
+                        date: new Date(),
+                        RatingRoomsId: singleRoom.id,
+                        status
+                    }
+                ],
+            },
+        } as IUserData;
+        await dispatch(fetchPatchProfile({ id: user.data.id, changedData: changedDataUser }))
+        await dispatch(fetchPatchRooms(changedData));
     }
     const open = Boolean(anchorEl);
     const idPop = open ? 'simple-popover' : undefined;
@@ -149,7 +171,7 @@ const SinglePage: FC = (): JSX.Element => {
 
         if (id === undefined) return;
         if (salePrice > user.data.balance) return
-        let status: null | "activate" | "extend" = null
+        let status: null | "activate" | "extend" | "disable" = null
         let changedData: IUserData = { ...user.data };
         const localRentedRooms = [...user.data.rentedRooms];
         const activeRentIndex = localRentedRooms.findIndex(item => item.id === idSingle);
@@ -200,12 +222,11 @@ const SinglePage: FC = (): JSX.Element => {
                 ]
             },
             story: {
+                ...user.data.story,
                 rentedStory: [
                     ...user.data.story.rentedStory,
                     newPaymentStory
                 ],
-                profileStory: user.data.story.profileStory,
-                favouritesStory: user.data.story.favouritesStory
             },
             rentedRooms: localRentedRooms
         } as IUserData;
@@ -233,8 +254,7 @@ const SinglePage: FC = (): JSX.Element => {
                 ...user.data,
                 favourites: favourites,
                 story: {
-                    rentedStory: user.data.story.rentedStory,
-                    profileStory: user.data.story.profileStory,
+                    ...user.data.story,
                     favouritesStory: [
                         ...user.data.story.favouritesStory,
                         {
@@ -251,6 +271,7 @@ const SinglePage: FC = (): JSX.Element => {
     }
     const onClickComment = async (e: any) => {
         e.preventDefault()
+        if (user.data.id === undefined) return false
         const localUser = user.data
 
         const statusComment = singleRoom.comments.findIndex(item => item.createId === localUser.createId)
@@ -268,6 +289,26 @@ const SinglePage: FC = (): JSX.Element => {
                 ...singleRoom,
                 comments: [...singleRoom.comments, commentObj]
             }
+            const commentsStory = user.data.story.commentsStory
+            const commentsStoryLastId = commentsStory.length > 0 ?
+                commentsStory[commentsStory.length - 1].id + 1 : 0
+
+            const changedDataUser: IUserData = {
+                ...user.data,
+                story: {
+                    ...user.data.story,
+                    commentsStory: [
+                        ...user.data.story.commentsStory,
+                        {
+                            id: commentsStoryLastId,
+                            date: new Date(),
+                            commentedRoomsId: singleRoom.id,
+                            status: 'activate'
+                        }
+                    ]
+                },
+            }
+            await dispatch(fetchPatchProfile({ id: user.data.id, changedData: changedDataUser }))
             await dispatch(fetchPatchRooms(changedData))
         } else {
             return false

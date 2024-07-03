@@ -35,15 +35,13 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
     }, [user, setValue]);
 
     const handleSubmitForm = async (changedData: any) => {
-        if (user.id === undefined) {
-            console.error('User ID is undefined');
-            return;
-        }
+        if (user.id === undefined) return false
         await reloadProfile(user.id, changedData)
 
         // window.location.reload()
     };
     const handleFileUpload = async (e: any) => {
+        if (user.id === undefined) return false
         const file = e.target.files[0];
 
         const formData = new FormData();
@@ -60,16 +58,12 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
                 },
             });
 
-
             const changedData: IUserData = {
                 ...user,
                 imageUrl: data.url,
                 imgsId: data.id
             }
-            if (user.id === undefined) {
-                console.error('User ID is undefined');
-                return;
-            }
+
             await reloadProfile(user.id, changedData)
             message.success(`${file.name} file uploaded successfully`);
         } catch (error) {
@@ -77,11 +71,29 @@ const ProfilePage: FC<IPropsProfilePage> = (props: IPropsProfilePage): JSX.Eleme
         }
     };
 
-    const reloadProfile = async (id: number, changedData: IUserData) => {
+    const reloadProfile = async (id: number, changedData: any) => {
         try {
+            const profileStory = user.story.profileStory;
+            const lastId = profileStory.length > 0 ? profileStory[profileStory.length - 1].id + 1 : 0;
+            const changedDataUser = {
+                ...changedData,
+                story: {
+                    ...user.story,
+                    profileStory: [
+                        ...user.story.profileStory,
+                        {
+                            id: lastId,
+                            date: new Date(),
+                            status: "changed"
+                        }
+                    ]
+                }
+            } as IUserData
             sessionStorage.removeItem('token')
             sessionStorage.removeItem('name')
-            const userData = await dispatch(fetchPatchProfile({ id, changedData }))
+            const userData = await dispatch(fetchPatchProfile({ id, changedData: changedDataUser }))
+
+
             await dispatch(loginUser({
                 email: userData.payload.email,
                 password: userData.payload.password

@@ -17,9 +17,7 @@ const Register: FC = (): JSX.Element => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const isloading = useAppSelector(e => e.auth.isloading)
-    if (isLogged) {
-        navigate('/')
-    }
+
     const {
         register,
         formState: {
@@ -39,7 +37,18 @@ const Register: FC = (): JSX.Element => {
                     username: data.username,
                     balance: 30000,
                     createId: Number(new Date()),
+                    favourites: [],
+                    rentedRooms: [],
+                    payments: {
+                        replenished: []
+                    },
+                    imageUrl: "",
+                    imgsId: 0,
                     story: {
+                        favouritesStory: [],
+                        rentedStory: [],
+                        commentsStory: [],
+                        ratingStory: [],
                         profileStory: [
                             {
                                 id: 0,
@@ -59,6 +68,7 @@ const Register: FC = (): JSX.Element => {
             throw Error(AppErrors.PasswordDoNotMatch)
         }
     }
+
     return (
         <div className="register">
             <div className="register__wrapper">

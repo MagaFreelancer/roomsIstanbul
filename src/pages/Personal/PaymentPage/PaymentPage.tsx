@@ -39,7 +39,6 @@ function createData(
 const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Element => {
   const { user, isLogged, dispatch } = props
   const [age, setAge] = React.useState('default');
-  const [state, setState] = React.useState({});
   let story: IPayment[] = []
   const storyTypes: Record<string, string> = {
     increment: 'replenished',
@@ -77,9 +76,9 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
     }
     return sortedStory
   }
-  const daysOfWeekInRussian = [
-    'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
-  ];
+  // const daysOfWeekInRussian = [
+  //   'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
+  // ];
   const monthsInRussian = [
     'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
     'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'

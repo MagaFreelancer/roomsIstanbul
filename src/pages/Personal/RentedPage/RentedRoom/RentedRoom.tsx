@@ -11,6 +11,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { fetchPatchProfile } from '../../../../redux/thunk/auth';
+import { IRentedStory, IUserData } from '../../../../common/types/auth';
 
 const delay = async (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -34,10 +35,30 @@ const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element 
         const rentedRooms = [...user.rentedRooms];
         const rentedRoomsIndex = rentedRooms.findIndex(el => el.id === item.id)
         rentedRooms.splice(rentedRoomsIndex, 1)
+
+        const rentedStory = user.story.rentedStory
+        const rentedStoryLastId = rentedStory.length > 0 ?
+            rentedStory[rentedStory.length - 1].id + 1 : 0
+        const newPaymentStory: IRentedStory = {
+            id: rentedStoryLastId,
+            RentedRoomsId: item.id,
+            date: new Date(),
+            status: "disable"
+        }
+
+
         const changedData = {
             ...user,
+            story: {
+                rentedStory: [
+                    ...user.story.rentedStory,
+                    newPaymentStory
+                ],
+                profileStory: user.story.profileStory,
+                favouritesStory: user.story.favouritesStory
+            },
             rentedRooms: [...rentedRooms]
-        }
+        } as IUserData
         await dispatch(fetchPatchProfile({ id: user.id, changedData }))
     }
     const handleClose = () => {
