@@ -125,65 +125,71 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
   return (
     <div className='payment'>
       <div className="payment__balance">
-        <h5 className="payment__heading">
-          Balance
-        </h5>
-        <div className="payment__sum">
-          {numberFormat(user.balance)} ₺
+        <div className="payment__balance-col payment__balance-col--dash">
+          <div className="payment__dashboard" >
+            <LineChart
+              dataset={data}
+              margin={{
+                top: 16,
+                right: 20,
+                left: 70,
+                bottom: 30,
+              }}
+              xAxis={[
+                {
+                  scaleType: 'point',
+                  dataKey: 'time',
+                  tickNumber: 2,
+                  tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
+                },
+              ]}
+              yAxis={[
+                {
+                  label: '',
+                  labelStyle: {
+                    ...(theme.typography.body1 as ChartsTextStyle),
+                    fill: theme.palette.text.primary,
+                  },
+                  tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
+                  max: 45000,
+                  tickNumber: 3,
+                },
+              ]}
+              series={[
+                {
+                  dataKey: 'amount',
+                  showMark: false,
+                  color: theme.palette.primary.light,
+                },
+              ]}
+              sx={{
+                [`.${axisClasses.root} line`]: { stroke: theme.palette.text.secondary },
+                [`.${axisClasses.root} text`]: { fill: theme.palette.text.secondary },
+                [`& .${axisClasses.left} .${axisClasses.label}`]: {
+                  transform: 'translateX(-25px)',
+                },
+              }}
+            />
+          </div>
         </div>
-        <div className="payment__ops">
-          <button className='button-blue payment__btn' onClick={addBalance}>Пополнить счет</button>
+        <div className="payment__balance-col">
+          <h5 className="payment__heading">
+            Balance
+          </h5>
+          <div className="payment__sum">
+            {numberFormat(user.balance)} ₺
+          </div>
+          <div className="payment__ops">
+            <button className='button-blue payment__btn' onClick={addBalance}>Пополнить счет</button>
+          </div>
         </div>
+
       </div>
       <div className="payment__story">
         <h4 className="payment__story-heading">
           Графика
         </h4>
-        <div className="payment__dashboard" >
-          <LineChart
-            dataset={data}
-            margin={{
-              top: 16,
-              right: 20,
-              left: 70,
-              bottom: 30,
-            }}
-            xAxis={[
-              {
-                scaleType: 'point',
-                dataKey: 'time',
-                tickNumber: 2,
-                tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-              },
-            ]}
-            yAxis={[
-              {
-                label: '',
-                labelStyle: {
-                  ...(theme.typography.body1 as ChartsTextStyle),
-                  fill: theme.palette.text.primary,
-                },
-                tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-                max: 45000,
-                tickNumber: 3,
-              },
-            ]}
-            series={[
-              {
-                dataKey: 'amount',
-                showMark: false,
-                color: theme.palette.primary.light,
-              },
-            ]}
-            sx={{
-              [`.${axisClasses.root} line`]: { stroke: theme.palette.text.secondary },
-              [`.${axisClasses.root} text`]: { fill: theme.palette.text.secondary },
-              [`& .${axisClasses.left} .${axisClasses.label}`]: {
-                transform: 'translateX(-25px)',
-              },
-            }}
-          />
-        </div>
+
         <div className="payment__nav">
           <h4 className="payment__nav-heading">
             All Customers

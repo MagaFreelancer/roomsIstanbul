@@ -8,8 +8,18 @@
         font-weight: 700;
         margin-bottom: 20px;
     }
+    &__balance {
+        display: flex;
+        gap: 20px;
+        width: 100%;
+    }
+    &__balance-col {
+        &--dash {
+            width: 80%;
+        }
+    }
     &__sum {
-        font-size: 40px;
+        font-size: 35px;
         margin-bottom: 30px;
     }
     &__btn {
@@ -17,7 +27,7 @@
         padding: 12px;
     }
     &__ops {
-        margin-bottom: 80px;
+        margin-bottom: 40px;
     }
     &__story-heading {
         font-size: 21px;

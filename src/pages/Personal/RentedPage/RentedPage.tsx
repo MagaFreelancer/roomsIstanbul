@@ -30,9 +30,6 @@ const RentedPage: FC<IPropsRentedPage> = (props): JSX.Element => {
         }
     })
 
-
-
-
     return (
         <div className="rented">
             <div className="rented__head">

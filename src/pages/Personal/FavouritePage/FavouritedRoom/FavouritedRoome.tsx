@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IPropsFavouritedRoom } from '../../../../common/types/personal';
 import { fetchPatchProfile } from '../../../../redux/thunk/auth';
+import { IUserData } from '../../../../common/types/auth';
 
 const FavouritedRoom: FC<IPropsFavouritedRoom> = (props: IPropsFavouritedRoom): JSX.Element => {
     const { item, dispatch, user } = props
@@ -33,10 +34,27 @@ const FavouritedRoom: FC<IPropsFavouritedRoom> = (props: IPropsFavouritedRoom): 
         const favourites = [...user.favourites];
 
         favourites.splice(favourites.indexOf(item.id), 1)
+        const favouritesStory = user.story.favouritesStory
+        const favouritesStoryLastId = favouritesStory.length > 0 ?
+            favouritesStory[favouritesStory.length - 1].id + 1 : 0
+
         const changedData = {
             ...user,
-            favourites: [...favourites]
-        }
+            favourites: [...favourites],
+            story: {
+                rentedStory: user.story.rentedStory,
+                profileStory: user.story.profileStory,
+                favouritesStory: [
+                    ...user.story.favouritesStory,
+                    {
+                        id: favouritesStoryLastId,
+                        favouritedRoomsId: item.id,
+                        date: new Date(),
+                        status: "disable"
+                    }
+                ]
+            }
+        } as IUserData
         await dispatch(fetchPatchProfile({ id: user.id, changedData }))
     }
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

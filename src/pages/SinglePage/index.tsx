@@ -149,7 +149,7 @@ const SinglePage: FC = (): JSX.Element => {
 
         if (id === undefined) return;
         if (salePrice > user.data.balance) return
-
+        let status: null | "activate" | "extend" = null
         let changedData: IUserData = { ...user.data };
         const localRentedRooms = [...user.data.rentedRooms];
         const activeRentIndex = localRentedRooms.findIndex(item => item.id === idSingle);
@@ -161,6 +161,7 @@ const SinglePage: FC = (): JSX.Element => {
                 daysCount: daysCount + activeRent.daysCount,
                 salePrice: activeRent.salePrice + salePrice,
             };
+            status = 'extend'
         } else {
             localRentedRooms.push({
                 daysCount,
@@ -168,16 +169,27 @@ const SinglePage: FC = (): JSX.Element => {
                 salePrice,
                 rentedDate: new Date(),
             });
+            status = 'activate'
+
         }
         const lastId = changedData.payments.replenished.length > 0 ? changedData.payments.replenished[changedData.payments.replenished.length - 1].id : 1
-
+        const rentedStory = user.data.story.rentedStory
+        const rentedStoryLastId = rentedStory.length > 0 ?
+            rentedStory[rentedStory.length - 1].id + 1 : 0
         const newPayment: IPayment = {
             id: lastId,
             sum: salePrice,
             type: 'decrement',
             date: new Date(),
-            balance: user.data.balance
+            balance: user.data.balance - salePrice
         }
+        const newPaymentStory = {
+            id: rentedStoryLastId,
+            RentedRoomsId: singleRoom.id,
+            date: new Date(),
+            status
+        }
+
         changedData = {
             ...user.data,
             balance: user.data.balance - salePrice,
@@ -187,23 +199,53 @@ const SinglePage: FC = (): JSX.Element => {
                     newPayment
                 ]
             },
+            story: {
+                rentedStory: [
+                    ...user.data.story.rentedStory,
+                    newPaymentStory
+                ],
+                profileStory: user.data.story.profileStory,
+                favouritesStory: user.data.story.favouritesStory
+            },
             rentedRooms: localRentedRooms
-        };
+        } as IUserData;
 
         await dispatch(fetchPatchProfile({ id, changedData }));
 
     }
     const onClickFavourite = async () => {
+        let status: null | "disable" | "activate" = null
         if (id !== undefined) {
             const favourites: number[] = [...user.data.favourites]
             const indexFavourit = favourites.indexOf(idSingle)
             if (indexFavourit !== -1) {
                 favourites.splice(indexFavourit, 1)
+                status = "disable"
             } else {
-
                 favourites.push(idSingle)
+                status = "activate"
             }
-            const changedData: IUserData = { ...user.data, favourites: favourites };
+            const favouritesStory = user.data.story.favouritesStory
+            const favouritesStoryLastId = favouritesStory.length > 0 ?
+                favouritesStory[favouritesStory.length - 1].id + 1 : 0
+
+            const changedData = {
+                ...user.data,
+                favourites: favourites,
+                story: {
+                    rentedStory: user.data.story.rentedStory,
+                    profileStory: user.data.story.profileStory,
+                    favouritesStory: [
+                        ...user.data.story.favouritesStory,
+                        {
+                            id: favouritesStoryLastId,
+                            favouritedRoomsId: singleRoom.id,
+                            date: new Date(),
+                            status
+                        }
+                    ]
+                }
+            } as IUserData;
             await dispatch(fetchPatchProfile({ id, changedData }))
         }
     }
