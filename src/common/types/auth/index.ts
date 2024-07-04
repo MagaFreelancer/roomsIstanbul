@@ -51,7 +51,7 @@ export interface IUserData {
 export type IRatingStory = {
     id: number,
     date: Date,
-    RatingRoomsId: number
+    ratingRoomsId: number
     status: 'activate' | "disable" | "changed"
 }
 export type ICommentsStory = {
@@ -68,7 +68,7 @@ export type IProfileStory = {
 export type IRentedStory = {
     id: number,
     date: Date,
-    RentedRoomsId: number,
+    rentedRoomsId: number,
     status: "activate" | "disable" | "extend"
 }
 export type IFavouritedStory = {

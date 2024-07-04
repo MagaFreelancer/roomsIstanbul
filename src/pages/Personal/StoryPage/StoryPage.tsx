@@ -3,14 +3,151 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { IPropsStoryPage } from '../../../common/types/personal';
 import "./StoryPage.scss";
+import { Link } from 'react-router-dom';
 
 
-const valueFormatter = (value: number | null) => `${value}mm`;
+const valueFormatter = (value: number | null) => `${value} Действий`;
 
+const dateFormat = (date: Date): string => {
+    let day: string | number = new Date(date).getDate()
+    let month: string | number = new Date(date).getMonth() + 1
+    const year: string | number = new Date(date).getFullYear()
 
-
+    if (day < 10) {
+        day = '0' + day
+    } if (month < 10) {
+        month = '0' + month
+    }
+    return `${day}.${month}.${year}`
+}
+let months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec"
+]
 const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => {
     const { user, isLogged, items, dispatch } = props
+
+    const rentObj: any = {
+        activate: "Арендовал офис",
+        disable: "Отменил аренду",
+        extend: "Продлил аренду"
+    }
+    const ratingObj: any = {
+        activate: "Добавил рейтинг",
+        changed: "Изменил рейтинг"
+    }
+    const commentObj: any = {
+        activate: "Добавил комментарии",
+        disable: "Удалил комментарии",
+        changed: "Изменил комментарии"
+    }
+    const favouriteObj: any = {
+        activate: "Добавил в избранное ",
+        disable: "Удалил из избранное",
+    }
+    const profileObj: any = {
+        signed: "Авторизовался",
+        logout: "Вышел из аккаунта",
+        registered: "Зарегистрировался",
+        changed: "Изменил данные"
+    }
+    // console.log(items);
+    if (!isLogged) {
+        return <>загрузка</>
+    }
+
+
+    const rentedStory = user.story.rentedStory.map(item => {
+        return {
+            name: rentObj[item.status],
+            date: dateFormat(item.date),
+            link: item.rentedRoomsId
+        }
+    })
+    const ratingStory = user.story.ratingStory.map(item => {
+        return {
+            name: ratingObj[item.status],
+            date: dateFormat(item.date),
+            link: item.ratingRoomsId
+        }
+    })
+    const commentsStory = user.story.commentsStory.map(item => {
+        return {
+            name: commentObj[item.status],
+            date: dateFormat(item.date),
+            link: item.commentedRoomsId
+        }
+    })
+    const favouritesStory = user.story.favouritesStory.map(item => {
+        return {
+            name: favouriteObj[item.status],
+            date: dateFormat(item.date),
+            link: item.favouritedRoomsId
+        }
+    })
+    const profileStory = user.story.profileStory.map(item => {
+        return {
+            name: profileObj[item.status],
+            date: dateFormat(item.date),
+            link: null
+        }
+    })
+    const filteredStory = [
+        ...rentedStory,
+        ...ratingStory,
+        ...commentsStory,
+        ...favouritesStory,
+        ...profileStory,
+    ]
+    const story = [
+        ...user.story.rentedStory,
+        ...user.story.ratingStory,
+        ...user.story.commentsStory,
+        ...user.story.favouritesStory,
+        ...user.story.profileStory,
+    ]
+    const ops: any = {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        7: 0,
+        8: 0,
+        9: 0,
+        10: 0,
+        11: 0
+    }
+    for (let k of story) {
+        const monthDate = new Date(k.date).getMonth()
+        for (let l in ops) {
+            const numberIndex = Number(l)
+            if (numberIndex === monthDate) {
+                ops[numberIndex] += 1
+            }
+        }
+    }
+    const dataset = months.map((item, index) => {
+        return {
+           
+            seoul: ops[index],
+            month: item,
+        }
+    })
+    console.log(dataset);
+
     // const tickPlacement = 'middle'
     // const tickLabelPlacement = 'middle'
     const chartSetting = {
@@ -25,95 +162,11 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
             [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
                 transform: 'translateX(-15px)',
             },
-           
+
         },
     };
-    const dataset = [
-        {
-            london: 59,
-            paris: 57,
-            newYork: 86,
-            seoul: 21,
-            month: 'Jan',
-        },
-        {
-            london: 50,
-            paris: 52,
-            newYork: 78,
-            seoul: 28,
-            month: 'Feb',
-        },
-        {
-            london: 47,
-            paris: 53,
-            newYork: 106,
-            seoul: 41,
-            month: 'Mar',
-        },
-        {
-            london: 54,
-            paris: 56,
-            newYork: 92,
-            seoul: 73,
-            month: 'Apr',
-        },
-        {
-            london: 57,
-            paris: 69,
-            newYork: 92,
-            seoul: 99,
-            month: 'May',
-        },
-        {
-            london: 60,
-            paris: 63,
-            newYork: 103,
-            seoul: 144,
-            month: 'June',
-        },
-        {
-            london: 59,
-            paris: 60,
-            newYork: 105,
-            seoul: 319,
-            month: 'July',
-        },
-        {
-            london: 65,
-            paris: 60,
-            newYork: 106,
-            seoul: 249,
-            month: 'Aug',
-        },
-        {
-            london: 51,
-            paris: 51,
-            newYork: 95,
-            seoul: 131,
-            month: 'Sept',
-        },
-        {
-            london: 60,
-            paris: 65,
-            newYork: 97,
-            seoul: 55,
-            month: 'Oct',
-        },
-        {
-            london: 67,
-            paris: 64,
-            newYork: 76,
-            seoul: 48,
-            month: 'Nov',
-        },
-        {
-            london: 61,
-            paris: 70,
-            newYork: 103,
-            seoul: 25,
-            month: 'Dec',
-        },
-    ];
+
+
     return (
         <div className="story">
             <h2 className="story__title">
@@ -128,6 +181,29 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
                     ]}
                     {...chartSetting}
                 />
+                <div className="payment__table">
+                    <table>
+                        <thead className='payment__head'>
+                            <tr>
+                                <th >ID</th>
+                                <th >Name</th>
+                                <th >Date</th>
+                            </tr>
+                        </thead>
+                        <tbody className='payment__body'>
+                            {filteredStory.map((item, index) => {
+
+                                return (
+                                    <tr key={index}>
+                                        <th>{index}</th>
+                                        {item.link !== null ? (<th ><Link to={`/offices/${item.link}`}>{item.name}</Link></th>) : <th >{item.name}</th>}
+                                        <th >{item.date}</th>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

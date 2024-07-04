@@ -84,7 +84,6 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
     'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
   ];
   const data = story.map(item => createData(monthsInRussian[new Date(item.date).getMonth()], item.balance))
-  console.log(data);
 
   // const paymentsSum = story.map(item => item.balance)
   const theme = useTheme();

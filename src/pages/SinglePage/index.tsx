@@ -207,7 +207,7 @@ const SinglePage: FC = (): JSX.Element => {
         }
         const newPaymentStory = {
             id: rentedStoryLastId,
-            RentedRoomsId: singleRoom.id,
+            rentedRoomsId: singleRoom.id,
             date: new Date(),
             status
         }

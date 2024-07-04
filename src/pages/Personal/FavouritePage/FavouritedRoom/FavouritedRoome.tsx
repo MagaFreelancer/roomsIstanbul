@@ -14,7 +14,6 @@ import { IUserData } from '../../../../common/types/auth';
 
 const FavouritedRoom: FC<IPropsFavouritedRoom> = (props: IPropsFavouritedRoom): JSX.Element => {
     const { item, dispatch, user } = props
-    console.log(user);
 
     const rews = item.reviews?.map((item) => item.userReviews).reduce((acc, review) => {
         if (acc !== null && review !== null) {
