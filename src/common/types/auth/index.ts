@@ -46,7 +46,13 @@ export interface IUserData {
         profileStory: IProfileStory[]
         commentsStory: ICommentsStory[]
         ratingStory: IRatingStory[]
+        paymentStory: IPaymentStory[]
     }
+}
+export type IPaymentStory = {
+    id: number,
+    date: Date,
+    status: string
 }
 export type IRatingStory = {
     id: number,

@@ -61,35 +61,48 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
         registered: "Зарегистрировался",
         changed: "Изменил данные"
     }
+    const paymentObj: any = {
+        increment: "Вы пополнили счет",
+    }
     if (!isLogged) {
         return <>загрузка</>
     }
-
+    const searchName = (arr: any[], id: number) => {
+        return arr.find(item => item.id === id);
+    };
 
     const rentedStory = user.story.rentedStory.map(item => {
+        const itemObj = searchName(items, item.rentedRoomsId);
+        
         return {
-            name: rentObj[item.status],
+            name: `${rentObj[item.status]} ${itemObj?.name}`,
             date: dateFormat(item.date),
             link: item.rentedRoomsId
-        }
-    })
+        };
+    });
     const ratingStory = user.story.ratingStory.map(item => {
+        const itemObj = searchName(items, item.id);
         return {
-            name: ratingObj[item.status],
+            name: `${ratingObj[item.status]} ${itemObj?.name}`,
+
             date: dateFormat(item.date),
             link: item.ratingRoomsId
         }
     })
     const commentsStory = user.story.commentsStory.map(item => {
+        const itemObj = searchName(items, item.id);
         return {
-            name: commentObj[item.status],
+            name: `${commentObj[item.status]} ${itemObj?.name}`,
+
             date: dateFormat(item.date),
             link: item.commentedRoomsId
         }
     })
     const favouritesStory = user.story.favouritesStory.map(item => {
+        const itemObj = searchName(items, item.id);
         return {
-            name: favouriteObj[item.status],
+            name: `${favouriteObj[item.status]} ${itemObj?.name}`,
+
             date: dateFormat(item.date),
             link: item.favouritedRoomsId
         }
@@ -101,12 +114,21 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
             link: null
         }
     })
+    const paymentStory = user.story.paymentStory.map(item => {
+        return {
+            name: paymentObj[item.status],
+            date: dateFormat(item.date),
+            link: null
+        }
+    })
     const filteredStory = [
         ...rentedStory,
         ...ratingStory,
         ...commentsStory,
         ...favouritesStory,
         ...profileStory,
+        ...paymentStory
+
     ]
     const story = [
         ...user.story.rentedStory,
@@ -114,6 +136,7 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
         ...user.story.commentsStory,
         ...user.story.favouritesStory,
         ...user.story.profileStory,
+        ...user.story.paymentStory
     ]
     const ops: any = {
         0: 0,
@@ -140,7 +163,7 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
     }
     const dataset = months.map((item, index) => {
         return {
-           
+
             seoul: ops[index],
             month: item,
         }

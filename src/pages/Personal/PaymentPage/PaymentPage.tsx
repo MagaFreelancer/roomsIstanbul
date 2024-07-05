@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { IPropsPaymentPage } from '../../../common/types/personal';
-import { IPayment, IUserData } from '../../../common/types/auth';
+import { IPayment, IPaymentStory, IUserData } from '../../../common/types/auth';
 import { fetchPatchProfile } from '../../../redux/thunk/auth';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, axisClasses } from '@mui/x-charts';
@@ -91,33 +91,45 @@ const PaymentPage: FC<IPropsPaymentPage> = (props: IPropsPaymentPage): JSX.Eleme
 
   const paymentItems = sortedStory(age)
   const addBalance = () => {
-    if (user.id === undefined) {
-      console.error("User ID is undefined");
-      return;
-    }
-    const lastId = story.length > 0 ? story[story.length - 1].id : 0;
+    if (user.id === undefined) return false
+    const lastId = story.length > 0 ? story[story.length - 1].id + 1 : 0;
+    const paymentStoryArr = user.story.paymentStory
+    const lastIdPaymentStory = paymentStoryArr.length > 0 ? paymentStoryArr[paymentStoryArr.length - 1].id + 1 : 0;
 
     const payment: IPayment = {
-      id: lastId + 1,
+      id: lastId,
       sum: 3500,
       date: new Date(),
       type: "increment",
       balance: user.balance
     }
+    const paymentStory = {
+      id: lastIdPaymentStory,
+      date: new Date(),
+      status: 'increment'
+    }
 
-    fetchProfile(user.id, payment)
+    fetchProfile(user.id, payment, paymentStory)
   }
-  const fetchProfile = async (id: number, payment: IPayment) => {
+  const fetchProfile = async (id: number, payment: IPayment, paymentStory: IPaymentStory) => {
 
     const changedData: IUserData = {
       ...user,
       balance: balanceCount([...story, payment]),
       payments: {
         replenished: [...story, payment]
+      },
+      story: {
+        ...user.story,
+        paymentStory: [
+          ...user.story.paymentStory,
+          paymentStory
+        ]
       }
+
     }
 
-    dispatch(fetchPatchProfile({ id, changedData }))
+    await dispatch(fetchPatchProfile({ id, changedData }))
   }
 
   return (
