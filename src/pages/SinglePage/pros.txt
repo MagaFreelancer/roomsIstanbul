@@ -134,38 +134,38 @@ const SinglePage: FC = (): JSX.Element => {
     }
     const open = Boolean(anchorEl);
     const idPop = open ? 'simple-popover' : undefined;
-    const arentedDate = user.data.rentedRooms?.find(item => item.id === singleRoom.id)
-    const extendDate = arentedDate ? addDays(new Date(arentedDate.rentedDate), arentedDate.daysCount) : new Date()
-    const minDate = arentedDate ? arentedDate.daysCount + 1 : 0
-    const addedStartDateDays: number = arentedDate ? 2 : 0;
-    const addedEndDateDays: number = arentedDate ? 3 : 1;
 
+
+
+    const arentedDate = user.data.rentedRooms?.find(item => item.id === singleRoom.id);
+    const extendDate = arentedDate ? addDays(new Date(arentedDate.rentedDate), arentedDate.daysCount) : new Date();
+    
+    const minDate = arentedDate ? arentedDate.daysCount + 1 : 0;
 
     const [valueDateRangePicker, setValueDateRangePicker] = useState<Range[] | undefined>([
         {
-            startDate: addDays(extendDate, addedStartDateDays),
-            endDate: addDays(extendDate, addedEndDateDays),
+            startDate: addDays(extendDate, 0),
+            endDate: addDays(extendDate, 1),
             key: "selection",
         },
     ]);
 
+    console.log("Value Date Range Picker:", valueDateRangePicker);
+    const [activeImg, setActiveImg] = useState<number>(0)
+
     useEffect(() => {
-        const arentedDate = user.data.rentedRooms?.find(item => item.id === singleRoom.id)
-        const extendDate = arentedDate ? addDays(new Date(arentedDate.rentedDate), arentedDate.daysCount) : new Date()
-        const addedStartDateDays: number = arentedDate ? 2 : 0;
-        const addedEndDateDays: number = arentedDate ? 3 : 1;
-
-
+        const arentedDate = user.data.rentedRooms?.find(item => item.id === singleRoom.id);
+        const extendDate = arentedDate ? addDays(new Date(arentedDate.rentedDate), arentedDate.daysCount) : new Date();
         setValueDateRangePicker([
             {
-                startDate: addDays(extendDate, addedStartDateDays),
-                endDate: addDays(extendDate, addedEndDateDays),
+                startDate: addDays(extendDate, 0),
+                endDate: addDays(extendDate, 1),
                 key: "selection",
             }
         ])
-    }, [user])
-
-    const [activeImg, setActiveImg] = useState<number>(0)
+    }, [
+        user
+    ])
 
     //календарь
     const formattedValueDateRangePickerStartDate = valueDateRangePicker?.[0].startDate
@@ -255,18 +255,7 @@ const SinglePage: FC = (): JSX.Element => {
             },
             rentedRooms: localRentedRooms
         } as IUserData;
-        const arentedDate = changedData.rentedRooms.find(item => item.id === singleRoom.id)
-        const extendDate = arentedDate ? addDays(new Date(), arentedDate.daysCount) : new Date()
 
-        setValueDateRangePicker(
-            [
-                {
-                    startDate: addDays(extendDate, 1),
-                    endDate: addDays(extendDate, addedEndDateDays),
-                    key: "selection",
-                }
-            ]
-        )
         await dispatch(fetchPatchProfile({ id, changedData }));
 
     }

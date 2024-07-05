@@ -61,7 +61,6 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
         registered: "Зарегистрировался",
         changed: "Изменил данные"
     }
-    // console.log(items);
     if (!isLogged) {
         return <>загрузка</>
     }
@@ -146,7 +145,6 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
             month: item,
         }
     })
-    console.log(dataset);
 
     // const tickPlacement = 'middle'
     // const tickLabelPlacement = 'middle'
