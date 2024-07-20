@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Range, RangeKeyDict } from "react-date-range";
 import Calendar from './Calendar/Calendar';
-import { addDays, format, subDays, differenceInDays } from 'date-fns';
+import { addDays, format, differenceInDays } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import Popover from '@mui/material/Popover';
@@ -32,6 +32,8 @@ export type IProgress = { diff: number, prec: number, daysCount: number, salePri
 
 
 const SinglePage: FC = (): JSX.Element => {
+
+
     const params = useParams()
     const idSingle = Number(params.id)
 
@@ -132,6 +134,8 @@ const SinglePage: FC = (): JSX.Element => {
         await dispatch(fetchPatchProfile({ id: user.data.id, changedData: changedDataUser }))
         await dispatch(fetchPatchRooms(changedData));
     }
+
+
     const open = Boolean(anchorEl);
     const idPop = open ? 'simple-popover' : undefined;
     const arentedDate = user.data.rentedRooms?.find(item => item.id === singleRoom.id)

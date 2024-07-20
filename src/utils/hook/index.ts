@@ -11,3 +11,4 @@ export const useAuth = () => {
 export const useStatus = (status: DataStatus.FAILED | DataStatus.SUCCESS | DataStatus.LOADING): boolean => {
     return status === DataStatus.LOADING ? true : false
 }
+

@@ -73,7 +73,7 @@ const StoryPage: FC<IPropsStoryPage> = (props: IPropsStoryPage): JSX.Element => 
 
     const rentedStory = user.story.rentedStory.map(item => {
         const itemObj = searchName(items, item.rentedRoomsId);
-        
+
         return {
             name: `${rentObj[item.status]} ${itemObj?.name}`,
             date: dateFormat(item.date),

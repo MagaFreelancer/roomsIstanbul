@@ -41,11 +41,10 @@ const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element 
             rentedStory[rentedStory.length - 1].id + 1 : 0
         const newPaymentStory: IRentedStory = {
             id: rentedStoryLastId,
-            RentedRoomsId: item.id,
+            rentedRoomsId: item.id,
             date: new Date(),
             status: "disable"
         }
-
 
         const changedData = {
             ...user,
@@ -55,7 +54,10 @@ const RentedRoom: FC<IPropsRentedRoom> = (props: IPropsRentedRoom): JSX.Element 
                     newPaymentStory
                 ],
                 profileStory: user.story.profileStory,
-                favouritesStory: user.story.favouritesStory
+                favouritesStory: user.story.favouritesStory,
+                commentsStory: user.story.commentsStory,
+                ratingStory: user.story.ratingStory,
+                paymentStory: user.story.paymentStory
             },
             rentedRooms: [...rentedRooms]
         } as IUserData

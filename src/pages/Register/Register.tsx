@@ -55,7 +55,8 @@ const Register: FC = (): JSX.Element => {
                                 date: new Date(),
                                 status: 'registered'
                             }
-                        ]
+                        ],
+                        paymentStory: []
                     }
                 } as IUserData
                 await dispatch(registerUser(userData))
